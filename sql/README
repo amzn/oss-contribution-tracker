@@ -1,0 +1,1 @@
+If not running in docker you will need to create the project and approvers tables before creating the contributions table.

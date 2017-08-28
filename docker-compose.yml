@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  frontend:
+    build: .
+    ports:
+    - 8000:8000
+    links:
+    - database
+    environment:
+    - USER
+  database:
+    image: postgres
+    ports:
+    - 5432:5432
+    volumes:
+    - ./sql:/docker-entrypoint-initdb.d

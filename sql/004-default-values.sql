@@ -1,0 +1,1 @@
+insert into approvers (approver_alias, approver_active) values ('YOU SHOULD ADD AN APPROVER', true);
