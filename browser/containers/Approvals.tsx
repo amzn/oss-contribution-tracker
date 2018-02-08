@@ -62,33 +62,29 @@ class Approvals extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="container">
-      <div className="jumbotron">
-        <form onSubmit={this.handleApproval}>
-          <div className="form-group">
-            <label>Approve/Deny</label>
-            <br/>
-            <div className="btn-group" role="group" aria-label="...">
-              <button id="approveBtn" type="button" className="btn btn-success btn-sm" onClick={this.approveContrib}>
-                <span className="glyphicon glyphicon-ok"></span>
-              </button>
-              <button id="denyBtn" type="button" className="btn btn-danger btn-sm" onClick={this.denyContrib}>
-                <span className="glyphicon glyphicon-remove"></span>
-              </button>
-            </div>
-            <br/>
-            <label>Approval Notes</label> <br/>
-            <textarea className="form-control" rows={3} name="approvalNotes" required /> <br/>
+      <form onSubmit={this.handleApproval}>
+        <div className="form-group">
+          <label>Approve/Deny</label>
+          <br/>
+          <div className="btn-group" role="group" aria-label="...">
+            <button id="approveBtn" type="button" className="btn btn-success btn-sm" onClick={this.approveContrib}>
+              <span className="glyphicon glyphicon-ok"></span>
+            </button>
+            <button id="denyBtn" type="button" className="btn btn-danger btn-sm" onClick={this.denyContrib}>
+              <span className="glyphicon glyphicon-remove"></span>
+            </button>
           </div>
-          <div className="col-md-10">
-            <div className="pullRight">
-              <IndexLink className="btn btn-default" to="/admin">Cancel</IndexLink>
-              <button className="btn btn-default" type="submit">Submit</button>
-            </div>
+          <br/>
+          <label>Approval Notes</label> <br/>
+          <textarea className="form-control" rows={3} name="approvalNotes" required /> <br/>
+        </div>
+        <div className="col-md-10">
+          <div className="pullRight">
+            <IndexLink className="btn btn-default" to="/admin">Cancel</IndexLink>
+            <button className="btn btn-default" type="submit">Submit</button>
           </div>
-        </form>
-      </div>
-      </div>
+        </div>
+      </form>
     );
   }
 }

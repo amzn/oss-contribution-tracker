@@ -74,26 +74,26 @@ class App extends React.Component<Props, State> {
     const { generalError } = this.props;
     return (
       <div>
-        <nav className="navbar navbar-inverse navbar-fixed-top">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <a className="navbar-brand" href="/">OSS Contribution Tracker</a>
-            </div>
-            <ul className="nav navbar-nav navbar-right">
-              <li>
-                <Link to="/admin">Admin</Link>
+        <nav className="navbar navbar-expand-sm navbar-light bg-light">
+          <Link to="/" className="navbar-brand">
+            OSS Contribution Tracker
+          </Link>
+          <div className="collapse navbar-collapse">
+            <ul className="nav navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link to="/admin" className="nav-link">Admin</Link>
               </li>
-              <li>
-                <Link to="/contribute">New Contribution</Link>
+              <li className="nav-item">
+                <Link to="/contribute" className="nav-link">New Contribution</Link>
               </li>
-              <li>
-                <Link to="/list">Contributions By Project</Link>
+              <li className="nav-item">
+                <Link to="/list" className="nav-link">Contributions By Project</Link>
               </li>
-              <li>
-                <Link to="/employee">Contributions By User</Link>
+              <li className="nav-item">
+                <Link to="/employee" className="nav-link">Contributions By User</Link>
               </li>
-              <li>
-                <a target="_blank" href="https://github.com/amzn/oss-contribution-tracker/issues">
+              <li className="nav-item">
+                <a target="_blank" href="https://github.com/amzn/oss-contribution-tracker/issues" className="nav-link">
                   <span className="glyphicon glyphicon-question-sign" /> Help
                 </a>
               </li>
@@ -103,13 +103,15 @@ class App extends React.Component<Props, State> {
 
         { generalError != null ? this.mapError(generalError) : '' }
 
-        <div id="body-content">
-          {this.props.children}
-        </div>
-        <div className="container">
+        <div className="container-fluid mt-4">
           <div className="row">
-            <div className="col-md-1"></div>
-            <div className="col-md-10">
+            <div id="body-content" className="mx-auto col-lg-11">
+              {this.props.children}
+            </div>
+          </div>
+
+          <div className="row mt-4">
+            <div className="mx-auto col-lg-11">
               <hr/>
               <a href="https://github.com/amzn/oss-contribution-tracker">GitHub</a> | <a href="https://github.com/amzn/oss-contribution-tracker/blob/master/LICENSE">License Information</a>
             </div>

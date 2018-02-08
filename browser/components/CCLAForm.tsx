@@ -12,7 +12,6 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
-import DatePicker = require('react-bootstrap-date-picker');
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
@@ -47,8 +46,8 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
     super(props);
     this.state = {
       project_name: '',
-      signed_date: new Date().toISOString(),
-      approved_date: new Date().toISOString(),
+      signed_date: '',
+      approved_date: '',
       contributor_names: '',
       approver_name: '',
       signatory_name: '',
@@ -142,7 +141,7 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
 
   render() {
     return (
-      <div className="container">
+      <div>
         <h3>New CCLA</h3>
         <form id="contributions-form" onSubmit={this.handleSubmit}>
           <div className="form-group">
@@ -173,9 +172,9 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
               })}
             </datalist><br/>
             <label>Date Signed</label>
-            <DatePicker name="dateSigned" value={this.state.signed_date}/><br/>
+            <input type="date" className="form-control" name="dateSigned" /><br/>
             <label>Date Approved</label>
-            <DatePicker name="dateApproved" value={this.state.approved_date}/><br/>
+            <input type="date" className="form-control" name="dateApproved" /><br/>
             <label>Additional Notes</label> <br/>
             <textarea id="description" className="form-control" rows={3} name="description" required></textarea>
           </div>

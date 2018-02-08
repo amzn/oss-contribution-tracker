@@ -12,7 +12,6 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
-import DatePicker = require('react-bootstrap-date-picker');
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
@@ -246,22 +245,22 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
             <label>Date of Contribution</label>
             <br />
             <div className="form-group">
-              <DatePicker id="contributionDateInput" name="contributionDateInput" value={this.state.contrib.contribution_date} />
+              <input type="date" className="form-control" id="contributionDateInput" name="contributionDateInput" />
             </div>
             <label>Contribution Notification Date</label>
             <br />
             <div className="form-group">
-              <DatePicker id="contributionSubmissionDateInput" name="contributionSubmissionDateInput" value={ this.state.contrib.contribution_submission_date} />
+              <input type="date" className="form-control" id="contributionSubmissionDateInput" name="contributionSubmissionDateInput" />
             </div>
             <label>Approval Date</label>
             <br />
             <div className="form-group">
-              <DatePicker id="approvalDateInput" name="approvalDateInput" value={ this.state.contrib.approval_date } />
+              <input type="date" className="form-control" id="approvalDateInput" name="approvalDateInput" />
             </div>
             <label>Contribution Closed Date</label>
             <br />
             <div className="form-group">
-              <DatePicker name="contributionClosedDateInput" value={ this.state.contrib.contribution_closed_date } />
+              <input type="date" className="form-control" name="contributionClosedDateInput" />
             </div>
             <label>GitHub Status</label>
             <br />

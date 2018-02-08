@@ -40,10 +40,8 @@ class List extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="container">
-        <div id="contributionsListAll" className="jumbotron">
-          <ContributionsTable contributionList={ this.state.contributionList } type="all" />
-        </div>
+      <div id="contributionsListAll">
+        <ContributionsTable contributionList={ this.state.contributionList } type="all" />
       </div>
     );
   }

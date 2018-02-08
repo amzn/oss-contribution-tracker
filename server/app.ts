@@ -53,7 +53,7 @@ if (cspEnabled) {
 app.use('/api', apiRoutes);
 app.use(compression());
 app.use('/assets', express.static(__dirname + '/assets'));
-app.use('/js', express.static(__dirname + '/ext'));
+app.use('/res', express.static(__dirname + '/../res'));
 
 app.use('/', (req, res) => {
   res.sendFile(__dirname + '/assets/template.html');

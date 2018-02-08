@@ -1,0 +1,11 @@
+@import './bootstrap-overrides.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+
+@import '~font-awesome/css/font-awesome.css';
+@import '~react-select/scss/default.scss';
+@import '~react-bootstrap-sweetalert/lib/css/animations.css';
+@import '~fixed-data-table/dist/fixed-data-table.min.css';
+
+input:invalid, textarea:invalid {
+  box-shadow: none;
+}

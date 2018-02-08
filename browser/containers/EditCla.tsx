@@ -98,9 +98,7 @@ class EditCla extends React.Component<Partial<Props>, State> {
 
   render() {
     return (
-      <div className="container">
-        <CLAEditor project_id={this.props.params.project_id} dispatch={this.props.dispatch} data={this.state} />
-      </div>
+      <CLAEditor project_id={this.props.params.project_id} dispatch={this.props.dispatch} data={this.state} />
     );
   }
 }

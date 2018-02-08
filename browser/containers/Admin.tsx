@@ -128,7 +128,7 @@ export default class Admin extends Component<Props, State> {
     let claTable = this.state.claTable;
     let contributionList = this.state.contributionList;
     return (
-      <div  className="container-fluid" id="admin_container">
+      <div className="container-fluid" id="admin_container">
       <div className="row">
         <div className="col-sm-2">
           <div className="nav-side-menu">

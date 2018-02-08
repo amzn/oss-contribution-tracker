@@ -99,10 +99,10 @@ class AllEmployeeTable extends React.Component<Props, State> {
   getTable = () => {
     let { alias } = this.props;
     let { filteredDataList } = this.state;
-    if (filteredDataList !== undefined && filteredDataList.length > 0) {
+    if (alias && filteredDataList !== undefined && filteredDataList.length > 0) {
       return(
         <div key="contribution_edit_div">
-          <h2>Viewing contributions from {alias}</h2>
+          <h2>Contributions by {alias}</h2>
           <Table
             rowsCount={filteredDataList ? filteredDataList.length : 0}
             rowHeight={50}
@@ -216,7 +216,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
         </div>
       );
     } else {
-      return (<h2>Enter an alias of a user above.</h2>);
+      return (<p>Enter an alias of a user above.</p>);
     };
   }
 

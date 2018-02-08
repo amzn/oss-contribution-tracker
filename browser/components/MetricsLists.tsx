@@ -73,7 +73,7 @@ export default class MetricsLists extends React.Component<Props, State> {
     let curYear = new Date().getFullYear();
     return (
       <div>
-      <div id="metrics" className="jumbotron">
+      <div id="metrics">
         <h2>Metrics</h2>
         <h4>Contributions by Year</h4>
         <div id="chart">
@@ -82,17 +82,17 @@ export default class MetricsLists extends React.Component<Props, State> {
         <ul>
           {metrics}
         </ul>
-        <h4>Top projects contributed ({curYear})</h4>
+        <h4>Top Project Contributions ({curYear})</h4>
         <ul>
           {this.topProjectsByYear(curYear, 'cur')}
         </ul>
 
-        <h4>Top projects contributed ({curYear - 1})</h4>
+        <h4>Top Project Contributions ({curYear - 1})</h4>
         <ul>
           {this.topProjectsByYear(curYear - 1, 'last')}
         </ul>
 
-        <h4>Top projects contributed (all time)</h4>
+        <h4>Top Project Contributions (all time)</h4>
         <ul>
           {topProjectsAll}
         </ul>
