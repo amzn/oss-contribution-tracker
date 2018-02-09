@@ -68,10 +68,10 @@ class Approvals extends React.Component<Props, State> {
           <br/>
           <div className="btn-group" role="group" aria-label="...">
             <button id="approveBtn" type="button" className="btn btn-success btn-sm" onClick={this.approveContrib}>
-              <span className="glyphicon glyphicon-ok"></span>
+              <i className="fa fa-check" />
             </button>
             <button id="denyBtn" type="button" className="btn btn-danger btn-sm" onClick={this.denyContrib}>
-              <span className="glyphicon glyphicon-remove"></span>
+              <i className="fa fa-ban" />
             </button>
           </div>
           <br/>

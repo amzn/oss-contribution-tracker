@@ -119,7 +119,7 @@ export default class Admin extends Component<Props, State> {
     }
     else {
       if (!this.state.claTableBoolean && !this.state.claFormBoolean) {
-        return(<h3>Select an option from the panel to show results</h3>);
+        return(<p>Select an option from the left.</p>);
       }
     }
   }
@@ -129,52 +129,30 @@ export default class Admin extends Component<Props, State> {
     let contributionList = this.state.contributionList;
     return (
       <div className="container-fluid" id="admin_container">
-      <div className="row">
-        <div className="col-sm-2">
-          <div className="nav-side-menu">
-            <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-              <div className="panel panel-default">
-                <div className="panel-heading" role="tab" id="contributions-heading">
-                  <h4 className="panel-title">
-                    <a id="contributions_link_admin" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      Contributions
-                    </a>
-                  </h4>
-                </div>
-                <div id="collapseOne" className="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                  <div className="list-group">
-                    <li onClick={this.setApprovalList} id="approve_contributions_admin_link">Approve Contributions <span className="glyphicon glyphicon-ok" /></li>
-                    <li onClick={this.setContributionList} id="edit_contributions_admin_link" >Edit Collaborations <span className="glyphicon glyphicon-pencil" /></li>
-                  </div>
-                </div>
-              </div>
-              <div className="panel panel-default">
-                <div className="panel-heading" role="tab" id="ccla-heading">
-                  <h4 className="panel-title">
-                    <a id="ccla_link_admin" className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                      CCLAs
-                    </a>
-                  </h4>
-                </div>
-                <div id="collapseTwo" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                  <div className="list-group">
-                    <li id="view_cla_link" onClick={this.setCLAList}>View CCLAs <span className="glyphicon glyphicon-list-alt" /></li>
-                    <li id="new_cla_link" onClick={this.setCLAForm}>New CCLA <span className="glyphicon glyphicon-edit" /></li>
-                  </div>
-                </div>
-              </div>
+        <div className="row">
+          <div className="col-lg-2 mb-3">
+            <h4>Contributions</h4>
+            <div className="list-group mb-3">
+              <a href="#" onClick={this.setApprovalList} className="list-group-item list-group-item-action">Approve Contributions</a>
+              <a href="#" onClick={this.setContributionList} className="list-group-item list-group-item-action">Edit Contributions</a>
+            </div>
+
+            <h4>CCLAs</h4>
+            <div className="list-group">
+              <a href="#" onClick={this.setCLAList} className="list-group-item list-group-item-action">View CCLAs</a>
+              <a href="#" onClick={this.setCLAForm} className="list-group-item list-group-item-action">New CCLA</a>
             </div>
           </div>
-        </div>
-        <div className="col-sm-9 col-sm-offset-2">
-          <div className="panel-body" key ={this.state.key}>
-            {this.state.editContributionListBoolean ? (<EditContributionTable contributionList={this.state.contributionList}/>) : this.renderTable(contributionList)}
-            {this.state.claTableBoolean && <CLATable cla={claTable}/>}
-            {this.state.claFormBoolean && <CCLAForm />}
+
+          <div className="col-lg-10 mb-3">
+            <div className="panel-body" key={this.state.key}>
+              {this.state.editContributionListBoolean ? (<EditContributionTable contributionList={this.state.contributionList} />) : this.renderTable(contributionList)}
+              {this.state.claTableBoolean && <CLATable cla={claTable} />}
+              {this.state.claFormBoolean && <CCLAForm />}
+            </div>
           </div>
+          <div id="alert" ></div>
         </div>
-      </div>
-      <div id="alert" ></div>
       </div>
     );
   }

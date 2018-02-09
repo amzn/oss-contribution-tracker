@@ -39,8 +39,8 @@ export default class TooltipCell extends React.Component<Partial<Props>, State> 
       <Cell {...props}
       onMouseEnter = {() => { ReactTooltip.show(); }}
       onMouseLeave = {() => { ReactTooltip.hide(); }}>
-      <a data-tip={value} className="im-pointer">
-          <span className="glyphicon glyphicon-comment fa-2x" aria-hidden="true"/>
+        <a data-tip={value} className="im-pointer">
+          <i className="fa fa-pencil-square" />
         </a>
       </Cell>
     );

@@ -14,7 +14,6 @@
 import * as React from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
-import { IndexLink } from 'react-router';
 import Select from 'react-select';
 
 import * as ContributionsActions from '../modules/contributions';
@@ -218,111 +217,99 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     let initialProjectId = this.state.project_id ? this.state.project_id : ''; // Pulled this out as it wasn't appearing in the initial render
     let approval_notes = this.state.contrib.approval_notes;
     return (
-      <div className="row">
-        <h2>Edit Contribution</h2>
-        <form id="edit-contributions-form" onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>Project Name</label>
-            <br/>
-              <Select
-                name="projectIdInput"
-                placeholder={initialProjectId}
-                options={projectOptions}
-                onChange={this.handleProjectChange}
-                value={this.state.project_id}
-                disabled={this.state.projectDisabled}
-                required
-                clearable={false}
-                autosize={true}
-                menuContainerStyle={{ zIndex: 5 }}
-                openOnFocus={true}
-              />
-            <label>Contributor Alias</label>
-            <br />
-            <div className="form-group">
-              <input type="text" className="form-control" id="contributorAliasInput" placeholder={ this.state.contrib.contributor_alias } />
-            </div>
-            <label>Date of Contribution</label>
-            <br />
-            <div className="form-group">
-              <input type="date" className="form-control" id="contributionDateInput" name="contributionDateInput" />
-            </div>
-            <label>Contribution Notification Date</label>
-            <br />
-            <div className="form-group">
-              <input type="date" className="form-control" id="contributionSubmissionDateInput" name="contributionSubmissionDateInput" />
-            </div>
-            <label>Approval Date</label>
-            <br />
-            <div className="form-group">
-              <input type="date" className="form-control" id="approvalDateInput" name="approvalDateInput" />
-            </div>
-            <label>Contribution Closed Date</label>
-            <br />
-            <div className="form-group">
-              <input type="date" className="form-control" name="contributionClosedDateInput" />
-            </div>
-            <label>GitHub Status</label>
-            <br />
-            <div className="form-group">
-              <Select
-                name="githubStatusInput"
-                placeholder={this.state.contribution_github_status}
-                options={values}
-                onChange={(change) => this.handleSelectChange(change, 'contribution_github_status')}
-                value={this.state.contribution_github_status}
-                clearable={false}
-                autosize={true}
-                menuContainerStyle={{ zIndex: 5 }}
-                openOnFocus={true}
-              />
-            </div>
-            <label>GitHub Commit URL</label>
-            <br />
-            <div className="form-group">
-              <input type="text" className="form-control" id="githubCommitUrlInput" placeholder={ this.state.contrib.contribution_commit_url } />
-            </div>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-9">
+            <h2>Edit Contribution</h2>
+
+            <form id="edit-contributions-form" onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <label>Project Name</label>
+                <Select
+                  name="projectIdInput"
+                  placeholder={initialProjectId}
+                  options={projectOptions}
+                  onChange={this.handleProjectChange}
+                  value={this.state.project_id}
+                  disabled={this.state.projectDisabled}
+                  required
+                  clearable={false}
+                  autosize={true}
+                  menuContainerStyle={{ zIndex: 5 }}
+                  openOnFocus={true}
+                />
+              </div>
+              <div className="form-group">
+                <label>Contributor Alias</label>
+                <input type="text" className="form-control" id="contributorAliasInput" placeholder={this.state.contrib.contributor_alias} />
+              </div>
+              <div className="form-group">
+                <label>Date of Contribution</label>
+                <input type="date" className="form-control" id="contributionDateInput" name="contributionDateInput" />
+              </div>
+              <div className="form-group">
+                <label>Contribution Notification Date</label>
+                <input type="date" className="form-control" id="contributionSubmissionDateInput" name="contributionSubmissionDateInput" />
+              </div>
+              <div className="form-group">
+                <label>Approval Date</label>
+                <input type="date" className="form-control" id="approvalDateInput" name="approvalDateInput" />
+              </div>
+              <div className="form-group">
+                <label>Contribution Closed Date</label>
+                <input type="date" className="form-control" name="contributionClosedDateInput" />
+              </div>
+              <div className="form-group">
+                <label>GitHub Status</label>
+                <Select
+                  name="githubStatusInput"
+                  placeholder={this.state.contribution_github_status}
+                  options={values}
+                  onChange={(change) => this.handleSelectChange(change, 'contribution_github_status')}
+                  value={this.state.contribution_github_status}
+                  clearable={false}
+                  autosize={true}
+                  menuContainerStyle={{ zIndex: 5 }}
+                  openOnFocus={true}
+                />
+              </div>
+              <div className="form-group">
+                <label>GitHub Commit URL</label>
+                <input type="text" className="form-control" id="githubCommitUrlInput" placeholder={this.state.contrib.contribution_commit_url} />
+              </div>
+              <div className="form-group">
+                <label>Contribution URL</label>
+                <input type="text" className="form-control" id="contributionUrlInput" placeholder={this.state.contrib.contribution_url} />
+              </div>
+              <div className="form-group">
+                <label>Contribution Description</label>
+                <textarea className="form-control" rows={2} id="contributionDescInput" placeholder={this.state.contrib.contribution_description} />
+              </div>
+              <div className="form-group">
+                <label>Internal Approval Status</label>
+                <Select
+                  name="approvalStatusInput"
+                  placeholder={this.state.approval_status}
+                  options={values}
+                  onChange={(change) => this.handleSelectChange(change, 'approval_status')}
+                  value={this.state.approval_status}
+                  clearable={false}
+                  autosize={true}
+                  menuContainerStyle={{ zIndex: 5 }}
+                  openOnFocus={true}
+                />
+              </div>
+              <div className="form-group">
+                <label>Approval Notes</label>
+                <textarea className="form-control" rows={2} id="approvalNotesInput" placeholder={approval_notes} />
+              </div>
+              <div className="form-group">
+                <button className="btn btn-primary" type="submit">Submit</button>
+              </div>
+            </form>
+            {this.state.alert}
           </div>
-          <div>
-            <label>Contribution URL</label>
-            <br />
-            <div className="form-group">
-              <input type="text" className="form-control" id="contributionUrlInput" placeholder={ this.state.contrib.contribution_url } />
-            </div>
-            <label>Contribution Description</label>
-            <br />
-            <div className="section">
-               <textarea className="form-control" rows={2} id="contributionDescInput" placeholder={ this.state.contrib.contribution_description } />
-            </div>
-            <label>Internal Approval Status</label>
-            <br />
-            <div className="form-group">
-              <Select
-                name="approvalStatusInput"
-                placeholder={ this.state.approval_status }
-                options={values}
-                onChange={(change) => this.handleSelectChange(change, 'approval_status')}
-                value={ this.state.approval_status }
-                clearable={false}
-                autosize={true}
-                menuContainerStyle={{ zIndex: 5 }}
-                openOnFocus={true}
-              />
-            </div>
-            <label>Approval Notes</label>
-            <br />
-            <div className="form-group">
-              <textarea className="form-control" rows={2} id="approvalNotesInput" placeholder={ approval_notes } />
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="col-sm-10">
-              <IndexLink className="btn btn-default im-red" id="to-home" to="/admin">Cancel</IndexLink>
-              <button className="btn btn-default im-blue" type="submit">Submit</button>
-            </div>
-          </div>
-        </form>
-        {this.state.alert}
+        </div>
       </div>
     );
   }

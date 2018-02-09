@@ -14,7 +14,6 @@
 import * as React from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
-import { IndexLink } from 'react-router';
 
 import * as claLogger from'../modules/claLogger';
 import { reqJSON } from '../util/index';
@@ -178,12 +177,8 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
             <label>Additional Notes</label> <br/>
             <textarea id="description" className="form-control" rows={3} name="description" required></textarea>
           </div>
-          <div className="col-md-10">
-            <div className="pullRight">
-              <IndexLink className="btn btn-default im-red" id="to-home" to="/">Cancel</IndexLink>
-              <button className="btn btn-default im-blue" type="submit">Submit</button>
-            </div>
-          </div>
+
+          <button className="btn btn-primary" type="submit">Submit</button>
         </form>
         {this.state.alert}
       </div>

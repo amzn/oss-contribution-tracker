@@ -94,7 +94,7 @@ class App extends React.Component<Props, State> {
               </li>
               <li className="nav-item">
                 <a target="_blank" href="https://github.com/amzn/oss-contribution-tracker/issues" className="nav-link">
-                  <span className="glyphicon glyphicon-question-sign" /> Help
+                  <i className="fa fa-question-circle" /> Help
                 </a>
               </li>
             </ul>

@@ -196,7 +196,9 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           />
         </Table>
         <br/>
-        <CSVLink data = {this.state.approvalList} filename = "Current-active-contribution.csv" ><button><span className="glyphicon glyphicon-download-alt brand-icon" /> Download CSV</button></CSVLink>
+        <CSVLink data={this.state.approvalList} filename="Current-active-contribution.csv">
+          <button className="btn btn-secondary"><i className="fa fa-download" /> Download CSV</button>
+        </CSVLink>
       </div>
     );
   }

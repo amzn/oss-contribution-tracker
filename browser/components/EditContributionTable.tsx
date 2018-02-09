@@ -252,8 +252,10 @@ export default class EditContributionTable extends React.Component<Props, State>
             width={125}
           />
         </Table>
-         <br/>
-        <button onClick={this.csvDownload} ><span className="glyphicon glyphicon-download-alt brand-icon" /> Download CSV</button>
+        <br/>
+        <button onClick={this.csvDownload} className="btn btn-secondary">
+          <i className="fa fa-download" /> Download CSV
+        </button>
       </div>
     );
   }
