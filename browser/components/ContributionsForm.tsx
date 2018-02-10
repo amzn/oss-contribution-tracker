@@ -154,12 +154,12 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
 
               <div className="form-group">
                 <label>Description of fix</label>
-                <textarea id="fixDescription" className="form-control" rows={3} name="fixDescription" required></textarea>
+                <textarea id="fixDescription" className="form-control" rows={3} name="fixDescription" required />
               </div>
 
               <div className="form-group">
                 <label>Contribution date</label>
-                <input type="date" className="form-control" name="dateSelected" />
+                <input type="date" className="form-control" name="dateSelected" required/>
               </div>
 
               <div className="form-group">

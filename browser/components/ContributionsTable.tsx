@@ -222,11 +222,11 @@ class ContributionsTable extends React.Component<Props, State> {
     });
     return (
       <div className="container-fluid">
-      <div className="row">
+        <div className="row">
           <div className="col-sm-3">
             <input type="text" id="projectLISearch" className="form-control"
               onInput={this.storeSearch} placeholder="Search projects" />
-            <div id="projectUL" className="list-group mt-1">
+            <div id="projectSearchResults" className="list-group mt-1">
               {newList.map((name, i) => (
                 <a key={i} href="#" className="list-group-item list-group-item-action"
                   onClick={this.updateSelectedProject(name)}>
@@ -239,7 +239,7 @@ class ContributionsTable extends React.Component<Props, State> {
             {this.state.selectedProject
               ? this.getTable(newList)
               : <p>Search for and select a project to see contributions.</p>}
-        </div>
+          </div>
         </div>
       </div>
     );

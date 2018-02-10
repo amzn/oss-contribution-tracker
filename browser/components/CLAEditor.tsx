@@ -198,7 +198,7 @@ export default class CLAEditor extends React.Component<Props, State> {
               {this.getOptionsProjectNames()}
             </datalist>
             <br/>
-            <label>Contributor[s]</label>
+            <label>Contributor(s)</label>
             <br/>
             <input type="text" className="form-control" id="contributorName" name="contributorName" placeholder={this.state.data.contributor_names}/><br/>
             <label>Approver</label>
@@ -227,10 +227,10 @@ export default class CLAEditor extends React.Component<Props, State> {
             </datalist>
             <br/>
             <label>Date Signed</label>
-            <input type="date" className="form-control" name="dateSigned" id="dateSigned" onChange={this.handleDateChangeForSigned}/>
+            <input type="date" className="form-control" name="dateSigned" id="dateSigned" onChange={this.handleDateChangeForSigned} required/>
             <br/>
             <label>Date Approved</label>
-            <input type="date" className="form-control" name="dateApproved" id="dateApproved" onChange={this.handleDateChangeForApproval}/>
+            <input type="date" className="form-control" name="dateApproved" id="dateApproved" onChange={this.handleDateChangeForApproval} required/>
             <br/>
             <label>Additional Notes</label>
             <br/>

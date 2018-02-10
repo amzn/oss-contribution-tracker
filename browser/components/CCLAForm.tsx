@@ -171,9 +171,9 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
               })}
             </datalist><br/>
             <label>Date Signed</label>
-            <input type="date" className="form-control" name="dateSigned" /><br/>
+            <input type="date" className="form-control" name="dateSigned" required/><br/>
             <label>Date Approved</label>
-            <input type="date" className="form-control" name="dateApproved" /><br/>
+            <input type="date" className="form-control" name="dateApproved" required/><br/>
             <label>Additional Notes</label> <br/>
             <textarea id="description" className="form-control" rows={3} name="description" required></textarea>
           </div>
