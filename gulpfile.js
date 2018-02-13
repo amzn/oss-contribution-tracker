@@ -53,10 +53,10 @@ gulp.task('copy-json', () => {
 });
 
 gulp.task('build-browser', () => {
-  return src('browser/app.jsx')
+  return src(['browser/app.jsx', 'styles/style.scss'])
     .pipe(plumber())
     .pipe(webpackStream(require('./webpack.config.js'), webpack))
-    .pipe(dest('build/server/ext'));
+    .pipe(dest('build/res'));
 });
 
 gulp.task('copy-assets', () => {
@@ -126,7 +126,7 @@ gulp.task('launch-dev-server', ['build-server'], done => {
 
 gulp.task('server', ['default', 'launch-dev-server'], () => {
   gulp.watch([`${__dirname}/server/**/*.{ts,json}`], ['launch-dev-server']);
-  gulp.watch([`${__dirname}/browser/**/*.{ts,tsx}`], ['build-browser']);
+  gulp.watch([`${__dirname}/browser/**/*.{ts,tsx}`, `${__dirname}/styles/**/*.{css,scss}`], ['build-browser']);
   gulp.watch([`${__dirname}/assets/**/*`], ['copy-assets']);
 });
 

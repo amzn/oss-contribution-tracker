@@ -60,11 +60,7 @@ export default class Contributions extends Component<Props, State> {
 
   render() {
     return (
-      <div className="container">
-        <div className="jumbotron">
-          <ContributionsForm approvers={this.state.approvers.name} projects={this.state.projects} />
-        </div>
-      </div>
+      <ContributionsForm approvers={this.state.approvers.name} projects={this.state.projects} />
     );
   }
 }

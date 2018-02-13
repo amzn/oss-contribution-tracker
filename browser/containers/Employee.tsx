@@ -72,15 +72,12 @@ class Employee extends React.Component<Props, State> {
     let employeeData = this.props.employeeData;
     let currentAlias = this.state.currentAlias === '' ? employeeData.user : this.state.currentAlias;
     return (
-      <div className="container">
-        <div className="col-md-12">
-          <br/>
-          <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch} placeholder="Contributor Alias"/>
-          <datalist id="browsers">
-            {this.state.aliasList.map(alias => (<option key={alias} value={alias}> </option>))}
-          </datalist>
-        </div>
-        <div id="contributionsListMine" className="jumbotron">
+      <div>
+        <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch} placeholder="Contributor Alias" className="form-control" />
+        <datalist id="browsers">
+          {this.state.aliasList.map(alias => (<option key={alias} value={alias}/>))}
+        </datalist>
+        <div id="contributionsListMine" className="mt-3">
           <AllEmployeeTable alias={currentAlias}/>
         </div>
       </div>

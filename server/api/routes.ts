@@ -190,8 +190,9 @@ function pack(promise, res, next) {
         res.send(x);
       }
     })
-    .catch(next => {
-      winston.error(`Unable to pack ${next}`);
+    .catch((err) => {
+      winston.error(err);
+      res.status(500).send('Internal error');
     });
 }
 

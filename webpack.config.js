@@ -14,6 +14,7 @@
 'use strict';
 
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -23,7 +24,13 @@ let plugins = [
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
     },
   }),
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    Popper: ['popper.js', 'default'],
+  }),
   new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}),
+  new ExtractTextPlugin('[name].css'),
 ];
 
 if (prod) {
@@ -33,17 +40,11 @@ if (prod) {
       comments: /^\**!|@preserve|copyright|license/i,
     }),
   ]);
-}  else {
-  // this is largely to not fail on typescript module loading.
-  // these "cannot find module" and related errors are benign -- just make sure
-  // they don't happen during development in your local build when you have
-  // types installed.
-  //plugins.push(new webpack.NoEmitOnErrorsPlugin());
 }
 
 module.exports = {
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.scss'],
   },
 
   module: {
@@ -55,6 +56,20 @@ module.exports = {
           configFileName: 'browser/tsconfig.json',
         },
       },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          use: ['css-loader', 'sass-loader'],
+        }),
+      },
+      {
+        test: /\.(woff2?|svg)(\?v=[\d\.]+)?$/,
+        loader: 'url-loader?limit=10000',
+      },
+      {
+        test: /\.(ttf|eot)(\?v=[\d\.]+)?$/,
+        loader: 'file-loader',
+      },
     ],
   },
 
@@ -63,17 +78,28 @@ module.exports = {
   },
 
   entry: {
-    app: ['./browser/app.tsx'], //add 'core-js/shim' to npm
-    vendor: ['core-js/shim', 'history', 'moment', 'react', 'react-dom', 'react-redux', 'react-router', 'react-select', 'redux', 'redux-thunk', 'whatwg-fetch'],
+    app: ['./browser/app.tsx'],
+    vendor: ['core-js/shim', 'bootstrap', 'history', 'jquery', 'moment', 'popper.js', 'react', 'react-dom', 'react-redux', 'react-router', 'react-select', 'redux', 'redux-thunk', 'whatwg-fetch'],
+    style: ['./styles/style.scss'],
   },
 
   output: {
-    path: __dirname + 'build/server/ext',
-    filename: 'app.js',
-    publicPath: '/js/',
+    path: `${__dirname}/build/res`,
+    filename: '[name].js',
+    publicPath: '/res/',
   },
 
-  devtool: prod ? 'source-map' : 'cheap-module-eval-source-map',
+  devtool: prod ? 'source-map' : 'cheap-module-source-map',
 
   plugins: plugins,
+
+  devServer: {
+    port: 8010,
+    publicPath: '/res/',
+    proxy: {
+      '*': 'http://localhost:8000',
+    },
+    stats: 'minimal',
+  },
+
 };

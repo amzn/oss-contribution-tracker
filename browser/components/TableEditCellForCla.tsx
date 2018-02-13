@@ -34,7 +34,7 @@ export default class TableEditCellForCla extends React.Component<Partial<Props>,
       <Cell {...props}>
         <div>
           <Link to={path}>
-            <span className="glyphicon glyphicon-edit" aria-hidden="true" />
+            <i className="fa fa-pencil-square" />
           </Link>
         </div>
       </Cell>

@@ -76,23 +76,20 @@ export default class Metrics extends React.Component<Props, State> {
     let content;
     if (this.state.allMetrics.length > 0) {
       content = (<MetricsLists
-      usersAndCounts={this.state.usersAndCounts}
-      contribCountByYearAll={this.state.contribCountByYearAll}
-      topContribProjectsAllTime={this.state.topContribProjectsAllTime}
-      topContribProjectsThisYear={this.state.topContribProjectsThisYear}
-      topContribProjectsLastYear={this.state.topContribProjectsLastYear}
-      allMetrics={this.state.allMetrics}
-    />);
+        usersAndCounts={this.state.usersAndCounts}
+        contribCountByYearAll={this.state.contribCountByYearAll}
+        topContribProjectsAllTime={this.state.topContribProjectsAllTime}
+        topContribProjectsThisYear={this.state.topContribProjectsThisYear}
+        topContribProjectsLastYear={this.state.topContribProjectsLastYear}
+        allMetrics={this.state.allMetrics}
+      />);
     } else {
       content = (
-        <div id="metrics" className="jumbotron">
-          <h1>No contributions logged.</h1>
-        </div>);
+        <div id="metrics">
+          <p>No contributions logged.</p>
+        </div>
+      );
     }
-    return (
-      <div className="container">
-        { content }
-      </div>
-    );
+    return content;
   }
 }

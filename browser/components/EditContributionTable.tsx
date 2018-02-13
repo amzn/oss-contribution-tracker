@@ -105,7 +105,9 @@ export default class EditContributionTable extends React.Component<Props, State>
         <Cell>
           <span>{ headText }</span>
           <br/>
-          <input onChange={(e) => this._onFilterChange(e, colName.columnKey)} style={{width: 90 + '%'}} />
+          <input type="search" className="form-control form-control-sm"
+            onChange={(e) => this._onFilterChange(e, colName.columnKey)}
+            style={{width: 90 + '%'}} />
         </Cell>
       </div>
     );
@@ -252,8 +254,10 @@ export default class EditContributionTable extends React.Component<Props, State>
             width={125}
           />
         </Table>
-         <br/>
-        <button onClick={this.csvDownload} ><span className="glyphicon glyphicon-download-alt brand-icon" /> Download CSV</button>
+        <br/>
+        <button onClick={this.csvDownload} className="btn btn-secondary">
+          <i className="fa fa-download" /> Download CSV
+        </button>
       </div>
     );
   }

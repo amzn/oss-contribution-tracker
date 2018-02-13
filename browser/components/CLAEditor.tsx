@@ -13,7 +13,6 @@
  */
 import * as React from 'react';
 import { IndexLink } from 'react-router';
-import DatePicker = require('react-bootstrap-date-picker');
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 import * as claLogger from'../modules/claLogger';
@@ -190,67 +189,65 @@ export default class CLAEditor extends React.Component<Props, State> {
     let projectName = this.state.data.project_name ? this.state.data.project_name : '';
     if (projectName != null) {
       return (
-        <div className="container">
-          <form id="contributions-form" onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label>Project name</label>
-              <br/>
-              <input type="text" list="project_name" id="projectName" className="form-control" name="projectName" placeholder={this.state.data.project_name}/>
-              <datalist id="project_name">
-                {this.getOptionsProjectNames()}
-              </datalist>
-              <br/>
-              <label>Contributor[s]</label>
-              <br/>
-              <input type="text" className="form-control" id="contributorName" name="contributorName" placeholder={this.state.data.contributor_names}/><br/>
-              <label>Approver</label>
-              <br/>
-              <input type="text" list="approver_names" className="form-control" name="appName" id="appName" placeholder={this.state.data.approver_name}/>
-              <datalist id="approver_names">
-                {this.getOptionsApproverNames()}
-              </datalist>
-              <br/>
-              <label>Signatory</label>
-              <br/>
-              <input type="text"  list="signatory_name" className="form-control" name="sigName" id="sigName" placeholder={this.state.data.signatory_name}/>
-              <datalist id="signatory_name">
-                {this.state.data.display.signatory.map(user => {
-                  return (<option key={user} value={user}/>);
-                })}
-              </datalist>
-              <br/>
-              <label>Point of Contact</label>
-              <br/>
-              <input type="text"  list="contact" className="form-control" id="contactName" name="contactName" placeholder={this.state.data.contact_name}/>
-              <datalist id="contact">
-                {this.state.data.display.poc.map(user => {
-                  return (<option key={user} value={user}/>);
-                })}
-              </datalist>
-              <br/>
-              <label>Date Signed</label>
-              <DatePicker name="dateSigned" dateFormat="MM/DD/YYYY" id="dateSigned" value={this.state.data.signed_date} onChange={this.handleDateChangeForSigned}/>
-              <br/>
-              <label>Date Approved</label>
-              <DatePicker name="dateApproved" id="dateApproved" value={this.state.data.approved_date} onChange={this.handleDateChangeForApproval}/>
-              <br/>
-              <label>Additional Notes</label>
-              <br/>
-              <textarea id="description" className="form-control" rows={3} placeholder={this.state.data.additional_notes} name="description" required></textarea>
+        <form id="contributions-form" onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label>Project name</label>
+            <br/>
+            <input type="text" list="project_name" id="projectName" className="form-control" name="projectName" placeholder={this.state.data.project_name}/>
+            <datalist id="project_name">
+              {this.getOptionsProjectNames()}
+            </datalist>
+            <br/>
+            <label>Contributor(s)</label>
+            <br/>
+            <input type="text" className="form-control" id="contributorName" name="contributorName" placeholder={this.state.data.contributor_names}/><br/>
+            <label>Approver</label>
+            <br/>
+            <input type="text" list="approver_names" className="form-control" name="appName" id="appName" placeholder={this.state.data.approver_name}/>
+            <datalist id="approver_names">
+              {this.getOptionsApproverNames()}
+            </datalist>
+            <br/>
+            <label>Signatory</label>
+            <br/>
+            <input type="text"  list="signatory_name" className="form-control" name="sigName" id="sigName" placeholder={this.state.data.signatory_name}/>
+            <datalist id="signatory_name">
+              {this.state.data.display.signatory.map(user => {
+                return (<option key={user} value={user}/>);
+              })}
+            </datalist>
+            <br/>
+            <label>Point of Contact</label>
+            <br/>
+            <input type="text"  list="contact" className="form-control" id="contactName" name="contactName" placeholder={this.state.data.contact_name}/>
+            <datalist id="contact">
+              {this.state.data.display.poc.map(user => {
+                return (<option key={user} value={user}/>);
+              })}
+            </datalist>
+            <br/>
+            <label>Date Signed</label>
+            <input type="date" className="form-control" name="dateSigned" id="dateSigned" onChange={this.handleDateChangeForSigned} required/>
+            <br/>
+            <label>Date Approved</label>
+            <input type="date" className="form-control" name="dateApproved" id="dateApproved" onChange={this.handleDateChangeForApproval} required/>
+            <br/>
+            <label>Additional Notes</label>
+            <br/>
+            <textarea id="description" className="form-control" rows={3} placeholder={this.state.data.additional_notes} name="description" required></textarea>
+          </div>
+          <div className="col-md-10">
+            <div className="pullRight">
+              <IndexLink className="btn btn-default im-blue" id="to-admin" to="/admin">Cancel</IndexLink>
+              <button className="btn btn-default im-red" onClick={this.handleDelete}>Delete</button>
+              <button className="btn btn-default im-blue" type="submit">Make Changes</button>
             </div>
-            <div className="col-md-10">
-              <div className="pullRight">
-                <IndexLink className="btn btn-default im-blue" id="to-admin" to="/admin">Cancel</IndexLink>
-                <button className="btn btn-default im-red" onClick={this.handleDelete}>Delete</button>
-                <button className="btn btn-default im-blue" type="submit">Make Changes</button>
-              </div>
-            </div>
-          </form>
-        {this.state.alert}
-        </div>
+          </div>
+          {this.state.alert}
+        </form>
       );
     } else {
-      return(<div></div>);
+      return <div/>;
     }
   }
 }

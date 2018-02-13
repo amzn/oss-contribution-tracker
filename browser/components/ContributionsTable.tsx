@@ -91,7 +91,8 @@ class ContributionsTable extends React.Component<Props, State> {
     });
   }
 
-  updateSelectedProject = (item) => {
+  updateSelectedProject = (item) => (e) => {
+    e.preventDefault();
     this.setState({
       selectedProject: item,
     });
@@ -125,7 +126,7 @@ class ContributionsTable extends React.Component<Props, State> {
 
   static renderTables = (name, item, tableProps) => {
     return (
-      <div className="container" key={Math.random()}>
+      <div key={name}>
         <h4>{name}</h4>
         <Table
           key={item.name + '_table'}
@@ -206,14 +207,7 @@ class ContributionsTable extends React.Component<Props, State> {
       </div>
     );
   }
-  getSearchResultText = (arrayList) => {
-    if (arrayList.length !== 0) {
-      return (<h4>Use the search bar and then click the project name to display the result</h4>);
-    }
-    else {
-      return (<h4>No contributions found</h4>);
-    }
-  }
+
   getTable = (arrayList) => {
     if (arrayList.length === 0) {
       return (<h4>No contributions found</h4>);
@@ -221,29 +215,31 @@ class ContributionsTable extends React.Component<Props, State> {
       return this.state.tables.get(this.state.selectedProject);
     }
   }
+
   render() {
-    let count = 0;
-    let newList = this.state.projectNames.filter(name => {
+    const newList = this.state.projectNames.filter(name => {
       return name.toLowerCase().indexOf(this.state.search) > -1;
     });
-    let table;
-    if (this.state.selectedProject === null) {
-      table = this.getSearchResultText(newList);
-    } else {
-      table = this.getTable(newList);
-    };
     return (
-      <div className="row">
-        <div className="col-md-2">
-        <br/>
-          <input type="text" id="projectLISearch" onInput={this.storeSearch} placeholder="Search projects.."/>
-          <ul id="projectUL" className="media-list">
-            {newList.map(name => (<li className="media" key={count++}><a href="#" onClick={() => this.updateSelectedProject(name)}>{name}</a></li>))}
-          </ul>
-        </div>
-        <br/>
-        <div className="col-md-10">
-          { table }
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-3">
+            <input type="text" id="projectLISearch" className="form-control"
+              onInput={this.storeSearch} placeholder="Search projects" />
+            <div id="projectSearchResults" className="list-group mt-1">
+              {newList.map((name, i) => (
+                <a key={i} href="#" className="list-group-item list-group-item-action"
+                  onClick={this.updateSelectedProject(name)}>
+                  {name}
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="col-sm-9">
+            {this.state.selectedProject
+              ? this.getTable(newList)
+              : <p>Search for and select a project to see contributions.</p>}
+          </div>
         </div>
       </div>
     );

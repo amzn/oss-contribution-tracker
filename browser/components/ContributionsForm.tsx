@@ -13,8 +13,6 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
-import DatePicker = require('react-bootstrap-date-picker');
-import { IndexLink } from 'react-router';
 import Select from 'react-select';
 
 import * as ContributionsActions from '../modules/contributions';
@@ -44,7 +42,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
     this.state = {
       package: '',
       description: '',
-      date: new Date().toISOString(),
+      date: '',
       project: 'Select Project',
       approver: 'Select Approver',
       projectDisabled: false,
@@ -113,66 +111,85 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
     this.setState({
       projectDisabled: e.target.checked,
     });
-    let elm = document.getElementById('new-project-text') as HTMLInputElement;
-    elm.disabled = this.state.projectDisabled;
   }
 
   render() {
     let approverOptions = this.approverList();
     let projectOptions = this.projectList();
     return (
-      <div>
-        <h3>New Contributions</h3>
-        <form id="contributions-form" onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>Project name</label>
-            <br/>
-            <Select
-              name="projectName"
-              placeholder="Select Project"
-              options={projectOptions}
-              onChange={this.handleProjectChange}
-              value={this.state.project}
-              disabled={this.state.projectDisabled}
-              required
-              menuContainerStyle={{ zIndex: 5 }}
-              openOnFocus={true}
-            />
-            <div className="input-group">
-              <span className="input-group-addon">
-                <input type="checkbox" className="checkbox-control" checked={this.state.projectDisabled} onChange={this.toggleProjectSelect}/>
-                <span className="checkbox-label"> New Project</span>
-              </span>
-              <input id="new-project-text" type="text" className="form-control" name="newProjectName" disabled required style={{'position' : 'static'}}/>
-            </div>
-            <label>Description of fix</label> <br/>
-            <textarea id="fixDescription" className="form-control" rows={3} name="fixDescription" required></textarea> <br/>
-            <label>Contribution date</label> <br/>
-            <DatePicker name="dateSelected" value={this.state.date}/>
-            <label>BFA/IP approver</label> <br/>
-            <Select
-              name="approverName"
-              placeholder="Select Approver"
-              options={approverOptions}
-              onChange={this.handleApproverChange}
-              value={this.state.approver}
-              required
-              menuContainerStyle={{ zIndex: 4 }}
-              openOnFocus={true}
-            />
-            <label>Contributor alias</label> <br/>
-            <input type="text" className="form-control" name="contributorName" required/>
-            <label>GitHub Link (optional)</label>
-            <input type="text" className="form-control" name="githubLink"/>
-            <br/>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-9">
+            <form id="contributions-form" onSubmit={this.handleSubmit}>
+              <h3>New Contribution</h3>
+              <div className="form-group">
+                <label>Project name</label>
+                <Select
+                  name="projectName"
+                  placeholder="Select Project"
+                  options={projectOptions}
+                  onChange={this.handleProjectChange}
+                  value={this.state.project}
+                  disabled={this.state.projectDisabled}
+                  required={true}
+                  menuContainerStyle={{ zIndex: 5 }}
+                  openOnFocus={true}
+                />
+                <div className="input-group mt-1">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">
+                      <input type="checkbox" id="newProject"
+                        className="ml-0 mr-1"
+                        checked={this.state.projectDisabled}
+                        onChange={this.toggleProjectSelect} />
+                      <label htmlFor="newProject" className="form-check-label">
+                        New Project
+                </label>
+                    </span>
+                  </div>
+                  <input id="new-project-text" type="text" className="form-control"
+                    name="newProjectName" disabled={!this.state.projectDisabled} required />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Description of fix</label>
+                <textarea id="fixDescription" className="form-control" rows={3} name="fixDescription" required />
+              </div>
+
+              <div className="form-group">
+                <label>Contribution date</label>
+                <input type="date" className="form-control" name="dateSelected" required/>
+              </div>
+
+              <div className="form-group">
+                <label>BFA/IP approver</label>
+                <Select
+                  name="approverName"
+                  placeholder="Select Approver"
+                  options={approverOptions}
+                  onChange={this.handleApproverChange}
+                  value={this.state.approver}
+                  required
+                  menuContainerStyle={{ zIndex: 4 }}
+                  openOnFocus={true}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Contributor alias</label>
+                <input type="text" className="form-control" name="contributorName" required />
+              </div>
+
+              <div className="form-group">
+                <label>GitHub Link (optional)</label>
+                <input type="text" className="form-control" name="githubLink" />
+              </div>
+
+              <button className="btn btn-primary" type="submit">Submit</button>
+            </form>
           </div>
-          <div className="col-md-10">
-            <div className="pullRight">
-              <IndexLink className="btn btn-default" to="/">Cancel</IndexLink>
-              <button className="btn btn-default" type="submit">Submit</button>
-            </div>
-          </div>
-        </form>
+        </div>
       </div>
     );
   }
