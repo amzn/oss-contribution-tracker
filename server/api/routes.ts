@@ -26,7 +26,7 @@ import * as projectsAPI from './projects';
 
 export let router = express.Router();
 
-router.use(bodyParser.json());
+router.use(bodyParser.json({limit: '1000kb'}));
 router.use(bodyParser.urlencoded({
   extended: true,
 }));
@@ -34,7 +34,7 @@ router.use(bodyParser.urlencoded({
 router.get('/user', async (req, res, next) => {
   // check for midway id token in req
   let user = getUser(req);
-  let groups = await LDAP.getGroups(user)
+  let groups = await LDAP.getGroups(user);
   res.send({
     user,
     groups,
@@ -87,7 +87,7 @@ router.get('/projects/name/:projectName', (req, res, next) => {
   pack(projectsAPI.searchProjectByName(req, req.params.projectName), res, next);
 });
 
-router.get('/api/projects/:projectId', (req, res, next) => {
+router.get('/projects/:projectId', (req, res, next) => {
   pack(projectsAPI.searchProjectById(req, req.params.projectId), res, next);
 });
 
@@ -141,6 +141,30 @@ router.post('/contributions/newautoapproval', async (req, res, next) => {
 
 router.post('/contributions/update', async (req, res, next) => {
   pack(contributionsAPI.updateContribution(req, req.body), res, next);
+});
+
+router.post('/contributions/update/link', async (req, res, next) => {
+  const user = getUser(req);
+  if (user === req.body.user) {
+    const confirm = await contributionsAPI.updateContributionLink(req, req.body);
+    if (!confirm) { // success returns null
+      res.status(200);
+      res.send({
+        msg: 'Successfully updated entry.',
+      });
+    } else {
+      res.status(500);
+      res.send({
+        msg: 'Failed to update entry.',
+      });
+    };
+  } else {
+    winston.warn('$1 not allowed to update contributions github link', [user]);
+    res.status(401);
+    res.send({
+      error: 'Not allowed to update contributions github link'
+    });
+  };
 });
 
 /**

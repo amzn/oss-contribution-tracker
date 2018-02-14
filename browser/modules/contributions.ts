@@ -13,6 +13,7 @@
  */
 import { browserHistory } from 'react-router';
 import { postJSON } from '../util/index';
+import * as winston from 'winston';
 
 export const CHANGE_MODAL = 'app/contributions/change-modal';
 export const MODAL_STATUS = 'app/contributions/modal-status';
@@ -35,7 +36,7 @@ export function addContribution(contrib) {
       .then(() => {
         browserHistory.push('/');
       })
-      .catch(error => console.log(error));
+      .catch(error => winston.error(error));
   };
 }
 
@@ -45,20 +46,27 @@ export function approveContribution(contrib) {
       .then(() => {
         browserHistory.push('/admin');
       })
-      .catch(error => console.log(error));
+      .catch(error => winston.error(error));
   };
 }
 
 export function updateContribution(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/update', JSON.stringify(contrib))
-      .catch(error => console.log(error));
+      .catch(error => winston.error(error));
   };
 }
 
 export function addContributionAutoApproval(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/newautoapproval', JSON.stringify(contrib))
-    .catch(error => console.log(error));
+    .catch(error => winston.error(error));
+  };
+}
+
+export function updateGithubLink(contrib) {
+  return dispatch => {
+    return postJSON('/api/contributions/update/link', JSON.stringify(contrib))
+    .catch(error => winston.info(error));
   };
 }

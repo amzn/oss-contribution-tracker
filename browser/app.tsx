@@ -24,6 +24,7 @@ import Contributions from './containers/Contributions';
 import EditCLA from './containers/EditCla';
 import EditContribution from './containers/EditContribution';
 import Employee from'./containers/Employee';
+import GithubLinkUpdater from './containers/GithubLinkUpdater';
 import List from './containers/List';
 import Metrics from './containers/Metrics';
 
@@ -42,9 +43,15 @@ window.addEventListener('DOMContentLoaded', () => {
           <Route path="approvals/:contrib_id" component={Approvals} />
           <Route path="contribution/:contrib_id" component={EditContribution} />
           <Route path="metrics" component={Metrics}/>
+          <Route path="contribute/link" component={GithubLinkUpdater}/>
         </Route>
       </Router>
     </Provider>,
     document.getElementById('content'),
   );
 });
+
+// @ts-ignore
+// load up extensions (webpack hook)
+const extCtx = (require as any).context('./extensions', false, /.ext.[jt]sx?$/);
+extCtx.keys().forEach(extCtx);

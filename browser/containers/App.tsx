@@ -18,6 +18,8 @@ import { Link } from 'react-router';
 import ErrorModal from '../components/ErrorModal';
 import { setGeneralError } from '../modules/common';
 
+import ExtensionPoint from '../util/ExtensionPoint';
+
 interface Props {
   children: any;
   dispatch: any;
@@ -113,7 +115,6 @@ class App extends React.Component<Props, State> {
           <div className="row mt-4">
             <div className="mx-auto col-lg-11">
               <hr/>
-              <a href="https://github.com/amzn/oss-contribution-tracker">GitHub</a> | <a href="https://github.com/amzn/oss-contribution-tracker/blob/master/LICENSE">License Information</a>
             </div>
           </div>
         </div>
@@ -124,4 +125,4 @@ class App extends React.Component<Props, State> {
 
 }
 
-export default connect(state => state.common)(App);
+export default connect((state: { common: any }) => state.common)(App);

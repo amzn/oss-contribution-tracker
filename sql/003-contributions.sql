@@ -13,5 +13,6 @@ CREATE TABLE contributions (
   approval_date DATE,
   contribution_submission_date TIMESTAMP NOT NULL,
   contribution_closed_date TIMESTAMP,
-  contribution_project_review BOOLEAN NOT NULL
+  contribution_project_review BOOLEAN NOT NULL,
+  contribution_metadata JSONB
 );

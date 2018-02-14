@@ -81,7 +81,7 @@ export async function addNewContribution(req, body) {
     body.description,
     body.date,
     body.approver,
-    body.contributor,
+    body.contributor.trim(),
     body.needsProjectReview,
     body.githubLink,
   );
@@ -102,7 +102,7 @@ export async function addNewContributionAutoApproval(req, body) {
     body.description,
     body.date,
     body.approver,
-    body.contributor,
+    body.contributor.trim(),
     body.needsProjectReview,
     body.githubLink,
     body.approvalNotes,
@@ -122,7 +122,7 @@ export async function updateContribution(req, body) {
     body.contribution_id,
     body.contribution_description,
     body.contribution_date,
-    body.contributor_alias,
+    body.contributor_alias.trim(),
     body.contribution_github_status,
     body.contribution_url,
     body.contribution_commit_url,
@@ -133,4 +133,11 @@ export async function updateContribution(req, body) {
     body.contribution_closed_date,
   );
   return { contributionID };
+}
+
+export async function updateContributionLink(req, body) {
+  return await dbContribution.updateContributionLink(
+    body.contrib_id,
+    body.link,
+  );
 }

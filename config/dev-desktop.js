@@ -12,58 +12,53 @@
  * permissions and limitations under the License.
  */
 
- // static configuration
- let config = {
-};
+console.log('*** Running Development Stack ***');
+const base = require('./default');
 
-config.domain = process.env.DOMAIN;
+const config = base.config;
 
 config.server = {
   hostname: '0.0.0.0',
   port: 8000,
-},
+};
 
 config.database = {
-  host: 'database',
-  port: 5432,
-  database: 'postgres',
-  user: 'postgres',
-  password: () => null,
+  host: 'contributionlogger.cjvrtnhhdzyg.us-west-2.rds.amazonaws.com',
+  port: 8200,
+  database: 'contributionlogger',
+  user: 'cl',
+  password: 'n5wIDCynCAA8',
   ssl: null,
-},
+};
 
 config.fallbackUser = 'nobody';
 
 config.ldap = {
-  o: '', // objectClass
-  url: 'ldaps://', // ldap server url
+  o: 'amazon.com', // objectClass
+  url: 'ldaps://ldap.amazon.com:636', // ldap server url
+  attributes: ['gecos','amzndeptname','amzncity','mail', 'description', 'roomnumber'],
 };
 
 config.admin = {
-  posixGroup: [''], // admin posix group(s)
+  posixGroup: ['osa'], // admin posix group(s)
 };
 
 config.approver = {
-  posixGroup: '', // approver posix group
+  posixGroup: 'osa', // approver posix group
 };
 
 // Users defined for dropdowns
 config.display = {
   signatory: [
-    'ADD A SIGNATORY', // user(s) that approve CCLAs
+    'jmowers', // user(s) that approve CCLAs
   ],
   poc: [
-    'ADD A POC', // user(s) that are points of contacts for CCLAs
+    'hyandell', // user(s) that are points of contacts for CCLAs
   ],
 };
-
-// load once asked for
-function load() {
-    return Promise.resolve(config);
-}
 
 module.exports = {
   default: config,
   config: config,
-  load: load,
+  load: base.load,
 };

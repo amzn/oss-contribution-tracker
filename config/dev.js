@@ -10,9 +10,9 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- */
+*/
 
- console.log('*** Running Development Stack ***');
+console.log('*** Running Development Stack ***');
 const base = require('./default');
 
 const config = base.config;
@@ -30,6 +30,38 @@ config.database = {
   password: () => null,
   ssl: null,
 };
+
+config.fallbackUser = 'nobody';
+
+config.ldap = {
+  o: '', // objectClass
+  url: 'ldaps://', // ldap server url
+  attributes: [],
+};
+
+config.admin = {
+  posixGroup: [''], // admin posix group(s)
+};
+
+config.approver = {
+  posixGroup: '', // approver posix group
+};
+
+// Users defined for dropdowns
+config.display = {
+  signatory: [
+    'ADD A SIGNATORY', // user(s) that approve CCLAs
+  ],
+  poc: [
+    'ADD A Point of Contact', // user(s) that are points of contacts for CCLAs
+  ],
+};
+
+// load once asked for
+function load() {
+  return Promise.resolve(config);
+}
+
 
 module.exports = {
   default: config,
