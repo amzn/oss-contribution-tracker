@@ -54,6 +54,10 @@ export default class ClaTable extends React.Component<Props, State> {
     });
   }
 
+  componentDidCatch(error, info) {
+    console.error(error);
+  }
+
   _onSortChange = (key) => {
     let sorted = Underscore.sortBy(this.state.cla, key);
     if (this.state.sortDirection === SortTypes.ASC) {

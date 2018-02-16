@@ -11,9 +11,9 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { browserHistory } from 'react-router';
 import { postJSON } from '../util/index';
-import * as winston from 'winston';
+
+import history from '../history';
 
 export const CHANGE_MODAL = 'app/contributions/change-modal';
 export const MODAL_STATUS = 'app/contributions/modal-status';
@@ -34,9 +34,9 @@ export function addContribution(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/new', JSON.stringify(contrib))
       .then(() => {
-        browserHistory.push('/');
+        history.push('/');
       })
-      .catch(error => winston.error(error));
+      .catch(error => console.error(error));
   };
 }
 
@@ -44,29 +44,29 @@ export function approveContribution(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/approve', JSON.stringify(contrib))
       .then(() => {
-        browserHistory.push('/admin');
+        history.push('/admin');
       })
-      .catch(error => winston.error(error));
+      .catch(error => console.error(error));
   };
 }
 
 export function updateContribution(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/update', JSON.stringify(contrib))
-      .catch(error => winston.error(error));
+      .catch(error => console.error(error));
   };
 }
 
 export function addContributionAutoApproval(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/newautoapproval', JSON.stringify(contrib))
-    .catch(error => winston.error(error));
+    .catch(error => console.error(error));
   };
 }
 
 export function updateGithubLink(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/update/link', JSON.stringify(contrib))
-    .catch(error => winston.info(error));
+    .catch(error => console.info(error));
   };
 }

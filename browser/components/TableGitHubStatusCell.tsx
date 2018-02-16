@@ -27,20 +27,20 @@ interface State {
 
 export default class TableGitHubStatusCell extends React.Component<Partial<Props>, State> {
   renderGithubStatus(st) {
-    let label = '';
+    let badge = '';
     let status = st ? st.toLowerCase() : '';
     if (status === 'denied') {
-      label = 'label label-danger';
+      badge = 'badge badge-danger';
     } else if (status === 'approved') {
-      label = 'label label-success';
+      badge = 'badge badge-success';
     } else if (status === 'failure') {
-      label = 'label label-warning';
+      badge = 'badge badge-warning';
     } else {
-      label = 'label label-primary';
+      badge = 'badge badge-primary';
     }
     return(
       <div>
-        <span className={label}>{status}</span>
+        <span className={badge}>{status}</span>
       </div>
     );
   }

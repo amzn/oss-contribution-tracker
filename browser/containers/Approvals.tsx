@@ -13,23 +13,22 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { IndexLink } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import * as ContributionsActions from '../modules/contributions';
 
-interface Props{
+interface Props {
   dispatch: any;
   params: any;
 }
 
-interface State{
+interface State {
   approvalStatus: string;
 }
 
 class Approvals extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-
     this.state = {
       approvalStatus: null,
     };
@@ -44,7 +43,7 @@ class Approvals extends React.Component<Props, State> {
     dispatch(ContributionsActions.approveContribution({
       approvalNotes: field.approvalNotes.value,
       approvalStatus: this.state.approvalStatus,
-      contributionId: this.props.params.contrib_id,
+      contributionId: (this.props as any).match.params.contrib_id,
     }));
   }
 
@@ -80,8 +79,8 @@ class Approvals extends React.Component<Props, State> {
         </div>
         <div className="col-md-10">
           <div className="pullRight">
-            <IndexLink className="btn btn-default" to="/admin">Cancel</IndexLink>
-            <button className="btn btn-default" type="submit">Submit</button>
+            <Link className="btn btn-secondary im-blue" to="/admin">Cancel</Link>
+            <button className="btn btn-primary im-blue" type="submit">Submit</button>
           </div>
         </div>
       </form>

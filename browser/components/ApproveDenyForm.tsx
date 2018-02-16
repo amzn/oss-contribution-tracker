@@ -12,7 +12,7 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
-import { IndexLink } from 'react-router';
+import { Link } from 'react-router-dom';
 
 interface Props {
 }
@@ -35,8 +35,8 @@ export default class ApproveDenyForm extends React.Component<Props, State> {
           </div>
           <div className="col-md-10">
             <div className="pullRight">
-              <IndexLink className="btn btn-default" to="/">Cancel</IndexLink>
-              <button className="btn btn-default" type="submit">Submit</button>
+              <Link className="btn btn-secondary im-blue" to="/admin">Cancel</Link>
+              <button className="btn btn-primary im-blue" type="submit">Submit</button>
             </div>
           </div>
         </form>

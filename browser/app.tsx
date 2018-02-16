@@ -14,37 +14,20 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { browserHistory, IndexRoute, Route, Router } from 'react-router';
+import { Route, Router } from 'react-router-dom';
+
+import history from './history';
 import store from './store';
 
-import Admin from './containers/Admin';
 import App from './containers/App';
-import Approvals from './containers/Approvals';
-import Contributions from './containers/Contributions';
-import EditCLA from './containers/EditCla';
-import EditContribution from './containers/EditContribution';
-import Employee from'./containers/Employee';
-import GithubLinkUpdater from './containers/GithubLinkUpdater';
-import List from './containers/List';
-import Metrics from './containers/Metrics';
+
 
 // routes listed here should point to redux-enabled containers
 window.addEventListener('DOMContentLoaded', () => {
   render(
     <Provider store={store}>
-      <Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
-        <Route path="/" component={App}>
-          <IndexRoute component={Metrics} />
-          <Route path="employee" component={Employee} />
-          <Route path="list" component={List} />
-          <Route path="admin" component={Admin} />
-          <Route path="cla/:project_id" component={EditCLA} />
-          <Route path="contribute" component={Contributions}  />
-          <Route path="approvals/:contrib_id" component={Approvals} />
-          <Route path="contribution/:contrib_id" component={EditContribution} />
-          <Route path="metrics" component={Metrics}/>
-          <Route path="contribute/link" component={GithubLinkUpdater}/>
-        </Route>
+      <Router onUpdate={() => window.scrollTo(0, 0)} history={history}>
+        <Route component={App} />
       </Router>
     </Provider>,
     document.getElementById('content'),

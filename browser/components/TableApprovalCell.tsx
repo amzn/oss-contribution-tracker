@@ -13,7 +13,7 @@
  */
 import {Cell} from 'fixed-data-table';
 import * as React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 interface Props {
   rowIndex: number;
@@ -35,7 +35,7 @@ export default class TableApprovalCell extends React.Component<Partial<Props>, S
       <Cell {...props}>
         <div className="row">
           <div className="col-md-6">
-            <Link to={`/approvals/${id}`}>Approve/Deny</Link>
+            <Link className="btn btn-info im-blue" to={`/approvals/${id}`}>Approve/Deny</Link>
           </div>
         </div>
       </Cell>

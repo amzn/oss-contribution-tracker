@@ -27,18 +27,18 @@ interface State {
 
 export default class TableApprovalStatusCell extends React.Component<Partial<Props>, State> {
   renderApprovalStatus(st) {
-    let label = '';
+    let badge = '';
     let status = st.toLowerCase();
     if (status === 'denied') {
-      label = 'label label-danger';
+      badge = 'badge badge-danger';
     } else if (status === 'approved') {
-      label = 'label label-success';
+      badge = 'badge badge-success';
     } else {
-      label = 'label label-primary';
+      badge = 'badge badge-primary';
     }
     return(
       <div>
-        <span className={label}>{status}</span>
+        <span className={badge}>{status}</span>
       </div>
     );
   }

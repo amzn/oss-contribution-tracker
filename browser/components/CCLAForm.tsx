@@ -20,6 +20,7 @@ import { reqJSON } from '../util/index';
 
 interface Props {
   dispatch: any;
+  toggleForm: any;
 }
 
 interface State {
@@ -105,7 +106,7 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
     this.setState({
       alert: null,
     });
-    document.getElementById('to-home').click();
+    this.props.toggleForm(false);
   }
 
   getOptionsProjectNames = () => {
@@ -177,7 +178,7 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
             <label>Additional Notes</label> <br/>
             <textarea id="description" className="form-control" rows={3} name="description" required></textarea>
           </div>
-
+          <button className="btn btn-secondary" type="submit" onClick={this.hideAlert}>Cancel</button>
           <button className="btn btn-primary" type="submit">Submit</button>
         </form>
         {this.state.alert}
@@ -188,4 +189,4 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
 
 export default connect(state => {
   return{};
-})(CCLAForm);
+})(CCLAForm) as any;

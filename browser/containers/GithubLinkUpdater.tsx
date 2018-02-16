@@ -40,16 +40,16 @@ class GithubLinkUpdater extends React.Component<Props, State> {
   }
 
   getData = async () => {
-    let user = await reqJSON('/api/user');
+    const user = await reqJSON('/api/user');
     this.setState({
       user: user.user,
     });
-    let clist = await reqJSON(`/api/contributions/${user.user}`);
+    const clist = await reqJSON(`/api/contributions/${user.user}`);
     this.sortList(clist.contributionList);
   }
 
   sortList = (cL) => {
-    let list = {};
+    const list = {};
     for (const key of Object.keys(cL)) {
       const value = cL[key];
       value.map(entry => {

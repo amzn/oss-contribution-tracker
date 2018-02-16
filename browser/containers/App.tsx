@@ -13,12 +13,22 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import ErrorModal from '../components/ErrorModal';
 import { setGeneralError } from '../modules/common';
 
 import ExtensionPoint from '../util/ExtensionPoint';
+
+import Admin from './Admin';
+import Approvals from './Approvals';
+import Contributions from './Contributions';
+import EditCLA from './EditCla';
+import EditContribution from './EditContribution';
+import Employee from'./Employee';
+import GithubLinkUpdater from './GithubLinkUpdater';
+import List from './List';
+import Metrics from './Metrics';
 
 interface Props {
   children: any;
@@ -35,7 +45,7 @@ interface State {
 }
 
 
-class App extends React.Component<Props, State> {
+export class App extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -107,6 +117,23 @@ class App extends React.Component<Props, State> {
 
         <div className="container-fluid mt-4">
           <div className="row">
+            <div className="mx-auto col-lg-10">
+              <Switch>
+                <Route exact path="/" component={Metrics} />
+                <Route exact path="/employee" component={Employee} />
+                <Route exact path="/list" component={List} />
+                <Route exact path="/admin" component={Admin} />
+                <Route path="/cla/:project_id" component={EditCLA} />
+                <Route exact path="/contribute" component={Contributions} />
+                <Route path="/approvals/:contrib_id" component={Approvals} />
+                <Route path="/contribution/:contrib_id" component={EditContribution} />
+                <Route exact path="/metrics" component={Metrics} />
+                <Route exact path="/contribute/link" component={GithubLinkUpdater} />
+              </Switch>
+            </div>
+          </div>
+
+          <div className="row">
             <div id="body-content" className="mx-auto col-lg-11">
               {this.props.children}
             </div>
@@ -115,6 +142,7 @@ class App extends React.Component<Props, State> {
           <div className="row mt-4">
             <div className="mx-auto col-lg-11">
               <hr/>
+              <ExtensionPoint ext="footer" />
             </div>
           </div>
         </div>
