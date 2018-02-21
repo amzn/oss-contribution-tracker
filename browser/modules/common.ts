@@ -12,7 +12,6 @@
  * permissions and limitations under the License.
  */
 import { reqJSON } from '../util/index';
-import * as winston from 'winston';
 
 export const SET_GENERAL_ERROR = 'app/common/set-general-error';
 export const RECEIVE_USER_DATA = 'app/common/receive-user-data';
@@ -44,7 +43,7 @@ export default function reducer(state = initial, action: any = {}) {
 
 export function setGeneralError(message) {
   if (message != null) {
-    winston.error(message);
+    console.error(message);
   }
   return {
     type: SET_GENERAL_ERROR,
