@@ -36,7 +36,7 @@ config.fallbackUser = 'nobody';
 
 config.ldap = {
   o: '', // objectClass
-  url: '', // ldap server url
+  url: 'ldaps://', // ldap server url
 };
 
 config.admin = {

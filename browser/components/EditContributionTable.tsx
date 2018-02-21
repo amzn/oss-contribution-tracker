@@ -96,7 +96,7 @@ export default class EditContributionTable extends React.Component<Props, State>
         headText = 'Contributor';
         break;
       default:
-        console.log('Unknown columnKey');
+        console.warn('Unknown columnKey');
         break;
     };
 

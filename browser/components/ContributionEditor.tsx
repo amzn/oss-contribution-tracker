@@ -14,6 +14,7 @@
 import * as React from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
 import * as ContributionsActions from '../modules/contributions';
@@ -171,7 +172,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     this.setState({
       alert: null,
     });
-    document.getElementById('to-home').click();
+    document.getElementById('to-admin').click();
   }
 
   handleSelectChange = (change, loc) => {
@@ -304,6 +305,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                 <textarea className="form-control" rows={2} id="approvalNotesInput" placeholder={approval_notes} />
               </div>
               <div className="form-group">
+                <Link className="btn btn-secondary" id="to-admin" to="/admin">Cancel</Link>
                 <button className="btn btn-primary" type="submit">Submit</button>
               </div>
             </form>

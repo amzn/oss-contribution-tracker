@@ -57,6 +57,21 @@ export class LDAPAuth {
       });
   }
 
+  getAllUserInfo(user) {
+    return this._ldapsearch(`o=${config.ldap.o}`, {
+      scope: 'sub',
+      filter: 'uid=' + encodeURIComponent(user),
+      attributes: config.ldap.attributes,
+    }, obj => obj)
+      .then(results => {
+        if (results.length === 0) {
+          return null;
+        }
+        return results;
+      });
+  }
+
+
   /**
    * Generic LDAP search.
    *

@@ -12,7 +12,7 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
-import { IndexLink } from 'react-router';
+import { Link } from 'react-router-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 import * as claLogger from'../modules/claLogger';
@@ -238,9 +238,9 @@ export default class CLAEditor extends React.Component<Props, State> {
           </div>
           <div className="col-md-10">
             <div className="pullRight">
-              <IndexLink className="btn btn-default im-blue" id="to-admin" to="/admin">Cancel</IndexLink>
-              <button className="btn btn-default im-red" onClick={this.handleDelete}>Delete</button>
-              <button className="btn btn-default im-blue" type="submit">Make Changes</button>
+              <Link className="btn btn-secondary" id="to-admin" to="/admin">Cancel</Link>
+              <button className="btn btn-danger" onClick={this.handleDelete}>Delete</button>
+              <button className="btn btn-primary" type="submit">Make Changes</button>
             </div>
           </div>
           {this.state.alert}

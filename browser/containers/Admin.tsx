@@ -55,11 +55,19 @@ export default class Admin extends Component<Props, State> {
   }
 
   componentWillMount() {
+    this.getApprovals();
+    this.getCLAs();
+  }
+
+  getApprovals = () => {
     reqJSON('/api/contributions/approvals').then(temp => {
       this.setState({
         approvalList: temp,
       });
     });
+  }
+
+  getCLAs = () => {
     reqJSON('/api/cla').then(claList => {
       this.setState({
         claTable: claList.claTable,
@@ -96,7 +104,7 @@ export default class Admin extends Component<Props, State> {
     });
   }
 
-  setCLAForm = () => {
+  setCLAFormTrue = () => {
     this.setState({
       claFormBoolean: true,
       claTableBoolean: false,
@@ -104,29 +112,28 @@ export default class Admin extends Component<Props, State> {
       editContributionListBoolean: false,
     });
   }
-  renderTable = (contribution) => {
-    if (this.state.approvalListBoolean) {
-      return(<ApprovalsTable approvalList={this.state.approvalList} />);
+
+  setCLAFormFalse = () => {
+    this.setState({
+      claFormBoolean: false,
+      claTableBoolean: false,
+      approvalListBoolean: false,
+      editContributionListBoolean: false,
+    });
+  }
+
+  // ftn passed to child to update the view once a form is submitted
+  toggleCLAForm = (status) => {
+    if (status) {
+      this.setCLAFormTrue();
+    } else {
+      this.setCLAFormFalse();
     };
-    if (this.state.editContributionListBoolean) {
-      if (this.state.key <= 2) {
-        let temp = this.state.key;
-        this.setState({
-          key: temp ++,
-        });
-      }
-      return(<EditContributionTable contributionList={contribution}/>);
-    }
-    else {
-      if (!this.state.claTableBoolean && !this.state.claFormBoolean) {
-        return(<p>Select an option from the left.</p>);
-      }
-    }
+    this.getCLAs(); // forces a refresh for the CLA lsit
   }
 
   render() {
     let claTable = this.state.claTable;
-    let contributionList = this.state.contributionList;
     return (
       <div className="container-fluid" id="admin_container">
         <div className="row">
@@ -140,15 +147,17 @@ export default class Admin extends Component<Props, State> {
             <h4>CCLAs</h4>
             <div className="list-group">
               <a href="#" onClick={this.setCLAList} className="list-group-item list-group-item-action">View CCLAs</a>
-              <a href="#" onClick={this.setCLAForm} className="list-group-item list-group-item-action">New CCLA</a>
+              <a href="#" onClick={this.setCLAFormTrue} className="list-group-item list-group-item-action">New CCLA</a>
             </div>
           </div>
 
           <div className="col-lg-10 mb-3">
             <div className="panel-body" key={this.state.key}>
-              {this.state.editContributionListBoolean ? (<EditContributionTable contributionList={this.state.contributionList} />) : this.renderTable(contributionList)}
+              {!this.state.approvalListBoolean && !this.state.editContributionListBoolean && !this.state.claTableBoolean && !this.state.claFormBoolean && <p>Select an option from the left.</p>}
+              {this.state.approvalListBoolean && <ApprovalsTable approvalList={this.state.approvalList} />}
+              {this.state.editContributionListBoolean && <EditContributionTable contributionList={this.state.contributionList}/>}
               {this.state.claTableBoolean && <CLATable cla={claTable} />}
-              {this.state.claFormBoolean && <CCLAForm />}
+              {this.state.claFormBoolean && <CCLAForm toggleForm={this.toggleCLAForm}/>}
             </div>
           </div>
           <div id="alert" ></div>

@@ -30,7 +30,7 @@ gulp.task('build-server', ['copy-config', 'copy-json'], () => {
   return src(['server/**/*.ts'])
     .pipe(plumber())
     .pipe(sourcemaps.init())
-    .pipe(ts(tsServer))
+    .pipe(tsServer())
     .pipe(sourcemaps.write('.'))
     .pipe(dest('build/server'));
 });

@@ -37,7 +37,7 @@ export default class EditContribution extends Component<Props, State> {
   }
 
   componentWillMount() {
-    let id = this.props.params.contrib_id;
+    let id = (this.props as any).match.params.contrib_id;
     reqJSON(`/api/contributions/single/${id}`).then(temp => {
       this.setState({
         contrib_data: temp[0],

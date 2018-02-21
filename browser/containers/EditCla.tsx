@@ -74,7 +74,7 @@ class EditCla extends React.Component<Partial<Props>, State> {
         cla_project_approvers_names: temp.approverList,
       });
     });
-    let id = this.props.params.project_id;
+    let id = (this.props as any).match.params.project_id;
     reqJSON(`/api/cla/getproject/${id}`).then( cla => {
       let object = cla.gotCla[0];
       this.setState({
@@ -98,7 +98,7 @@ class EditCla extends React.Component<Partial<Props>, State> {
 
   render() {
     return (
-      <CLAEditor project_id={this.props.params.project_id} dispatch={this.props.dispatch} data={this.state} />
+      <CLAEditor project_id={(this.props as any).match.params.project_id} dispatch={this.props.dispatch} data={this.state} />
     );
   }
 }

@@ -21,7 +21,7 @@ export default function reducer(state = initial, action: any = {}) {
   switch (action.type) {
     case RECEIVE_CONTRIBUTIONS_OF_SELECTED_USER:
       return(Object.assign({}, state, {
-        filteredDataList: action.userContributions
+        filteredDataList: action.userContributions,
       })
     );
     default:

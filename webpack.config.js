@@ -51,9 +51,9 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
         options: {
-          configFileName: 'browser/tsconfig.json',
+          configFile: 'browser/tsconfig.json',
         },
       },
       {
@@ -79,7 +79,7 @@ module.exports = {
 
   entry: {
     app: ['./browser/app.tsx'],
-    vendor: ['core-js/shim', 'bootstrap', 'history', 'jquery', 'moment', 'popper.js', 'react', 'react-dom', 'react-redux', 'react-router', 'react-select', 'redux', 'redux-thunk', 'whatwg-fetch'],
+    vendor: ['core-js/shim', 'bootstrap', 'history', 'jquery', 'moment', 'popper.js', 'react', 'react-dom', 'react-redux', 'react-router-dom', 'react-select', 'redux', 'redux-thunk', 'whatwg-fetch'],
     style: ['./styles/style.scss'],
   },
 

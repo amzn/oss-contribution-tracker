@@ -29,8 +29,7 @@ export async function getAllContributorAlias() {
 
 // List contributions by a specific user
 export function listUserContributions(username) {
-   return pg().query('select P.project_id, lower(P.project_name) as project_name, C.project_id, C.contribution_description, C.contribution_github_status, C.contribution_url, C.contribution_commit_url, C.approval_status, C.contribution_submission_date from projects P, contributions C where P.project_id = C.project_id and C.contributor_alias = $1 order by P.project_id', [username],
-   );
+   return pg().query('select P.project_id, lower(P.project_name) as project_name, C.contribution_id, C.project_id, C.contribution_description, C.contribution_github_status, C.contribution_url, C.contribution_commit_url, C.approval_status, C.contribution_submission_date from projects P, contributions C where P.project_id = C.project_id and C.contributor_alias = $1 order by P.project_id', [username]);
 }
 
 // Get single contribution by id
@@ -68,4 +67,8 @@ export async function updateContribution(project_id, contribution_id, contributi
     'update contributions set (project_id, contribution_description, contribution_date, contributor_alias, contribution_github_status, contribution_url, contribution_commit_url, approval_status, approval_notes, approval_date, contribution_submission_date, contribution_closed_date) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where contribution_id = $13',
     [project_id, contribution_description, contribution_date, contributor_alias, contribution_github_status, contribution_url, contribution_commit_url, approval_status, approval_notes, approval_date, contribution_submission_date, contribution_closed_date, contribution_id],
   );
+}
+
+export async function updateContributionLink(contrib_id, link) {
+  return await pg().none('update contributions set (contribution_commit_url) = ($1) where contribution_id = $2', [link, contrib_id]);
 }
