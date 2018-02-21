@@ -79,8 +79,8 @@ class Approvals extends React.Component<Props, State> {
         </div>
         <div className="col-md-10">
           <div className="pullRight">
-            <Link className="btn btn-secondary im-blue" to="/admin">Cancel</Link>
-            <button className="btn btn-primary im-blue" type="submit">Submit</button>
+            <Link className="btn btn-secondary" to="/admin">Cancel</Link>
+            <button className="btn btn-primary" type="submit">Submit</button>
           </div>
         </div>
       </form>

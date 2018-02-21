@@ -65,11 +65,7 @@ class GithubLinkUpdater extends React.Component<Props, State> {
     const cl = this.state.contributionList;
     const usr = this.state.user;
     return (
-      <div className="container">
-        <div className="jumbotron">
-          <GithubLink contributionList={ cl } user={ usr } />
-        </div>
-      </div>
+      <GithubLink contributionList={ cl } user={ usr } />
     );
   }
 }
