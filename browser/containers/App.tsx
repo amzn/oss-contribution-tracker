@@ -87,9 +87,9 @@ export class App extends React.Component<Props, State> {
     return (
       <div>
         <nav className="navbar navbar-expand-sm navbar-light bg-light">
-          <Link to="/" className="navbar-brand">
-            OSS Contribution Tracker
-          </Link>
+          <ExtensionPoint ext="navbar-logo">
+            <Link to="/" className="navbar-brand">OSS Contribution Tracker</Link>
+          </ExtensionPoint>
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav ml-auto">
               <li className="nav-item">
@@ -110,6 +110,7 @@ export class App extends React.Component<Props, State> {
                 </a>
               </li>
             </ul>
+            <ExtensionPoint ext="navbar-end" />
           </div>
         </nav>
 
@@ -130,12 +131,6 @@ export class App extends React.Component<Props, State> {
                 <Route exact path="/metrics" component={Metrics} />
                 <Route exact path="/contribute/link" component={GithubLinkUpdater} />
               </Switch>
-            </div>
-          </div>
-
-          <div className="row">
-            <div id="body-content" className="mx-auto col-lg-11">
-              {this.props.children}
             </div>
           </div>
 

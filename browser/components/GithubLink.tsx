@@ -117,22 +117,24 @@ class GithubLink extends React.Component<Partial<Props>, State> {
   render() {
     let tables = this.renderTable();
     return (
-      <div className="row">
-        <div id="github-link-container" className="col-md-10 col-md-offset-1"><br/><br/>
-          <h3>Your contributions awaiting links</h3>
-          { this.state.alert }
-          <table className="table table-striped table-bordered">
-            <thead>
-              <tr key="github-link-table-head">
-                <th>Project</th>
-                <th>Description</th>
-                <th>Contribution Link</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tables}
-            </tbody>
-          </table>
+      <div className="container">
+        <div className="row">
+          <div id="github-link-container" className="col-lg-9"><br/><br/>
+            <h3>Your contributions awaiting links</h3>
+            { this.state.alert }
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr key="github-link-table-head">
+                  <th>Project</th>
+                  <th>Description</th>
+                  <th>Contribution Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tables}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );

@@ -305,8 +305,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                 <textarea className="form-control" rows={2} id="approvalNotesInput" placeholder={approval_notes} />
               </div>
               <div className="form-group">
-                <Link className="btn btn-secondary im-blue" id="to-admin" to="/admin">Cancel</Link>
-                <button className="btn btn-primary im-blue" type="submit">Submit</button>
+                <Link className="btn btn-secondary" id="to-admin" to="/admin">Cancel</Link>
+                <button className="btn btn-primary" type="submit">Submit</button>
               </div>
             </form>
             {this.state.alert}

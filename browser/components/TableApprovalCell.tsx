@@ -35,7 +35,7 @@ export default class TableApprovalCell extends React.Component<Partial<Props>, S
       <Cell {...props}>
         <div className="row">
           <div className="col-md-6">
-            <Link className="btn btn-info im-blue" to={`/approvals/${id}`}>Approve/Deny</Link>
+            <Link className="btn btn-info" to={`/approvals/${id}`}>Approve/Deny</Link>
           </div>
         </div>
       </Cell>

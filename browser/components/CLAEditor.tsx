@@ -238,9 +238,9 @@ export default class CLAEditor extends React.Component<Props, State> {
           </div>
           <div className="col-md-10">
             <div className="pullRight">
-              <Link className="btn btn-secondary im-blue" id="to-admin" to="/admin">Cancel</Link>
-              <button className="btn btn-danger im-red" onClick={this.handleDelete}>Delete</button>
-              <button className="btn btn-primary im-blue" type="submit">Make Changes</button>
+              <Link className="btn btn-secondary" id="to-admin" to="/admin">Cancel</Link>
+              <button className="btn btn-danger" onClick={this.handleDelete}>Delete</button>
+              <button className="btn btn-primary" type="submit">Make Changes</button>
             </div>
           </div>
           {this.state.alert}

@@ -22,7 +22,7 @@
     "@types/react-dom": "^0.14.20",
     "@types/react-redux": "^5.0.7",
     "@types/react-router": "^2.0.41",
-    "@types/react-select": "^1.0.39",
+    "@types/react-select": "^1.2.3",
     "@types/request": "^2.0.3",
     "@types/selenium-webdriver": "^2.53.39",
     "@types/typescript": "^2.0.0",
