@@ -15,6 +15,7 @@
 
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -35,10 +36,7 @@ let plugins = [
 
 if (prod) {
   plugins = plugins.concat([
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {warnings: false},
-      comments: /^\**!|@preserve|copyright|license/i,
-    }),
+    new UglifyJsPlugin(),
   ]);
 }
 
