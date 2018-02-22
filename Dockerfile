@@ -4,7 +4,7 @@ COPY ./package.json ./package-lock.json /build/
 RUN cd /build && NPM_CONFIG_LOGLEVEL=warn npm install
 
 COPY ./ /build
-RUN cd /build && ./node_modules/.bin/gulp
+RUN cd /build && npm run build
 
 EXPOSE 8000
 
