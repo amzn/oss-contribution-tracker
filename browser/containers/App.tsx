@@ -39,7 +39,7 @@ interface Props {
 
 interface State {
   user: {
-    access: string;
+    access: string[];
     name: string;
     groups: string;
     ossApproved: boolean;
@@ -57,7 +57,7 @@ export class App extends React.Component<Props, State> {
     super(props);
     this.state = {
       user: {
-          access: '',
+          access: [],
           name: '',
           groups: '',
           ossApproved: false,
@@ -114,9 +114,9 @@ export class App extends React.Component<Props, State> {
 
   render() {
     const { generalError } = this.props;
-    let admin_link = null;
+    let adminLink = null;
     if (this.state.user.access.includes(AccessTypes.admin)) {
-      admin_link = (<li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>);
+      adminLink = (<li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>);
     };
     const securedRoutes = this.buildSecureRoutes();
     return (
@@ -127,7 +127,7 @@ export class App extends React.Component<Props, State> {
           </ExtensionPoint>
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav ml-auto">
-              {admin_link}
+              {adminLink}
               <li className="nav-item">
                 <Link to="/contribute" className="nav-link">New Contribution</Link>
               </li>
@@ -147,7 +147,7 @@ export class App extends React.Component<Props, State> {
           </div>
         </nav>
 
-        { generalError !== null ? this.mapError(generalError) : '' }
+        { generalError != null ? this.mapError(generalError) : '' }
 
         <div className="container-fluid mt-4">
           <div className="row">
