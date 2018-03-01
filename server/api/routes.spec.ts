@@ -19,15 +19,36 @@ describe('routes', function () {
   beforeEach(function () {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mock = {
-      LDAP: {},
+      LDAP: {
+        getActiveUser: jasmine.createSpy('LDAP.getActiveUser').and.callFake(function (req, res, next) {
+          if (req.type === 'admin') {
+            return 'adminTestUser';
+          } else if (req.type === 'approver') {
+            return 'approverTestUser';
+          } else {
+            return 'anonTestUser';
+          };
+        }),
+        getGroups: jasmine.createSpy('LDAP.getGroups').and.callFake(function (user) {
+          if (user === 'adminTestUser') {
+            return ['group1', 'group3'];
+          } else if (user === 'approverTestUser') {
+            return ['group2', 'group3'];
+          } else {
+            return ['group3'];
+          };
+        }),
+      },
     };
-    mockery.registerMock('../auth/ldap', {default: mock.LDAP});
+    mockery.registerMock('../auth/ldap', {
+      default: mock.LDAP,
+    });
     config = {
       admin: {
-        posixGroup: ['fake2'],
+        posixGroup: ['group1'],
       },
       approver: {
-        posixGroup: 'fakefake',
+        posixGroup: ['group2'],
       }};
     mockery.registerMock('../config', {default: config});
     mockery.registerAllowable('./routes');
@@ -41,46 +62,24 @@ describe('routes', function () {
 
   describe('checkAccess', function () {
     it('should return admin', async function (done) {
-      let user = 'jamesiri';
-      mock.LDAP.getGroups = jasmine.createSpy('LDAP.getGroups').and.returnValue(returnAdmin());
-      let access = await auth.checkAccess(user);
-      expect(access).toEqual('admin');
+      let req = { type: 'admin' }, res = {}, next = () => {};
+      await auth.checkAccess(req, res, next);
+      expect((req as any).UserAccess).toEqual(['admin']);
+      done();
+    });
+
+    it('should return approver', async function (done) {
+      let req = { type: 'approver' }, res = {}, next = () => {};
+      await auth.checkAccess(req, res, next);
+      expect((req as any).UserAccess).toEqual(['approver']);
       done();
     });
 
     it('should return anon', async function (done) {
-      let user = 'nobody';
-      mock.LDAP.getGroups = jasmine.createSpy('getGroups').and.returnValue(returnAnon());
-      let access = await auth.checkAccess(user);
-      expect(access).toEqual('anon');
+      const req = { type: 'nope' }, res = {}, next = () => {};
+      await auth.checkAccess(req, res, next);
+      expect((req as any).UserAccess).toEqual(['anon']);
       done();
     });
   });
-
-  describe('approvedAccess', function () {
-    let list = ['first', 'admin'];
-    it('should return true one', function (done) {
-      let type = 'admin';
-      expect(auth.approvedAccess(type, list)).toEqual(true);
-      done();
-    });
-    it('should return true two', function (done) {
-      let type = 'first';
-      expect(auth.approvedAccess(type, list)).toEqual(true);
-      done();
-    });
-    it('should return true', function(done) {
-      let type = 'hats';
-      expect(auth.approvedAccess(type, list)).toEqual(false);
-      done();
-    });
-  });
-
-  function returnAdmin() {
-    return (Promise.resolve(['fake2']));
-  }
-
-  function returnAnon() {
-    return (Promise.resolve(['fake1']));
-  }
 });

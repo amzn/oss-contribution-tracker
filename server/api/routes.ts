@@ -31,9 +31,15 @@ router.use(bodyParser.urlencoded({
   extended: true,
 }));
 
+/**
+ * Forces all requests to grab the requesting users access privileges so
+ * all actions can be checked against those privileges
+ */
+router.use(checkAccess);
+
 router.get('/user', async (req, res, next) => {
   // check for midway id token in req
-  let user = getUser(req);
+  let user = await getUser(req);
   let groups = await LDAP.getGroups(user);
   res.send({
     user,
@@ -41,9 +47,25 @@ router.get('/user', async (req, res, next) => {
   });
 });
 
-router.get('/config/display', (req, res, next) => {
-  // return users defined in server config
-  res.send(config.display);
+router.get('/user/access', async (req, res, next) => {
+  res.send({
+    access: (req as any).UserAccess,
+  });
+});
+
+router.get('/config/display', async (req, res, next) => {
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    // return users defined in server config
+    res.send(config.display);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /config/display`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 router.get('/metrics/contrib/user/counts', (req, res, next) => {
@@ -80,7 +102,17 @@ router.get('/projects/approval', async (req, res, next) => {
 
 // Implement when adding projects needed
 /*router.post('/projects/new', (req, res, next) => {
-  pack(projectsAPI.addProject(req, req.body), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(projectsAPI.addProject(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /projects/new`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });*/
 
 router.get('/projects/name/:projectName', (req, res, next) => {
@@ -96,7 +128,17 @@ router.get('/approvers', (req, res, next) => {
 });
 
 router.post('/approvers/new', async (req, res, next) => {
-  pack(approversAPI.listApprovers(req), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin) || access.includes(AccessTypes.approve)) {
+    pack(approversAPI.listApprovers(req), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /approvers/new`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 router.get('/approvers/:approverId', (req, res, next) => {
@@ -120,7 +162,17 @@ router.get('/contributions/approvals', (req, res, next) => {
 });
 
 router.post('/contributions/approve', async (req, res, next) => {
-  pack(contributionsAPI.approveContribution(req, req.body), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(contributionsAPI.approveContribution(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /contributions/approve`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 router.get('/contributions/:username', (req, res, next) => {
@@ -136,11 +188,31 @@ router.post('/contributions/new', async (req, res, next) => {
 });
 
 router.post('/contributions/newautoapproval', async (req, res, next) => {
-  pack(contributionsAPI.addNewContributionAutoApproval(req, req.body), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(contributionsAPI.addNewContributionAutoApproval(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /contributions/newautoapproval`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 router.post('/contributions/update', async (req, res, next) => {
-  pack(contributionsAPI.updateContribution(req, req.body), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(contributionsAPI.updateContribution(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /contributions/update`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 router.post('/contributions/update/link', async (req, res, next) => {
@@ -162,7 +234,7 @@ router.post('/contributions/update/link', async (req, res, next) => {
     winston.warn('$1 not allowed to update contributions github link', [user]);
     res.status(401);
     res.send({
-      error: 'Not allowed to update contributions github link'
+      error: 'Not allowed to update contributions github link',
     });
   };
 });
@@ -188,17 +260,47 @@ router.get('/cla/getproject/:id', (req, res, next) => {
 
 // Delete CLA
 router.post('/cla/delete', async(req, res, next) => {
-  pack(claAPI.deleteCLA(req, req.body), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(claAPI.deleteCLA(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /cla/delete`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 // Edit CLA
 router.post('/cla/update', async (req, res, next) => {
-  pack(claAPI.updateCLA(req, req.body), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(claAPI.updateCLA(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /cla/update`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 // New CLA post request
 router.post('/cla/submit', async (req, res, next) => {
-  pack(claAPI.addNewCLA(req, req.body), res, next);
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(claAPI.addNewCLA(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /cla/submit`);
+    res.status(403);
+    res.send({
+      error: 'You do not posses the permissions to access that',
+    });
+  };
 });
 
 /**
@@ -220,47 +322,46 @@ function pack(promise, res, next) {
     });
 }
 
-function getUser(req) {
+async function getUser(req) {
   // Get username
-  return LDAP.getActiveUser(req);
+  return await LDAP.getActiveUser(req);
 }
 
 /*
-  Note: No longer using in OSS version but being left for future features
   levels of access:
     admin: administrators
     approver: can approve new projects
     anon: unknown users with minimal access
 */
-type AccessTypes =
-  'admin'
-  | 'approver'
-  | 'anon';
-
-export async function checkAccess(user): Promise<AccessTypes> {
+enum AccessTypes {
+  admin = 'admin',
+  approve = 'approver',
+  anon = 'anon',
+}
+// Middleware that stuffs user access levels into req.UserAccess
+export async function checkAccess(req, res, next) {
+  let user = await getUser(req);
   // Checks that the user has access to their requested information
   let groups = await LDAP.getGroups(user);
-  let access;
+  let access = [];
   let len = config.admin.posixGroup.length;
+  // Check if in admin groups
   for (let i = 0; i < len; i++) {
     if ((groups as any).includes(config.admin.posixGroup[i])) {
-      access = 'admin';
+      access.push('admin');
     }
   }
-  if (!access) {
-    if ((groups as any).includes(config.approver.posixGroup)) {
-      access = 'approver';
-    } else {
-      access = 'anon';
+  len = config.approver.posixGroup.length;
+  // Check if in approver groups
+  for (let i = 0; i < len; i++) {
+    if ((groups as any).includes(config.approver.posixGroup[i])) {
+      access.push('approver');
     }
   }
-  return access;
-}
-
-export function approvedAccess(type, list): boolean {
-  if (list.includes(type)) {
-    return true;
-  } else {
-    return false;
+  // If access is empty then they aren't a member of a special group
+  if (access.length === 0) {
+    access.push('anon');
   }
+  req.UserAccess = access;
+  next();
 }

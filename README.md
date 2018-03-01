@@ -20,6 +20,11 @@ If you are interested in setting up a development server for testing, or just wa
 3. In a new shell, run `npm run dev` to launch a development/auto-reloading instance.
 4. Navigate to http://0.0.0.0:8010/
 
+### Using Alternate Configurations
+You can provide a custom configuration by placing your config in the server/config directory and by running
+
+`npm run dev --alt_config=<config name>`
+
 ### Testing
 
 To run unit tests, run `npm test` from the root folder.
@@ -31,8 +36,6 @@ To run UI tests:
 **Note:** You can connect to the selenium instance through VNC to actually view the UI tests. This is useful when trying to troubleshoot or write new features.
 
 ### Environment Variables
-
-Set `CONFIG_NAME` to the name of a configuration file in `config` to switch configuration. For example, `CONFIG_NAME=foo` to use `config/foo.js`.
 
 Set `DEBUG_SQL=1` to show full SQL commands on the console.
 

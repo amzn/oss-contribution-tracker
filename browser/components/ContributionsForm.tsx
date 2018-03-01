@@ -13,6 +13,7 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Select from 'react-select';
 
 import * as ContributionsActions from '../modules/contributions';
@@ -185,7 +186,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
                 <label>GitHub Link (optional)</label>
                 <input type="text" className="form-control" name="githubLink" />
               </div>
-
+              <Link className="btn btn-secondary" id="to-admin" to="/">Cancel</Link>
               <button className="btn btn-primary" type="submit">Submit</button>
             </form>
           </div>
