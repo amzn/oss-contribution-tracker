@@ -51,12 +51,16 @@ class Approvals extends React.Component<Props, State> {
     this.setState({
       approvalStatus: 'approved',
     });
+    (document.getElementById('approveBtn') as any).disabled = true;
+    (document.getElementById('denyBtn') as any).disabled = false;
   }
 
   denyContrib = (e) => {
     this.setState({
       approvalStatus: 'denied',
     });
+    (document.getElementById('approveBtn') as any).disabled = false;
+    (document.getElementById('denyBtn') as any).disabled = true;
   }
 
   render() {
@@ -66,10 +70,10 @@ class Approvals extends React.Component<Props, State> {
           <label>Approve/Deny</label>
           <br/>
           <div className="btn-group" role="group" aria-label="...">
-            <button id="approveBtn" type="button" className="btn btn-success btn-sm" onClick={this.approveContrib}>
+            <button id="approveBtn" type="button" className="btn btn-success btn-sm active" onClick={this.approveContrib}>
               <i className="fa fa-check" />
             </button>
-            <button id="denyBtn" type="button" className="btn btn-danger btn-sm" onClick={this.denyContrib}>
+            <button id="denyBtn" type="button" className="btn btn-danger btn-sm active" onClick={this.denyContrib}>
               <i className="fa fa-ban" />
             </button>
           </div>

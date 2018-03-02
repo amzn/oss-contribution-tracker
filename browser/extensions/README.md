@@ -52,4 +52,45 @@ A [React functional component].
     * `props` - React props. Empty.
 * Return: a rendered React component.
 
+### `ldap-info`
+
+Area for displaying additional ldap information.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+* Return: a rendered React component.
+
+### `landing-content`
+
+Replace the default landing content.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+        * `children` - Default landing metrics.
+* Return: a rendered React component.
+
+### `admin-sidebar`
+
+Add options to the admin sidebar.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+* Return: a rendered React component.
+
+### `admin-content`
+
+Area for displaying additional admin components
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+* Return: a rendered React component.
+
 [React functional component]: https://reactjs.org/docs/components-and-props.html#functional-and-class-components

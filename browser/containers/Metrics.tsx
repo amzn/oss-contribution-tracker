@@ -16,6 +16,8 @@ import { reqJSON } from '../util/index';
 
 import MetricsLists from '../components/MetricsLists';
 
+import ExtensionPoint from '../util/ExtensionPoint';
+
 interface Props extends React.Props<any> {
 }
 
@@ -72,16 +74,16 @@ export default class Metrics extends React.Component<Props, State> {
     });
   }
 
-  render() {
+  getContent = (allMetrics, usersAndCounts, contribCountByYearAll, topContribProjectsAllTime, topContribProjectsThisYear, topContribProjectsLastYear) => {
     let content;
-    if (this.state.allMetrics.length > 0) {
+    if (allMetrics.length > 0) {
       content = (<MetricsLists
-        usersAndCounts={this.state.usersAndCounts}
-        contribCountByYearAll={this.state.contribCountByYearAll}
-        topContribProjectsAllTime={this.state.topContribProjectsAllTime}
-        topContribProjectsThisYear={this.state.topContribProjectsThisYear}
-        topContribProjectsLastYear={this.state.topContribProjectsLastYear}
-        allMetrics={this.state.allMetrics}
+        usersAndCounts={usersAndCounts}
+        contribCountByYearAll={contribCountByYearAll}
+        topContribProjectsAllTime={topContribProjectsAllTime}
+        topContribProjectsThisYear={topContribProjectsThisYear}
+        topContribProjectsLastYear={topContribProjectsLastYear}
+        allMetrics={allMetrics}
       />);
     } else {
       content = (
@@ -89,7 +91,17 @@ export default class Metrics extends React.Component<Props, State> {
           <p>No contributions logged.</p>
         </div>
       );
-    }
+    };
     return content;
+  }
+
+  render() {
+    let metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts, this.state.contribCountByYearAll, this.state.topContribProjectsAllTime, this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
+    return (
+      <div>
+        <ExtensionPoint ext="landing-content" >
+          { metrics }
+        </ExtensionPoint>
+      </div>);
   }
 }
