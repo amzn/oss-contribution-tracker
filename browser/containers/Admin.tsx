@@ -20,6 +20,8 @@ import CCLAForm from '../components/CCLAForm';
 import CLATable from '../components/CLATable';
 import EditContributionTable from '../components/EditContributionTable';
 
+import ExtensionPoint from '../util/ExtensionPoint';
+
 interface Props {
   alert: any;
 }
@@ -151,6 +153,8 @@ export default class Admin extends Component<Props, State> {
             </div>
           </div>
 
+          <ExtensionPoint ext="admin-sidebar" />
+
           <div className="col-lg-10 mb-3">
             <div className="panel-body" key={this.state.key}>
               {!this.state.approvalListBoolean && !this.state.editContributionListBoolean && !this.state.claTableBoolean && !this.state.claFormBoolean && <p>Select an option from the left.</p>}
@@ -158,6 +162,7 @@ export default class Admin extends Component<Props, State> {
               {this.state.editContributionListBoolean && <EditContributionTable contributionList={this.state.contributionList}/>}
               {this.state.claTableBoolean && <CLATable cla={claTable} />}
               {this.state.claFormBoolean && <CCLAForm toggleForm={this.toggleCLAForm}/>}
+              <ExtensionPoint ext="admin-content" />
             </div>
           </div>
           <div id="alert" ></div>
