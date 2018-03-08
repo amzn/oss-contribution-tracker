@@ -68,7 +68,7 @@
     "fixed-data-table": "^0.6.5",
     "history": "^4.6.3",
     "ldapjs": "^1.0.0",
-    "moment": "^2.12.0",
+    "moment": "^2.19.3",
     "pg-promise": "^5.5.0",
     "react": "^16.2.0",
     "react-bootstrap-sweetalert": "^4.0.0",
