@@ -162,7 +162,7 @@ export default class Admin extends Component<Props, State> {
               {this.state.editContributionListBoolean && <EditContributionTable contributionList={this.state.contributionList}/>}
               {this.state.claTableBoolean && <CLATable cla={claTable} />}
               {this.state.claFormBoolean && <CCLAForm toggleForm={this.toggleCLAForm}/>}
-              {<ExtensionPoint ext="admin-content" />}
+              <ExtensionPoint ext="admin-content" />
             </div>
           </div>
           <div id="alert" ></div>

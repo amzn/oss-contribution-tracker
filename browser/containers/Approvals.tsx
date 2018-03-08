@@ -24,13 +24,17 @@ interface Props {
 
 interface State {
   approvalStatus: string;
+  acceptHighlight: boolean;
+  declineHighlight: boolean;
 }
 
 class Approvals extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      approvalStatus: null,
+      approvalStatus: '',
+      acceptHighlight: false,
+      declineHighlight: false,
     };
   }
 
@@ -50,17 +54,17 @@ class Approvals extends React.Component<Props, State> {
   approveContrib = (e) => {
     this.setState({
       approvalStatus: 'approved',
+      acceptHighlight: true,
+      declineHighlight: false,
     });
-    (document.getElementById('approveBtn') as any).disabled = true;
-    (document.getElementById('denyBtn') as any).disabled = false;
   }
 
   denyContrib = (e) => {
     this.setState({
       approvalStatus: 'denied',
+      acceptHighlight: false,
+      declineHighlight: true,
     });
-    (document.getElementById('approveBtn') as any).disabled = false;
-    (document.getElementById('denyBtn') as any).disabled = true;
   }
 
   render() {
@@ -70,10 +74,10 @@ class Approvals extends React.Component<Props, State> {
           <label>Approve/Deny</label>
           <br/>
           <div className="btn-group" role="group" aria-label="...">
-            <button id="approveBtn" type="button" className="btn btn-success btn-sm active" onClick={this.approveContrib}>
+            <button id="approveBtn" type="button" className="btn btn-success btn-sm active" onClick={this.approveContrib} disabled={this.state.acceptHighlight}>
               <i className="fa fa-check" />
             </button>
-            <button id="denyBtn" type="button" className="btn btn-danger btn-sm active" onClick={this.denyContrib}>
+            <button id="denyBtn" type="button" className="btn btn-danger btn-sm active" onClick={this.denyContrib} disabled={this.state.declineHighlight}>
               <i className="fa fa-ban" />
             </button>
           </div>
