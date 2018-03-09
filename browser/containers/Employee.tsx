@@ -17,8 +17,6 @@ import { connect } from 'react-redux';
 import * as EmployeeActions from '../actions/employeeAction';
 import AllEmployeeTable from '../components/AllEmployeeTable';
 
-import ExtensionPoint from '../util/ExtensionPoint';
-
 interface Props extends React.Props<any> {
   dispatch: any;
   employeeData: any;
@@ -76,7 +74,6 @@ class Employee extends React.Component<Props, State> {
     return (
       <div>
         <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch} placeholder="Contributor Alias" className="form-control" />
-        <ExtensionPoint ext="ldap-info" />
         <datalist id="browsers">
           {this.state.aliasList.map(alias => (<option key={alias} value={alias}/>))}
         </datalist>

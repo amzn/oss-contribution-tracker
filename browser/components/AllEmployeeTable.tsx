@@ -23,6 +23,7 @@ import TableLinkCell from '../components/TableLinkCell';
 import TableSortHeaderCell from '../components/TableSortHeaderCell';
 import TableSummaryCell from '../components/TableSummaryCell';
 import TableTextCell from '../components/TableTextCell';
+import ExtensionPoint from '../util/ExtensionPoint';
 
 interface OwnProps {
   alias: string;
@@ -103,6 +104,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
       return(
         <div key="contribution_edit_div">
           <h2>Contributions by {alias}</h2>
+          <ExtensionPoint ext="ldap-info" />
           <Table
             rowsCount={filteredDataList ? filteredDataList.length : 0}
             rowHeight={50}
