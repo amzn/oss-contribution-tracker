@@ -60,6 +60,7 @@ A [React functional component].
 
 * Input:
     * `props` - React props. Empty.
+    * `alias` - Alias of the user accessing the page. This is used for accessing the users LDAP info.
 * Return: a rendered React component.
 
 ### `landing-content`
