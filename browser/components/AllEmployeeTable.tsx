@@ -98,13 +98,12 @@ class AllEmployeeTable extends React.Component<Props, State> {
   }
 
   getTable = () => {
-    let { alias } = this.props;
     let { filteredDataList } = this.state;
-    if (alias && filteredDataList !== undefined && filteredDataList.length > 0) {
+    if (this.state.currAlias && filteredDataList !== undefined && filteredDataList.length > 0) {
       return(
         <div key="contribution_edit_div">
-          <h2>Contributions by {alias}</h2>
-          <ExtensionPoint ext="ldap-info" alias={alias}/>
+          <h2>Contributions by {this.state.currAlias}</h2>
+          <ExtensionPoint ext="ldap-info" alias={this.state.currAlias}/>
           <Table
             rowsCount={filteredDataList ? filteredDataList.length : 0}
             rowHeight={50}
@@ -223,9 +222,10 @@ class AllEmployeeTable extends React.Component<Props, State> {
   }
 
   render() {
+    const tables = this.getTable()
     return (
       <div>
-        {this.getTable()}
+        {tables}
       </div>
     );
   }
