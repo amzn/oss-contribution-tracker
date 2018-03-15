@@ -11,18 +11,30 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import pg from './index';
+/**
+ * Authz error for valid tokens, but no access to a resource.
+ */
+export class AccessError extends Error {
+  status: number;
 
-// Select all approvers
-export function listApprovers() {
-  return pg().query('select * from approvers');
+  constructor(message) {
+    super();
+    this.name = 'AccessError';
+    this.message = message;
+    this.status = 403;
+  }
 }
 
-// Select approvers by ID
-export function searchApprovers(id) {
-  return pg().query('select * from approvers where approver_id = $1', id);
-}
+/**
+ * Invalid request.
+ */
+export class RequestError extends Error {
+  status: number;
 
-export function getApproverByName(name) {
-  return pg().one('select * from approvers where approver_alias = $1', [name]);
+  constructor(message) {
+    super();
+    this.name = 'RequestError';
+    this.message = message;
+    this.status = 400;
+  }
 }
