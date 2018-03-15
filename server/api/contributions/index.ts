@@ -11,8 +11,13 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+import * as dbApprovers from '../../db/approvers';
 import * as dbContribution from '../../db/contributions';
 import * as dbProjects from '../../db/projects';
+
+import { config } from '../../config';
+import { RequestError } from '../../errors/index';
+import { getDiffSize } from '../../util/diffcheck';
 
 function sortContributions(list) {
   let contributionList = {};
@@ -88,6 +93,36 @@ export async function addNewContribution(req, body) {
   return { contributionID };
 }
 
+export async function addNewAutoApprovedContribution(req, body, user) {
+  const projects = await dbProjects.searchProjectById(body.projectId);
+  if (projects.length !== 1 || !projects[0].project_auto_approvable) {
+    throw new RequestError('Project not marked for auto-approvable contributions');
+  }
+  const autoApprover = await dbApprovers.getApproverByName('auto-approver');
+  const contributionID = await dbContribution.addNewContribution(
+    body.projectId,
+    body.description,
+    new Date(),
+    autoApprover.approver_id,
+    user,
+    false,
+    null,
+    dbContribution.ContributionStatus.APPROVED_PENDING_LINK,
+    body.meta,
+  );
+  return { contributionID };
+}
+
+export async function diffCheck(req, body) {
+  const size = getDiffSize(body.diff);
+  if (size === 0) {
+    throw new RequestError('Submitted text is not a unified diff, or it had no changes');
+  }
+  return {
+    ok: size < config.contributions.autoApprove.diffLimit,
+    size,
+  };
+}
 
 export async function addNewContributionAutoApproval(req, body) {
   let projectId = '';

@@ -187,6 +187,26 @@ router.post('/contributions/new', async (req, res, next) => {
   pack(contributionsAPI.addNewContribution(req, req.body), res, next);
 });
 
+router.post('/contributions/new/auto', async (req, res, next) => {
+  const user = await getUser(req);
+  const roles = await getRoles(user);
+  if (!roles.has('auto-approve')) {
+    res.status(401).send('no access to auto-approve');
+    return;
+  }
+  pack(contributionsAPI.addNewAutoApprovedContribution(req, req.body, user), res, next);
+});
+
+router.post('/contributions/diffcheck', async (req, res, next) => {
+  const user = await getUser(req);
+  const roles = await getRoles(user);
+  if (!roles.has('auto-approve')) {
+    res.status(401).send('no access to auto-approve');
+    return;
+  }
+  pack(contributionsAPI.diffCheck(req, req.body), res, next);
+});
+
 router.post('/contributions/newautoapproval', async (req, res, next) => {
   const access = (req as any).UserAccess;
   if (access.includes(AccessTypes.admin)) {
@@ -303,6 +323,19 @@ router.post('/cla/submit', async (req, res, next) => {
   };
 });
 
+// error handling for all of the above
+router.use(function (err: any, req: any, res: any, next: any) {
+  if (err.name === 'UnauthorizedError'
+      || err.name === 'AccessError'
+      || err.name === 'RequestError') {
+    res.status(err.status).send({error: err.message});
+    return;
+  }
+
+  winston.error(err.stack ? err.stack : err);
+  res.status(500).send({error: 'Internal error.'});
+});
+
 /**
  * Send API call results, calling error middleware on failure.
  */
@@ -364,4 +397,23 @@ export async function checkAccess(req, res, next) {
   }
   req.UserAccess = access;
   next();
+}
+
+async function getRoles(user: string): Promise<Set<string>> {
+  const groups = await LDAP.getGroups(user);
+  const roles = new Set();
+
+  // check each role
+  for (const role of Object.keys(config.roles)) {
+    const roleGroups: Set<string> = config.roles[role];
+
+    // look for any overlap in user groups & role groups
+    for (const roleGroup of roleGroups) {
+      if ((groups as any).includes(roleGroup)) {
+        roles.add(role);
+        break;
+      }
+    }
+  }
+  return roles;
 }
