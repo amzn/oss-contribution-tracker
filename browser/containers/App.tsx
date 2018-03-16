@@ -128,8 +128,11 @@ export class App extends React.Component<Props, State> {
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav ml-auto">
               {adminLink}
+              <ExtensionPoint ext="navbar-links" />
               <li className="nav-item">
-                <Link to="/contribute" className="nav-link">New Contribution</Link>
+                <ExtensionPoint ext="navbar-contribution">
+                  <Link to="/contribute" className="nav-link">New Contribution</Link>
+                </ExtensionPoint>
               </li>
               <li className="nav-item">
                 <Link to="/list" className="nav-link">Contributions By Project</Link>
@@ -159,6 +162,7 @@ export class App extends React.Component<Props, State> {
                 <Route exact path="/contribute" component={Contributions} />
                 <Route exact path="/contribute/link" component={GithubLinkUpdater} />
                 {securedRoutes}
+                <ExtensionPoint ext="routes-additional"/>
               </Switch>
             </div>
           </div>

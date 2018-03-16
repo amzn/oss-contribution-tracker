@@ -42,6 +42,27 @@ A [React functional component].
         * `children` - the default header text
 * Return: a rendered React component.
 
+### `navbar-links`
+
+Add additional links to the navbar.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+* Return: a rendered React component.
+
+### `navbar-contribution`
+
+Allows for replacing the contribution system.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+     * `children` - The default contribution process.
+* Return: a rendered React component.
+
 ### `navbar-end`
 
 Add additional items to the end of the navbar.
@@ -93,5 +114,15 @@ A [React functional component].
 * Input:
     * `props` - React props. Empty.
 * Return: a rendered React component.
+
+### `routes-additional`
+
+Add additional routes for react-router-dom.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+* Return: a react-router-dom route.
 
 [React functional component]: https://reactjs.org/docs/components-and-props.html#functional-and-class-components
