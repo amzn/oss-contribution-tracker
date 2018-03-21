@@ -47,6 +47,10 @@ config.approver = {
   posixGroup: '', // approver posix group
 };
 
+config.roles = {
+  // 'role-name': ['group-1', 'group-2'],
+}
+
 // Users defined for dropdowns
 config.display = {
   signatory: [
