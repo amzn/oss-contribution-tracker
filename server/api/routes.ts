@@ -39,16 +39,13 @@ router.use(checkAccess);
 
 router.get('/user', async (req, res, next) => {
   // check for midway id token in req
-  let user = await getUser(req);
-  let groups = await LDAP.getGroups(user);
+  const user = await getUser(req);
+  const groups = await LDAP.getGroups(user);
+  const roles = await getRoles(groups);
   res.send({
     user,
     groups,
-  });
-});
-
-router.get('/user/access', async (req, res, next) => {
-  res.send({
+    roles: Array.from(roles),
     access: (req as any).UserAccess,
   });
 });
@@ -355,7 +352,7 @@ function pack(promise, res, next) {
     });
 }
 
-async function getUser(req) {
+async function getUser(req): Promise<string> {
   // Get username
   return await LDAP.getActiveUser(req);
 }
@@ -399,8 +396,16 @@ export async function checkAccess(req, res, next) {
   next();
 }
 
-async function getRoles(user: string): Promise<Set<string>> {
-  const groups = await LDAP.getGroups(user);
+/**
+ * Given a username or a list of groups, return relevant roles.
+ *
+ * If a username is provided, groups are looked up automatically.
+ */
+async function getRoles(userOrGroups: string | string[]): Promise<Set<string>> {
+  let groups = userOrGroups;
+  if (typeof userOrGroups === 'string') {
+    groups = await LDAP.getGroups(userOrGroups);
+  }
   const roles = new Set();
 
   // check each role
@@ -415,5 +420,6 @@ async function getRoles(user: string): Promise<Set<string>> {
       }
     }
   }
+
   return roles;
 }

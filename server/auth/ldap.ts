@@ -18,7 +18,7 @@ import config from '../config';
 
 export class LDAPAuth {
 
-  getActiveUser(request) {
+  getActiveUser(request): string {
     let remoteUser = request.get('X-FORWARDED-USER') || `${config.fallbackUser}@`;
     return remoteUser.substring(0, remoteUser.indexOf('@'));
   }

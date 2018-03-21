@@ -39,10 +39,10 @@ interface Props {
 
 interface State {
   user: {
-    access: string[];
     name: string;
-    groups: string;
-    ossApproved: boolean;
+    access: string[];
+    groups: string[];
+    roles: string[];
   };
 }
 
@@ -57,24 +57,16 @@ export class App extends React.Component<Props, State> {
     super(props);
     this.state = {
       user: {
-          access: [],
-          name: '',
-          groups: '',
-          ossApproved: false,
-        },
+        name: '',
+        access: [],
+        groups: [],
+        roles: [],
+      },
     };
   };
 
   componentWillMount() {
-    reqJSON('/api/user/access').then(privs => {
-      const access = privs.access;
-      this.setState({
-        user: {
-          ...this.state.user,
-          access,
-        },
-      });
-    });
+    reqJSON('/api/user').then(user => this.setState({ user }));
   };
 
   dismissError = () => {
@@ -114,11 +106,10 @@ export class App extends React.Component<Props, State> {
 
   render() {
     const { generalError } = this.props;
-    let adminLink = null;
-    if (this.state.user.access.includes(AccessTypes.admin)) {
-      adminLink = (<li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>);
-    };
+    const { user } = this.state;
+
     const securedRoutes = this.buildSecureRoutes();
+
     return (
       <div>
         <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -127,10 +118,14 @@ export class App extends React.Component<Props, State> {
           </ExtensionPoint>
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav ml-auto">
-              {adminLink}
-              <ExtensionPoint ext="navbar-links" />
+              { user.access.includes(AccessTypes.admin) &&
+                (<li className="nav-item">
+                  <Link to="/admin" className="nav-link">Admin</Link>
+                </li>)
+              }
+              <ExtensionPoint ext="navbar-links" user={user} />
               <li className="nav-item">
-                <ExtensionPoint ext="navbar-contribution">
+                <ExtensionPoint ext="navbar-contribution" user={user}>
                   <Link to="/contribute" className="nav-link">New Contribution</Link>
                 </ExtensionPoint>
               </li>
@@ -146,7 +141,7 @@ export class App extends React.Component<Props, State> {
                 </a>
               </li>
             </ul>
-            <ExtensionPoint ext="navbar-end" />
+            <ExtensionPoint ext="navbar-end" user={user} />
           </div>
         </nav>
 

@@ -49,7 +49,8 @@ Add additional links to the navbar.
 A [React functional component].
 
 * Input:
-    * `props` - React props. Empty.
+    * `props` - React props:
+        * `user` - an object describing the current user. See `App.tsx` for structure.
 * Return: a rendered React component.
 
 ### `navbar-contribution`
@@ -59,8 +60,9 @@ Allows for replacing the contribution system.
 A [React functional component].
 
 * Input:
-    * `props` - React props. Empty.
-     * `children` - The default contribution process.
+    * `props` - React props:
+        * `children` - The default contribution process.
+        * `user` - an object describing the current user. See `App.tsx` for structure.
 * Return: a rendered React component.
 
 ### `navbar-end`
@@ -70,7 +72,8 @@ Add additional items to the end of the navbar.
 A [React functional component].
 
 * Input:
-    * `props` - React props. Empty.
+    * `props` - React props:
+        * `user` - an object describing the current user. See `App.tsx` for structure.
 * Return: a rendered React component.
 
 ### `ldap-info`
@@ -80,8 +83,8 @@ Area for displaying additional ldap information.
 A [React functional component].
 
 * Input:
-    * `props` - React props. Empty.
-    * `alias` - Alias of the user accessing the page. This is used for accessing the users LDAP info.
+    * `props` - React props:
+        * `alias` - Alias of the user accessing the page. This is used for accessing the users LDAP info.
 * Return: a rendered React component.
 
 ### `landing-content`
@@ -91,7 +94,7 @@ Replace the default landing content.
 A [React functional component].
 
 * Input:
-    * `props` - React props. Empty.
+    * `props` - React props:
         * `children` - Default landing metrics.
 * Return: a rendered React component.
 
