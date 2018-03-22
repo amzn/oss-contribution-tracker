@@ -119,10 +119,14 @@ export class App extends React.Component<Props, State> {
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav ml-auto">
               { user.access.includes(AccessTypes.admin) &&
-                (<li className="nav-item">
-                  <Link to="/admin" className="nav-link">Admin</Link>
-                </li> &&
-                <ExtensionPoint ext="navbar-admin-links" user={user} />)
+                (<div className="collapse navbar-collapse">
+                  <li className="nav-item">
+                    <Link to="/admin" className="nav-link">Admin</Link>
+                  </li>
+                  <li className="nav-item">
+                    <ExtensionPoint ext="navbar-admin-links" user={user} />
+                  </li>
+                </div>)
               }
               <ExtensionPoint ext="navbar-links" user={user} />
               <li className="nav-item">
