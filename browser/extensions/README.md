@@ -53,6 +53,17 @@ A [React functional component].
         * `user` - an object describing the current user. See `App.tsx` for structure.
 * Return: a rendered React component.
 
+### `navbar-admin-links`
+
+Add additional admin links to the navbar.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props:
+        * `user` - an object describing the current user. See `App.tsx` for structure.
+* Return: a rendered React-Router Link.
+
 ### `navbar-contribution`
 
 Allows for replacing the contribution system.

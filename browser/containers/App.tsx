@@ -121,7 +121,8 @@ export class App extends React.Component<Props, State> {
               { user.access.includes(AccessTypes.admin) &&
                 (<li className="nav-item">
                   <Link to="/admin" className="nav-link">Admin</Link>
-                </li>)
+                </li> &&
+                <ExtensionPoint ext="navbar-admin-links" user={user} />)
               }
               <ExtensionPoint ext="navbar-links" user={user} />
               <li className="nav-item">
