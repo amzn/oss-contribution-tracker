@@ -91,10 +91,8 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     const display = [];
     for (const key of Object.keys(this.state.contributionList)) {
       const value = this.state.contributionList[key];
-      let status, commitUrl;
-      status = value.approval_status;
-      commitUrl = value.contribution_commit_url;
-      if (status === 'approved' && (commitUrl == null || commitUrl.length === 0)) {
+      const status = value.approval_status;
+      if (status === 'approved-pending-link') {
         display.push(
           <tr key={value.contribution_id}>
             <td>{value.project_name}</td>
