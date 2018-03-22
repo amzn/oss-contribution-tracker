@@ -186,7 +186,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
                 <label>GitHub Link (optional)</label>
                 <input type="text" className="form-control" name="githubLink" />
               </div>
-              <Link className="btn btn-secondary" id="to-admin" to="/">Cancel</Link>
+              <Link className="btn btn-secondary" id="to-home" to="/">Cancel</Link>
               <button className="btn btn-primary" type="submit">Submit</button>
             </form>
           </div>

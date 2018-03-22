@@ -34,7 +34,8 @@ export function addContribution(contrib) {
   return dispatch => {
     return postJSON('/api/contributions/new', JSON.stringify(contrib))
       .then(() => {
-        history.push('/');
+        history.push('/contribute');
+        window.location.reload();
       })
       .catch(error => console.error(error));
   };
