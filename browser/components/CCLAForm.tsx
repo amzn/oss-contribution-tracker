@@ -184,6 +184,4 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default connect((state) => {
-  return{};
-})(CCLAForm) as any;
+export default connect((state) => ({}))(CCLAForm) as any;

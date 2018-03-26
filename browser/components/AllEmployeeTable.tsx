@@ -82,7 +82,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
     }
   }
 
-  _onSortChange = (key) => {
+  onSortChange = (key) => {
     const sorted = Underscore.sortBy(this.state.filteredDataList, key);
     if (this.state.sortDirection === SortTypes.ASC) {
       this.setState({
@@ -113,7 +113,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  _onSortChange={() => {this._onSortChange('project_name'); }}
+                  onSortChange={() => {this.onSortChange('project_name'); }}
                   sortDir="project_name">
                   Project
                 </TableSortHeaderCell>
@@ -129,7 +129,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  _onSortChange={() => {this._onSortChange('contribution_description'); }}
+                  onSortChange={() => {this.onSortChange('contribution_description'); }}
                   sortDir="contribution_description">
                   Contribution Description
                 </TableSortHeaderCell>
@@ -146,7 +146,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  _onSortChange={() => {this._onSortChange('contribution_url'); }}
+                  onSortChange={() => {this.onSortChange('contribution_url'); }}
                   sortDir="contribution_url">
                   Contribution URL
                 </TableSortHeaderCell>
@@ -163,7 +163,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  _onSortChange={() => {this._onSortChange('contribution_commit_url'); }}
+                  onSortChange={() => {this.onSortChange('contribution_commit_url'); }}
                   sortDir="contribution_commit_url">
                   Commit URL
                 </TableSortHeaderCell>
@@ -180,7 +180,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  _onSortChange={() => {this._onSortChange('contribution_submission_date'); }}
+                  onSortChange={() => {this.onSortChange('contribution_submission_date'); }}
                   sortDir="contribution_submission_date">
                   Submission Date
                 </TableSortHeaderCell>
@@ -199,7 +199,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
               columnKey="approval_status"
               header={
                 <TableSortHeaderCell
-                  _onSortChange={() => {this._onSortChange('approval_status'); }}
+                  onSortChange={() => {this.onSortChange('approval_status'); }}
                   sortDir="approval_status">
                   Approval Status
                 </TableSortHeaderCell>

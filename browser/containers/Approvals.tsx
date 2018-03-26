@@ -98,6 +98,4 @@ class Approvals extends React.Component<Props, State> {
   }
 }
 
-export default connect((state) => {
-  return{};
-})(Approvals);
+export default connect((state) => ({}))(Approvals);

@@ -56,23 +56,22 @@ export default class Admin extends Component<Props, State> {
     };
   }
 
-  componentWillMount() {
-    this.getApprovals();
-    this.getCLAs();
+  async componentWillMount() {
+    await this.getApprovals();
+    await this.getCLAs();
   }
 
   getApprovals = async () => {
-    const approvalList = reqJSON('/api/contributions/approvals');
+    const approvalList = await reqJSON('/api/contributions/approvals');
     this.setState({
       approvalList,
     });
   }
 
-  getCLAs = () => {
-    reqJSON('/api/cla').then((claList) => {
-      this.setState({
-        claTable: claList.claTable,
-      });
+  getCLAs = async () => {
+    const claList = await reqJSON('/api/cla');
+    this.setState({
+      claTable: claList.claTable,
     });
   }
 
@@ -85,15 +84,14 @@ export default class Admin extends Component<Props, State> {
     });
   }
 
-  setContributionList = () => {
-    reqJSON('/api/contributions/bulk').then((temp) => {
-      this.setState({
-        contributionList: temp,
-        showContributionEditor: true,
-        showApprovalList: false,
-        showClaTable: false,
-        showClaForm: false,
-      });
+  setContributionList = async () => {
+    const contributionList = await reqJSON('/api/contributions/bulk');
+    this.setState({
+      contributionList,
+      showContributionEditor: true,
+      showApprovalList: false,
+      showClaTable: false,
+      showClaForm: false,
     });
   }
   setCLAList = () => {
@@ -124,13 +122,13 @@ export default class Admin extends Component<Props, State> {
   }
 
   // ftn passed to child to update the view once a form is submitted
-  toggleCLAForm = (status) => {
+  toggleCLAForm = async (status) => {
     if (status) {
       this.setCLAFormTrue();
     } else {
       this.setCLAFormFalse();
     }
-    this.getCLAs(); // forces a refresh for the CLA lsit
+    await this.getCLAs(); // forces a refresh for the CLA lsit
   }
 
   render() {

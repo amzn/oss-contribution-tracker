@@ -99,6 +99,4 @@ class EditCla extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default connect((state) => {
-  return{};
-})(EditCla);
+export default connect((state) => ({}))(EditCla);

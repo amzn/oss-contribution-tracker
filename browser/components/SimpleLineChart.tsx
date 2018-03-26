@@ -20,11 +20,11 @@ interface Props {
 
 export default class SimpleLineChart extends React.Component<Props, {}> {
   stringToNumbers = () => {
-    const filtered = this.props.metricsDataByYear;
-    for (const element in filtered) {
-      filtered[element].total_contributions = Number(filtered[element].total_contributions);
-    }
-    return filtered;
+    return this.props.metricsDataByYear
+      .map((metric) => ({
+        ...metric,
+        total_contributions: parseInt(metric.total_contributions, 10),
+      }));
   }
 
   render() {

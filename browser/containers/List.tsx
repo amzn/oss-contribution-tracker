@@ -29,10 +29,9 @@ class List extends React.Component<{}, State> {
     };
   }
 
-  componentWillMount() {
-    reqJSON('/api/contributions').then((temp) => {
-      this.setState({contributionList: temp.contributionList});
-    });
+  async componentWillMount() {
+    const contributions = await reqJSON('/api/contributions');
+    this.setState({contributionList: contributions.contributionList});
   }
 
   render() {
@@ -44,6 +43,4 @@ class List extends React.Component<{}, State> {
   }
 }
 
-export default connect((state) => {
-  return {  };
-})(List);
+export default connect((state) => ({}))(List);

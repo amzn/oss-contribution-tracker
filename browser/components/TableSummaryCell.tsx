@@ -22,10 +22,7 @@ interface Props extends React.Props<any> {
   columnKey: string;
 }
 
-interface State extends React.Props<any> {
-}
-
-export default class TableSummaryCell extends React.Component<Partial<Props>, State> {
+export default class TableSummaryCell extends React.Component<Partial<Props>, {}> {
   componentDidUpdate() {
     $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
     $('[data-toggle="popover"]').popover({ container: 'body' });

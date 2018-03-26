@@ -13,6 +13,8 @@
  */
 import { postJSON } from '../util/index';
 
+// tslint:disable:no-console
+
 import history from '../history';
 
 export const CHANGE_MODAL = 'app/contributions/change-modal';

@@ -22,7 +22,7 @@ interface Props extends React.Props<any> {
   employeeData: any;
 }
 
-interface State extends React.Props<any> {
+interface State {
   currentAlias: string;
   search: string;
   aliasList: any[];
@@ -76,7 +76,8 @@ class Employee extends React.Component<Props, State> {
     const currentAlias = this.state.currentAlias === '' ? employeeData.user : this.state.currentAlias;
     return (
       <div>
-        <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch} placeholder="Contributor Alias" className="form-control" />
+        <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch}
+          placeholder="Contributor Alias" className="form-control" />
         <datalist id="browsers">
           {this.state.aliasList.map((alias) => (<option key={alias} value={alias}/>))}
         </datalist>

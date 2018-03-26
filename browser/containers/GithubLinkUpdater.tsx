@@ -62,14 +62,10 @@ class GithubLinkUpdater extends React.Component<Props, State> {
   }
 
   render() {
-    const cl = this.state.contributionList;
-    const usr = this.state.user;
     return (
-      <GithubLink contributionList={ cl } user={ usr } />
+      <GithubLink contributionList={this.state.contributionList} user={this.state.user} />
     );
   }
 }
 
-export default connect((state) => {
-  return {  };
-})(GithubLinkUpdater);
+export default connect((state) => ({}))(GithubLinkUpdater);
