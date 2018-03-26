@@ -193,24 +193,28 @@ export default class CLAEditor extends React.Component<Props, State> {
           <div className="form-group">
             <label>Project name</label>
             <br/>
-            <input type="text" list="project_name" id="projectName" className="form-control" name="projectName" placeholder={this.state.data.project_name}/>
+            <input type="text" list="project_name" id="projectName" className="form-control"
+              name="projectName" placeholder={this.state.data.project_name}/>
             <datalist id="project_name">
               {this.getOptionsProjectNames()}
             </datalist>
             <br/>
             <label>Contributor(s)</label>
             <br/>
-            <input type="text" className="form-control" id="contributorName" name="contributorName" placeholder={this.state.data.contributor_names}/><br/>
+            <input type="text" className="form-control" id="contributorName"
+              name="contributorName" placeholder={this.state.data.contributor_names}/><br/>
             <label>Approver</label>
             <br/>
-            <input type="text" list="approver_names" className="form-control" name="appName" id="appName" placeholder={this.state.data.approver_name}/>
+            <input type="text" list="approver_names" className="form-control"
+              name="appName" id="appName" placeholder={this.state.data.approver_name}/>
             <datalist id="approver_names">
               {this.getOptionsApproverNames()}
             </datalist>
             <br/>
             <label>Signatory</label>
             <br/>
-            <input type="text"  list="signatory_name" className="form-control" name="sigName" id="sigName" placeholder={this.state.data.signatory_name}/>
+            <input type="text"  list="signatory_name" className="form-control"
+              name="sigName" id="sigName" placeholder={this.state.data.signatory_name}/>
             <datalist id="signatory_name">
               {this.state.data.display.signatory.map((user) => {
                 return (<option key={user} value={user}/>);
@@ -219,7 +223,8 @@ export default class CLAEditor extends React.Component<Props, State> {
             <br/>
             <label>Point of Contact</label>
             <br/>
-            <input type="text"  list="contact" className="form-control" id="contactName" name="contactName" placeholder={this.state.data.contact_name}/>
+            <input type="text"  list="contact" className="form-control" id="contactName"
+              name="contactName" placeholder={this.state.data.contact_name}/>
             <datalist id="contact">
               {this.state.data.display.poc.map((user) => {
                 return (<option key={user} value={user}/>);
@@ -227,14 +232,17 @@ export default class CLAEditor extends React.Component<Props, State> {
             </datalist>
             <br/>
             <label>Date Signed</label>
-            <input type="date" className="form-control" name="dateSigned" id="dateSigned" onChange={this.handleDateChangeForSigned} required/>
+            <input type="date" className="form-control" name="dateSigned" id="dateSigned"
+              onChange={this.handleDateChangeForSigned} required />
             <br/>
             <label>Date Approved</label>
-            <input type="date" className="form-control" name="dateApproved" id="dateApproved" onChange={this.handleDateChangeForApproval} required/>
+            <input type="date" className="form-control" name="dateApproved" id="dateApproved"
+              onChange={this.handleDateChangeForApproval} required />
             <br/>
             <label>Additional Notes</label>
             <br/>
-            <textarea id="description" className="form-control" rows={3} placeholder={this.state.data.additional_notes} name="description" required></textarea>
+            <textarea id="description" className="form-control" rows={3}
+              placeholder={this.state.data.additional_notes} name="description" required />
           </div>
           <div className="col-md-10">
             <div className="pullRight">

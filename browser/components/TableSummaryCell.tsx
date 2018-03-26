@@ -36,7 +36,8 @@ export default class TableSummaryCell extends React.Component<Partial<Props>, St
     if (text && text.length > 50) {
       return(
         <span>
-          {text.substring(0, 47)} <a tabIndex={0} data-toggle="popover" data-trigger="hover" data-placement="right" title="Contribution Summary" data-content={text}>...</a>
+          {text.substring(0, 47)} <a tabIndex={0} data-toggle="popover" data-trigger="hover"
+            data-placement="right" title="Contribution Summary" data-content={text}>...</a>
         </span>
       );
     } else {
@@ -45,7 +46,9 @@ export default class TableSummaryCell extends React.Component<Partial<Props>, St
   }
 
   render() {
-    const {rowIndex, field, data, col, columnKey, ...props} = this.props; // Shorten alows for more flexibitly in reusing this component
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+
+    // Shorten alows for more flexibitly in reusing this component
     return (
       <Cell {...props}>
         {this.shortner(data[rowIndex][field]) }

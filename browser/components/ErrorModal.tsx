@@ -21,10 +21,7 @@ interface Props {
   onDismiss: any;
 }
 
-interface State {
-}
-
-export default class ErrorModal extends Component<Props, State> {
+export default class ErrorModal extends Component<Props, {}> {
   render() {
     const { title, message, explain, onDismiss } = this.props;
 

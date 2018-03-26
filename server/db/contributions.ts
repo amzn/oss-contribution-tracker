@@ -13,6 +13,8 @@
  */
 import pg from './index';
 
+// tslint:disable:variable-name
+
 export enum ContributionStatus {
   PENDING = 'pending',
   DENIED = 'denied',

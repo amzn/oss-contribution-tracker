@@ -55,11 +55,14 @@ class Employee extends React.Component<Props, State> {
 
   componentWillReceiveProps() {
     const { employeeData } = this.props;
-    employeeData.aliasNames ? this.filterAliasNames(employeeData.aliasNames) : '';
+    if (employeeData.aliasNames) {
+      this.filterAliasNames(employeeData.aliasNames);
+    }
   }
 
   filterAliasNames = (alias) => {
-    const newArray = Object.keys(alias.contributionList.undefined).map((key) => alias.contributionList.undefined[key].alias);
+    const newArray = Object.keys(alias.contributionList.undefined)
+      .map((key) => alias.contributionList.undefined[key].alias);
     const aliasSet = new Set(newArray.sort());
     const aliasArray = Array.from(aliasSet);
     this.setState({

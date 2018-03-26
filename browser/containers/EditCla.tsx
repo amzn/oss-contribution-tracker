@@ -63,42 +63,38 @@ class EditCla extends React.Component<Partial<Props>, State> {
     };
   }
 
-  componentWillMount() {
-    reqJSON('/api/cla/projects').then((nameList) => {
-      this.setState({
-        cla_project_names: nameList.projectNames,
-      });
+  async componentWillMount() {
+    const nameList = await reqJSON('/api/cla/projects');
+    const approvers = await reqJSON('/api/approvers');
+    this.setState({
+      cla_project_names: nameList.projectNames,
+      cla_project_approvers_names: approvers.approverList,
     });
-    reqJSON('/api/approvers').then((temp) => {
-      this.setState({
-        cla_project_approvers_names: temp.approverList,
-      });
-    });
+
     const id = (this.props as any).match.params.project_id;
-    reqJSON(`/api/cla/getproject/${id}`).then( (cla) => {
-      const object = cla.gotCla[0];
-      this.setState({
-        project_name: object.project_name,
-        signed_date: object.date_signed,
-        approved_date: object.date_approved,
-        contributor_names: object.contributor_name,
-        approver_name: object.approver_name,
-        signatory_name: object.signatory_name,
-        contact_name: object.contact_name,
-        ticket_link: object.ticket_link,
-        additional_notes: object.additional_notes,
-      });
+    const cla = await reqJSON(`/api/cla/getproject/${id}`);
+    const object = cla.gotCla[0];
+    this.setState({
+      project_name: object.project_name,
+      signed_date: object.date_signed,
+      approved_date: object.date_approved,
+      contributor_names: object.contributor_name,
+      approver_name: object.approver_name,
+      signatory_name: object.signatory_name,
+      contact_name: object.contact_name,
+      ticket_link: object.ticket_link,
+      additional_notes: object.additional_notes,
     });
-    reqJSON('/api/config/display').then((config) => {
-      this.setState({
-        display: config,
-      });
+    const config = await reqJSON('/api/config/display');
+    this.setState({
+      display: config,
     });
   }
 
   render() {
     return (
-      <CLAEditor project_id={(this.props as any).match.params.project_id} dispatch={this.props.dispatch} data={this.state} />
+      <CLAEditor project_id={(this.props as any).match.params.project_id}
+        dispatch={this.props.dispatch} data={this.state} />
     );
   }
 }

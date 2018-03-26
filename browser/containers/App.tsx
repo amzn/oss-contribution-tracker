@@ -65,8 +65,9 @@ export class App extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
-    reqJSON('/api/user').then((user) => this.setState({ user }));
+  async componentWillMount() {
+    const user = await reqJSON('/api/user');
+    this.setState({ user });
   }
 
   dismissError = () => {

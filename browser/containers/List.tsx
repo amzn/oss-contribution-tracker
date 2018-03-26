@@ -17,14 +17,11 @@ import { reqJSON } from '../util/index';
 
 import ContributionsTable from '../components/ContributionsTable';
 
-interface Props {
-}
-
 interface State {
   contributionList: any;
 }
 
-class List extends React.Component<Props, State> {
+class List extends React.Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {

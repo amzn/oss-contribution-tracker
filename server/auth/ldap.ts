@@ -88,9 +88,9 @@ export class LDAPAuth {
 
     // search LDAP for group membership
     return new Promise((resolve, reject) => {
-      client.search(base, opts, (err, res) => {
-        if (err) {
-          return reject(new Error(err));
+      client.search(base, opts, (searchErr, res) => {
+        if (searchErr) {
+          return reject(new Error(searchErr));
         }
 
         const results = [];

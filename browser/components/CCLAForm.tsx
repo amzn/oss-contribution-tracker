@@ -121,21 +121,14 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
     ));
   }
 
-  componentWillMount() {
-    reqJSON('/api/cla/projects').then((nameList) => {
-      this.setState({
-        cla_project_names: nameList.projectNames,
-      });
-    });
-    reqJSON('/api/approvers').then((temp) => {
-      this.setState({
-          cla_project_approvers_names: temp.approverList,
-      });
-    });
-    reqJSON('/api/config/display').then((config) => {
-      this.setState({
-        display: config,
-      });
+  async componentWillMount() {
+    const projects = await reqJSON('/api/cla/projects');
+    const approvers = await reqJSON('/api/approvers');
+    const config = await reqJSON('/api/config/display');
+    this.setState({
+      cla_project_names: projects.projectNames,
+      cla_project_approvers_names: approvers.approverList,
+      display: config,
     });
   }
 
@@ -146,26 +139,30 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
         <form id="contributions-form" onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>Project name</label><br/>
-            <input type="text" list="project_name" className="form-control" name="projectName" defaultValue={null} required/>
+            <input type="text" list="project_name" className="form-control" name="projectName"
+              defaultValue={null} required />
               <datalist id="project_name">
                 {this.getOptionsProjectNames()}
               </datalist><br/>
             <label>Contributor[s]</label> <br/>
             <input type="text" className="form-control" name="contributorName" defaultValue={null}/><br/>
             <label>Approver</label> <br/>
-            <input type="text" list="approver_names" className="form-control" name="appName" defaultValue={null} required/>
+            <input type="text" list="approver_names" className="form-control" name="appName"
+              defaultValue={null} required />
               <datalist id="approver_names">
                 {this.getOptionsApproverNames()}
               </datalist><br/>
             <label>Signatory</label> <br/>
-            <input type="text"  list="signatory_name" className="form-control" name="sigName" defaultValue={null} required/>
+            <input type="text"  list="signatory_name" className="form-control" name="sigName"
+              defaultValue={null} required />
             <datalist id="signatory_name">
               {this.state.display.signatory.map((user) => {
                 return (<option key={user} value={user}/>);
               })}
              </datalist><br/>
             <label>Point of Contact</label> <br/>
-            <input type="text"  list="contact" className="form-control" name="contactName" defaultValue={null} required/>
+            <input type="text"  list="contact" className="form-control" name="contactName"
+              defaultValue={null} required />
             <datalist id="contact">
               {this.state.display.poc.map((user) => {
                 return (<option key={user} value={user}/>);

@@ -13,6 +13,8 @@
  */
 import pg from './index';
 
+// tslint:disable:variable-name
+
 // Select all approvers
 export function listApprovers() {
   return pg().query('select * from approvers');

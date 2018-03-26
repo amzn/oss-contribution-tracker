@@ -18,10 +18,7 @@ interface Props {
   metricsDataByYear: any;
 }
 
-interface State {
-}
-
-export default class SimpleLineChart extends React.Component<Props, State> {
+export default class SimpleLineChart extends React.Component<Props, {}> {
   stringToNumbers = () => {
     const filtered = this.props.metricsDataByYear;
     for (const element in filtered) {

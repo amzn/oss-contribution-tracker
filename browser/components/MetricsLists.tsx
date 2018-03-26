@@ -23,20 +23,15 @@ interface Props {
   allMetrics: any;
 }
 
-interface State {
-}
-
-export default class MetricsLists extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+export default class MetricsLists extends React.Component<Props, {}> {
 
   metricsAll = () => {
     const list = this.props.allMetrics;
     return list.map((item) => {
-     return <li key={'allMetrics_' + item.year}> {item.year} : {item.total_contributions} contributions ({item.contributor_count} distinct contributors to {item.project_count} distinct projects) </li>;
+      return <li key={'allMetrics_' + item.year}>
+        {item.year}: {item.total_contributions} contributions
+        ({item.contributor_count} distinct contributors to {item.project_count} distinct projects)
+      </li>;
     });
   }
 
@@ -50,14 +45,18 @@ export default class MetricsLists extends React.Component<Props, State> {
       list = [];
     }
     return list.map((item) => {
-      return <li key={'topProjectsByYear_' + item.project_name + item.count}>{item.count} - {item.project_name}</li>;
+      return <li key={'topProjectsByYear_' + item.project_name + item.count}>
+        {item.count} - {item.project_name}
+      </li>;
     });
   }
 
   topProjectsAllTime = () => {
     const list = this.props.topContribProjectsAllTime.slice(0, 10);
     return list.map((item) => {
-      return <li key={'topProjectsAllTime_' + item.project_name}>{item.count} - {item.project_name}</li>;
+      return <li key={'topProjectsAllTime_' + item.project_name}>
+        {item.count} - {item.project_name}
+      </li>;
     });
   }
 

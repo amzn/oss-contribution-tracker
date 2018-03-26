@@ -54,6 +54,7 @@ export default class ClaTable extends React.Component<Props, State> {
   }
 
   componentDidCatch(error, info) {
+    // tslint:disable-next-line:no-console
     console.error(error);
   }
 
@@ -119,7 +120,7 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('contributor_name');}}
+                _onSortChange={() => {this._onSortChange('contributor_name'); }}
                 sortDir="contributor_name">
                 Contributor[s]
               </TableSortHeaderCell>
@@ -136,7 +137,7 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('signatory_name');}}
+                _onSortChange={() => {this._onSortChange('signatory_name'); }}
                 sortDir="signatory_name">
                 Signatory Name
               </TableSortHeaderCell>
@@ -153,7 +154,7 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('approver_name');}}
+                _onSortChange={() => {this._onSortChange('approver_name'); }}
                 sortDir="approver_name">
                 Approver Name
               </TableSortHeaderCell>
@@ -170,7 +171,7 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('contact_name');}}
+                _onSortChange={() => {this._onSortChange('contact_name'); }}
                 sortDir="contact_name">
                 Point of Contact
               </TableSortHeaderCell>
@@ -188,7 +189,7 @@ export default class ClaTable extends React.Component<Props, State> {
             header=
             {
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('ticket_link');}}
+                _onSortChange={() => {this._onSortChange('ticket_link'); }}
                 sortDir="ticket_link">
                 Ticket URL
               </TableSortHeaderCell>
@@ -205,7 +206,7 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('date_approved');}}
+                _onSortChange={() => {this._onSortChange('date_approved'); }}
                 sortDir="date_approved">
                 Date Approved
               </TableSortHeaderCell>
@@ -222,7 +223,7 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('date_signed');}}
+                _onSortChange={() => {this._onSortChange('date_signed'); }}
                 sortDir="date_signed">
                 Date Signed
               </TableSortHeaderCell>
@@ -240,7 +241,7 @@ export default class ClaTable extends React.Component<Props, State> {
             key={'notes_link'}
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('additional_notes');}}
+                _onSortChange={() => {this._onSortChange('additional_notes'); }}
                 sortDir="additional_notes">
                 Notes
               </TableSortHeaderCell>

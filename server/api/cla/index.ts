@@ -25,14 +25,18 @@ export async function listCLAProjectNames(req) {
 
 export async function addNewCLA(req, body) {
   const contributionID = await db.pushNewCla(
-    body.project_name, body.signatory_name, body.approver_name, body.contact_name, body.date_signed, body.date_approved, body.ticket_link, body.contributor_names, body.additional_notes,
+    body.project_name, body.signatory_name, body.approver_name, body.contact_name,
+    body.date_signed, body.date_approved, body.ticket_link, body.contributor_names,
+    body.additional_notes,
   );
   return { contributionID };
 }
 
 export async function updateCLA(req, body) {
   const updatedCla = await db.updateSingleCla(
-    body.project_name, body.signatory_name, body.approver_name, body.contact_name, body.date_signed, body.date_approved, body.ticket_link, body.contributor_names, body.additional_notes, body.project_id,
+    body.project_name, body.signatory_name, body.approver_name, body.contact_name,
+    body.date_signed, body.date_approved, body.ticket_link, body.contributor_names,
+    body.additional_notes, body.project_id,
   );
   return { updatedCla };
 }

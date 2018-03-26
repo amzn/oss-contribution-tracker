@@ -13,8 +13,12 @@
  */
 import * as mockery from 'mockery';
 
+// tslint:disable:no-empty
+
 describe('routes', function() {
-  let mock: any, auth: any, config: any;
+  let mock: any;
+  let auth: any;
+  let config: any;
 
   beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
@@ -62,21 +66,27 @@ describe('routes', function() {
 
   describe('checkAccess', function() {
     it('should return admin', async function(done) {
-      const req = { type: 'admin' }, res = {}, next = () => {};
+      const req = { type: 'admin' };
+      const res = {};
+      const next = () => {};
       await auth.checkAccess(req, res, next);
       expect((req as any).UserAccess).toEqual(['admin']);
       done();
     });
 
     it('should return approver', async function(done) {
-      const req = { type: 'approver' }, res = {}, next = () => {};
+      const req = { type: 'approver' };
+      const res = {};
+      const next = () => {};
       await auth.checkAccess(req, res, next);
       expect((req as any).UserAccess).toEqual(['approver']);
       done();
     });
 
     it('should return anon', async function(done) {
-      const req = { type: 'nope' }, res = {}, next = () => {};
+      const req = { type: 'nope' };
+      const res = {};
+      const next = () => {};
       await auth.checkAccess(req, res, next);
       expect((req as any).UserAccess).toEqual(['anon']);
       done();

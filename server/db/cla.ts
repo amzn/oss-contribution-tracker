@@ -12,6 +12,7 @@
  * permissions and limitations under the License.
  */
 import pg from './index';
+// tslint:disable:variable-name
 
 // List of CLA's
 export function getClaTable() {
@@ -24,10 +25,15 @@ export function getClaProjectNames() {
 }
 
 // Add a new cla to the DB
-export async function pushNewCla(project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_names, additional_notes) {
+export async function pushNewCla(project_name, signatory_name, approver_name, contact_name,
+                                 date_signed, date_approved, ticket_link, contributor_names,
+                                 additional_notes) {
   return await pg().none(
-    'insert into cla (project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_name, additional_notes, external_view_link) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
-    [project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_names, additional_notes, null],
+    'insert into cla (project_name, signatory_name, approver_name, contact_name, date_signed, ' +
+    'date_approved, ticket_link, contributor_name, additional_notes, external_view_link) ' +
+    'values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+    [project_name, signatory_name, approver_name, contact_name, date_signed, date_approved,
+      ticket_link, contributor_names, additional_notes, null],
   );
 }
 
@@ -42,7 +48,13 @@ export async function deleteSingleCla(projectId) {
 }
 
 // Update query
-export async function updateSingleCla(project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_names, additional_notes, project_id) {
-  return await pg().none('update cla set project_name = $1, signatory_name = $2, approver_name = $3, contact_name = $4, date_signed = $5, date_approved = $6, ticket_link = $7, contributor_name = $8, additional_notes = $9 where project_id = $10',
-    [project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_names, additional_notes, project_id]);
+export async function updateSingleCla(project_name, signatory_name, approver_name, contact_name,
+                                      date_signed, date_approved, ticket_link, contributor_names,
+                                      additional_notes, project_id) {
+  return await pg().none(
+    'update cla set project_name = $1, signatory_name = $2, approver_name = $3, contact_name = $4, ' +
+    'date_signed = $5, date_approved = $6, ticket_link = $7, contributor_name = $8, ' +
+    'additional_notes = $9 where project_id = $10',
+    [project_name, signatory_name, approver_name, contact_name, date_signed, date_approved,
+      ticket_link, contributor_names, additional_notes, project_id]);
 }

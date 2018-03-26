@@ -28,14 +28,14 @@ interface Props {
 
 interface State {
   approvalList: any;
-  approvalListBoolean: any;
+  showApprovalList: boolean;
   contributionList: any;
-  editContributionListBoolean: any;
+  showContributionEditor: boolean;
   user: any;
   key: number;
   claTable: any;
-  claTableBoolean: any;
-  claFormBoolean: any;
+  showClaTable: boolean;
+  showClaForm: boolean;
   claProjectNames: any[];
 }
 
@@ -44,14 +44,14 @@ export default class Admin extends Component<Props, State> {
     super(props);
     this.state = {
       approvalList: new Array(),
-      approvalListBoolean: false,
+      showApprovalList: false,
       contributionList: new Array(),
-      editContributionListBoolean: false,
+      showContributionEditor: false,
       user: '',
       key: 0,
       claTable: new Array(),
-      claTableBoolean: false,
-      claFormBoolean: false,
+      showClaTable: false,
+      showClaForm: false,
       claProjectNames: new Array(),
     };
   }
@@ -61,11 +61,10 @@ export default class Admin extends Component<Props, State> {
     this.getCLAs();
   }
 
-  getApprovals = () => {
-    reqJSON('/api/contributions/approvals').then((temp) => {
-      this.setState({
-        approvalList: temp,
-      });
+  getApprovals = async () => {
+    const approvalList = reqJSON('/api/contributions/approvals');
+    this.setState({
+      approvalList,
     });
   }
 
@@ -79,10 +78,10 @@ export default class Admin extends Component<Props, State> {
 
   setApprovalList = () => {
     this.setState({
-      approvalListBoolean: true,
-      editContributionListBoolean: false,
-      claTableBoolean: false,
-      claFormBoolean: false,
+      showApprovalList: true,
+      showContributionEditor: false,
+      showClaTable: false,
+      showClaForm: false,
     });
   }
 
@@ -90,37 +89,37 @@ export default class Admin extends Component<Props, State> {
     reqJSON('/api/contributions/bulk').then((temp) => {
       this.setState({
         contributionList: temp,
-        editContributionListBoolean: true,
-        approvalListBoolean: false,
-        claTableBoolean: false,
-        claFormBoolean: false,
+        showContributionEditor: true,
+        showApprovalList: false,
+        showClaTable: false,
+        showClaForm: false,
       });
     });
   }
   setCLAList = () => {
     this.setState({
-      claTableBoolean: true,
-      approvalListBoolean: false,
-      editContributionListBoolean: false,
-      claFormBoolean: false,
+      showClaTable: true,
+      showApprovalList: false,
+      showContributionEditor: false,
+      showClaForm: false,
     });
   }
 
   setCLAFormTrue = () => {
     this.setState({
-      claFormBoolean: true,
-      claTableBoolean: false,
-      approvalListBoolean: false,
-      editContributionListBoolean: false,
+      showClaForm: true,
+      showClaTable: false,
+      showApprovalList: false,
+      showContributionEditor: false,
     });
   }
 
   setCLAFormFalse = () => {
     this.setState({
-      claFormBoolean: false,
-      claTableBoolean: false,
-      approvalListBoolean: false,
-      editContributionListBoolean: false,
+      showClaForm: false,
+      showClaTable: false,
+      showApprovalList: false,
+      showContributionEditor: false,
     });
   }
 
@@ -135,15 +134,23 @@ export default class Admin extends Component<Props, State> {
   }
 
   render() {
-    const claTable = this.state.claTable;
+    const { claTable, showApprovalList, showClaForm, showClaTable, showContributionEditor } = this.state;
+
+    // whether an item is selected
+    const somethingSelected: boolean = [
+      showApprovalList, showClaForm, showClaTable, showContributionEditor,
+    ].reduce((acc, next) => acc || next);
+
     return (
       <div className="container-fluid" id="admin_container">
         <div className="row">
           <div className="col-lg-2 mb-3">
             <h4>Contributions</h4>
             <div className="list-group mb-3">
-              <a href="#" onClick={this.setApprovalList} className="list-group-item list-group-item-action">Approve Contributions</a>
-              <a href="#" onClick={this.setContributionList} className="list-group-item list-group-item-action">Edit Contributions</a>
+              <a href="#" onClick={this.setApprovalList}
+                className="list-group-item list-group-item-action">Approve Contributions</a>
+              <a href="#" onClick={this.setContributionList}
+                className="list-group-item list-group-item-action">Edit Contributions</a>
             </div>
 
             <h4>CCLAs</h4>
@@ -157,15 +164,22 @@ export default class Admin extends Component<Props, State> {
 
           <div className="col-lg-10 mb-3">
             <div className="panel-body" key={this.state.key}>
-              {!this.state.approvalListBoolean && !this.state.editContributionListBoolean && !this.state.claTableBoolean && !this.state.claFormBoolean && <p>Select an option from the left.</p>}
-              {this.state.approvalListBoolean && <ApprovalsTable approvalList={this.state.approvalList} />}
-              {this.state.editContributionListBoolean && <EditContributionTable contributionList={this.state.contributionList}/>}
-              {this.state.claTableBoolean && <CLATable cla={claTable} />}
-              {this.state.claFormBoolean && <CCLAForm toggleForm={this.toggleCLAForm}/>}
+              {!somethingSelected &&
+                <p>Select an option from the left.</p>}
+
+              {showApprovalList &&
+                <ApprovalsTable approvalList={this.state.approvalList} />}
+              {showContributionEditor &&
+                <EditContributionTable contributionList={this.state.contributionList}/>}
+              {showClaTable &&
+                <CLATable cla={claTable} />}
+              {showClaForm &&
+                <CCLAForm toggleForm={this.toggleCLAForm}/>}
+
               <ExtensionPoint ext="admin-content" />
             </div>
           </div>
-          <div id="alert" ></div>
+          <div id="alert" />
         </div>
       </div>
     );

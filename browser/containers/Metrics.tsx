@@ -45,16 +45,19 @@ export default class Metrics extends React.Component<Props, State> {
 
   componentWillMount() {
     reqJSON('/api/metrics/all').then((temp) => {
-      const topTenContributor = [], topTwentyContributor = [], topFiftyContributor = [], topOneHunderedContributor = [];
+      const topTenContributor = [];
+      const topTwentyContributor = [];
+      const topFiftyContributor = [];
+      const topOneHunderedContributor = [];
       // sorting into the groups I care about
       temp.usersAndCounts.forEach(function(item) {
-        if (parseInt(item.count) >= 10 && parseInt(item.count) < 20) {
+        if (parseInt(item.count, 10) >= 10 && parseInt(item.count, 10) < 20) {
           topTenContributor.push(item);
-        } else if (parseInt(item.count) >= 20 && parseInt(item.count) < 50) {
+        } else if (parseInt(item.count, 10) >= 20 && parseInt(item.count, 10) < 50) {
           topTwentyContributor.push(item);
-        } else if (parseInt(item.count) >= 50 && parseInt(item.count) < 100) {
+        } else if (parseInt(item.count, 10) >= 50 && parseInt(item.count, 10) < 100) {
           topFiftyContributor.push(item);
-        } else if (parseInt(item.count) >= 100) {
+        } else if (parseInt(item.count, 10) >= 100) {
           topOneHunderedContributor.push(item);
         }
       });
@@ -74,7 +77,9 @@ export default class Metrics extends React.Component<Props, State> {
     });
   }
 
-  getContent = (allMetrics, usersAndCounts, contribCountByYearAll, topContribProjectsAllTime, topContribProjectsThisYear, topContribProjectsLastYear) => {
+  getContent = (allMetrics, usersAndCounts, contribCountByYearAll,
+                topContribProjectsAllTime, topContribProjectsThisYear,
+                topContribProjectsLastYear) => {
     let content;
     if (allMetrics.length > 0) {
       content = (<MetricsLists
@@ -96,7 +101,9 @@ export default class Metrics extends React.Component<Props, State> {
   }
 
   render() {
-    const metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts, this.state.contribCountByYearAll, this.state.topContribProjectsAllTime, this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
+    const metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts,
+      this.state.contribCountByYearAll, this.state.topContribProjectsAllTime,
+      this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
     return (
       <div>
         <ExtensionPoint ext="landing-content" >

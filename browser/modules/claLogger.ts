@@ -11,6 +11,8 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// tslint:disable:no-console
+
 import { postJSON } from '../util/index';
 
 // Actions
@@ -18,20 +20,20 @@ import { postJSON } from '../util/index';
 // New Cla
 export function postNewCla(cla) {
   return (dispatch) => {
-    return postJSON('/api/cla/submit', JSON.stringify(cla)).catch((error) => console.log(error));
+    return postJSON('/api/cla/submit', JSON.stringify(cla)).catch((error) => console.error(error));
   };
 }
 
 // update function for edit cla
 export function updateCla(claUpdated) {
   return (dispatch) => {
-    return postJSON('/api/cla/update', JSON.stringify(claUpdated)).catch((error) => console.log(error));
+    return postJSON('/api/cla/update', JSON.stringify(claUpdated)).catch((error) => console.error(error));
   };
 }
 
 // delete entries from cla
 export function deleteClaEntry(id) {
   return (dispatch) => {
-    return postJSON('/api/cla/delete', JSON.stringify(id)).catch((error) => console.log(error));
+    return postJSON('/api/cla/delete', JSON.stringify(id)).catch((error) => console.error(error));
   };
 }

@@ -35,8 +35,8 @@ class GithubLinkUpdater extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
-    this.getData();
+  async componentWillMount() {
+    await this.getData();
   }
 
   getData = async () => {
