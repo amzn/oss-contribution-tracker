@@ -233,7 +233,7 @@ router.post('/contributions/update', async (req, res, next) => {
 });
 
 router.post('/contributions/update/link', async (req, res, next) => {
-  const user = getUser(req);
+  const user = await getUser(req);
   if (user === req.body.user) {
     const confirm = await contributionsAPI.updateContributionLink(req, req.body);
     if (!confirm) { // success returns null
@@ -248,10 +248,10 @@ router.post('/contributions/update/link', async (req, res, next) => {
       });
     };
   } else {
-    winston.warn('$1 not allowed to update contributions github link', [user]);
+    winston.warn(`${user} not allowed to update contribution link`);
     res.status(401);
     res.send({
-      error: 'Not allowed to update contributions github link',
+      error: 'Not allowed to update contribution link',
     });
   };
 });

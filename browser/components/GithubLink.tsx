@@ -78,7 +78,7 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     } else {
       const getAlert = () => (
         <SweetAlert title="Failure to update link" onConfirm={this.hideAlertRedirect}>
-          Unable to save contribution link. If this problem persists, contact osa-pm@amazon.com.
+          Unable to save your contribution link. Please contact your site administrator.
         </SweetAlert>
       );
       this.setState({
