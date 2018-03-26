@@ -22,14 +22,14 @@ import { config, load } from './config';
 import { connect } from './db';
 
 // install a crash handler to log errors
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   winston.error('FATAL exception: ' + err);
   winston.error(err.stack);
   process.exit(99);
 });
 
 // let's get this junker running
-let app = express();
+const app = express();
 
 // allow disabling CSP for local/dev server
 let cspEnabled = true;
@@ -62,7 +62,7 @@ app.use('/', (req, res) => {
 /**
  * Load app configuration, initialize, and listen.
  */
-export let start = async function (port, hostname) {
+export let start = async function(port, hostname) {
   winston.info('Starting up...');
 
   // wait for configuration to resolve

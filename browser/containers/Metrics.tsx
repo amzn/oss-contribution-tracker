@@ -44,10 +44,10 @@ export default class Metrics extends React.Component<Props, State> {
   }
 
   componentWillMount() {
-    reqJSON('/api/metrics/all').then(temp => {
-      let topTenContributor = [], topTwentyContributor = [], topFiftyContributor = [], topOneHunderedContributor = [];
+    reqJSON('/api/metrics/all').then((temp) => {
+      const topTenContributor = [], topTwentyContributor = [], topFiftyContributor = [], topOneHunderedContributor = [];
       // sorting into the groups I care about
-      temp.usersAndCounts.forEach(function (item) {
+      temp.usersAndCounts.forEach(function(item) {
         if (parseInt(item.count) >= 10 && parseInt(item.count) < 20) {
           topTenContributor.push(item);
         } else if (parseInt(item.count) >= 20 && parseInt(item.count) < 50) {
@@ -55,7 +55,7 @@ export default class Metrics extends React.Component<Props, State> {
         } else if (parseInt(item.count) >= 50 && parseInt(item.count) < 100) {
           topFiftyContributor.push(item);
         } else if (parseInt(item.count) >= 100) {
-          topOneHunderedContributor.push(item)
+          topOneHunderedContributor.push(item);
         }
       });
       this.setState({
@@ -91,12 +91,12 @@ export default class Metrics extends React.Component<Props, State> {
           <p>No contributions logged.</p>
         </div>
       );
-    };
+    }
     return content;
   }
 
   render() {
-    let metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts, this.state.contribCountByYearAll, this.state.topContribProjectsAllTime, this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
+    const metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts, this.state.contribCountByYearAll, this.state.topContribProjectsAllTime, this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
     return (
       <div>
         <ExtensionPoint ext="landing-content" >

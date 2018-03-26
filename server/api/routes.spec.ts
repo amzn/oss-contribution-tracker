@@ -13,30 +13,30 @@
  */
 import * as mockery from 'mockery';
 
-describe('routes', function () {
+describe('routes', function() {
   let mock: any, auth: any, config: any;
 
-  beforeEach(function () {
+  beforeEach(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mock = {
       LDAP: {
-        getActiveUser: jasmine.createSpy('LDAP.getActiveUser').and.callFake(function (req, res, next) {
+        getActiveUser: jasmine.createSpy('LDAP.getActiveUser').and.callFake(function(req, res, next) {
           if (req.type === 'admin') {
             return 'adminTestUser';
           } else if (req.type === 'approver') {
             return 'approverTestUser';
           } else {
             return 'anonTestUser';
-          };
+          }
         }),
-        getGroups: jasmine.createSpy('LDAP.getGroups').and.callFake(function (user) {
+        getGroups: jasmine.createSpy('LDAP.getGroups').and.callFake(function(user) {
           if (user === 'adminTestUser') {
             return ['group1', 'group3'];
           } else if (user === 'approverTestUser') {
             return ['group2', 'group3'];
           } else {
             return ['group3'];
-          };
+          }
         }),
       },
     };
@@ -55,27 +55,27 @@ describe('routes', function () {
     auth = require('./routes');
   });
 
-  afterEach(function () {
+  afterEach(function() {
     mockery.deregisterAll();
     mockery.disable();
   });
 
-  describe('checkAccess', function () {
-    it('should return admin', async function (done) {
-      let req = { type: 'admin' }, res = {}, next = () => {};
+  describe('checkAccess', function() {
+    it('should return admin', async function(done) {
+      const req = { type: 'admin' }, res = {}, next = () => {};
       await auth.checkAccess(req, res, next);
       expect((req as any).UserAccess).toEqual(['admin']);
       done();
     });
 
-    it('should return approver', async function (done) {
-      let req = { type: 'approver' }, res = {}, next = () => {};
+    it('should return approver', async function(done) {
+      const req = { type: 'approver' }, res = {}, next = () => {};
       await auth.checkAccess(req, res, next);
       expect((req as any).UserAccess).toEqual(['approver']);
       done();
     });
 
-    it('should return anon', async function (done) {
+    it('should return anon', async function(done) {
       const req = { type: 'nope' }, res = {}, next = () => {};
       await auth.checkAccess(req, res, next);
       expect((req as any).UserAccess).toEqual(['anon']);

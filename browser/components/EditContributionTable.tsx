@@ -23,7 +23,6 @@ import TableLinkCell from '../components/TableLinkCell';
 import TableSummaryCell from '../components/TableSummaryCell';
 import TableTextCell from '../components/TableTextCell';
 
-
 interface Props {
   contributionList: any;
 }
@@ -43,9 +42,9 @@ export default class EditContributionTable extends React.Component<Props, State>
   }
 
   componentWillMount() {
-    let { contributionList } = this.props;
+    const { contributionList } = this.props;
     this.setState({
-      contributionList: contributionList,
+      contributionList,
       filteredDataList: contributionList,
     });
   }
@@ -64,12 +63,12 @@ export default class EditContributionTable extends React.Component<Props, State>
       });
     }
 
-    let filterBy = e.target.value.toLowerCase();
-    let size = this.state.contributionList.length;
-    let filteredContributions = [];
+    const filterBy = e.target.value.toLowerCase();
+    const size = this.state.contributionList.length;
+    const filteredContributions = [];
     for (let index = 0; index < size; index++) {
-      let filter = this.state.contributionList[index][colName];
-      let pos = filter.toLowerCase().indexOf(filterBy);
+      const filter = this.state.contributionList[index][colName];
+      const pos = filter.toLowerCase().indexOf(filterBy);
       if (pos !== -1) {
         filteredContributions.push(this.state.contributionList[index]);
       }
@@ -90,7 +89,7 @@ export default class EditContributionTable extends React.Component<Props, State>
         headText = 'Summary';
         break;
       case 'submission_date':
-        headText = 'Submission Date'
+        headText = 'Submission Date';
         break;
       case 'contributor_alias':
         headText = 'Contributor';
@@ -98,7 +97,7 @@ export default class EditContributionTable extends React.Component<Props, State>
       default:
         console.warn('Unknown columnKey');
         break;
-    };
+    }
 
     return (
       <div>
@@ -118,7 +117,7 @@ export default class EditContributionTable extends React.Component<Props, State>
   }
 
   render() {
-    let filtered = this.state.filteredDataList;
+    const filtered = this.state.filteredDataList;
     return (
       <div key="contribution_edit_div" id="edit_contributions_admin_link">
         <Table

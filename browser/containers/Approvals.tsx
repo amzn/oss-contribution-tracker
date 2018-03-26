@@ -40,7 +40,7 @@ class Approvals extends React.Component<Props, State> {
 
   handleApproval = (e) => {
     const { dispatch } = this.props;
-    let field = e.target.elements;
+    const field = e.target.elements;
     e.preventDefault();
 
     // dispatch to server
@@ -96,6 +96,6 @@ class Approvals extends React.Component<Props, State> {
   }
 }
 
-export default connect(state => {
+export default connect((state) => {
   return{};
 })(Approvals);

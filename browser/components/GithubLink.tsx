@@ -65,12 +65,12 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     const contrib_id = entry.contribution_id.toString();
     const url = event.currentTarget.url.value.trim();
     const rtn = await dispatch(ContributionsActions.updateGithubLink({
-      contrib_id: contrib_id,
+      contrib_id,
       link: url,
       user: this.state.user,
     }));
     if (rtn.status === 200) {
-      let list = this.state.contributionList;
+      const list = this.state.contributionList;
       delete list[contrib_id];
       this.setState({
         contributionList: this.state.contributionList,
@@ -84,7 +84,7 @@ class GithubLink extends React.Component<Partial<Props>, State> {
       this.setState({
         alert: getAlert(),
       });
-    };
+    }
   }
 
   renderTable = () => {
@@ -107,13 +107,13 @@ class GithubLink extends React.Component<Partial<Props>, State> {
             </td>
           </tr>,
         );
-      };
-    };
+      }
+    }
     return display;
   }
 
   render() {
-    let tables = this.renderTable();
+    const tables = this.renderTable();
     return (
       <div className="container">
         <div className="row">
@@ -139,4 +139,4 @@ class GithubLink extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default connect(state => ({}))(GithubLink) as any; // hacky and I need to fix the redux stuff
+export default connect((state) => ({}))(GithubLink) as any; // hacky and I need to fix the redux stuff

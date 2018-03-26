@@ -16,7 +16,7 @@ import { reqJSON } from '../util/index';
 export const SET_GENERAL_ERROR = 'app/common/set-general-error';
 export const RECEIVE_USER_DATA = 'app/common/receive-user-data';
 
-let initial = {
+const initial = {
   generalError: null,
   claims: null,
 };
@@ -47,7 +47,7 @@ export function setGeneralError(message) {
   }
   return {
     type: SET_GENERAL_ERROR,
-    message: message,
+    message,
   };
 }
 
@@ -59,8 +59,8 @@ export function receiveUserData(user) {
 }
 
 export function fetchUserData(query?: any) {
-  return dispatch => {
-    return reqJSON('/api/user').then(user => {
+  return (dispatch) => {
+    return reqJSON('/api/user').then((user) => {
       dispatch(receiveUserData(user));
     });
   };

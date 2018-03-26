@@ -14,11 +14,11 @@
 import * as db from '../../db/approvers';
 
 export async function listApprovers(req) {
-  let approverList = await db.listApprovers();
+  const approverList = await db.listApprovers();
   return { approverList };
 }
 
 export async function searchApprovers(req, approverId) {
-  let approverInfo = await db.searchApprovers(approverId);
+  const approverInfo = await db.searchApprovers(approverId);
   return { approverInfo };
 }

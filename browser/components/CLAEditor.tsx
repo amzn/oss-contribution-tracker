@@ -12,10 +12,10 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { Link } from 'react-router-dom';
 
-import * as claLogger from'../modules/claLogger';
+import * as claLogger from '../modules/claLogger';
 
 interface Props {
   project_id: any;
@@ -29,13 +29,13 @@ interface State {
     additional_notes: string;
     approved_date: string;
     approver_name: string;
-    cla_project_approvers_names: Array<object>;
-    cla_project_names: Array<object>;
+    cla_project_approvers_names: object[];
+    cla_project_names: object[];
     contact_name: string;
     contributor_names: string;
     display: {
-      signatory: Array<string>,
-      poc: Array<string>,
+      signatory: string[],
+      poc: string[],
     };
     project_name: string;
     signatory_name: string;
@@ -68,7 +68,7 @@ export default class CLAEditor extends React.Component<Props, State> {
 
   handleDelete = (e) => {
     e.preventDefault();
-    let getAlertDelete = () => (
+    const getAlertDelete = () => (
     <SweetAlert
       warning
       showCancel
@@ -88,10 +88,10 @@ export default class CLAEditor extends React.Component<Props, State> {
   }
 
   deleteFile = () => {
-    let { dispatch } = this.props;
-    let jsonObj = { project_id: this.state.project_id };
+    const { dispatch } = this.props;
+    const jsonObj = { project_id: this.state.project_id };
     dispatch(claLogger.deleteClaEntry(jsonObj));
-    let getAlertConfirmDelete = () => (
+    const getAlertConfirmDelete = () => (
       <SweetAlert
         success
         title="Success"
@@ -107,16 +107,16 @@ export default class CLAEditor extends React.Component<Props, State> {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let { dispatch } = this.props;
-    let projectNames = (e.target.elements.projectName as HTMLInputElement).value.trim();
-    let contributorName = (e.target.elements.contributorName as HTMLInputElement).value.trim();
-    let appName = (e.target.elements.appName as HTMLInputElement).value.trim();
-    let sigName = (e.target.elements.sigName as HTMLInputElement).value.trim();
-    let contactName = (e.target.elements.contactName as HTMLInputElement).value.trim();
-    let desc = (e.target.elements.description as HTMLInputElement).value.toLowerCase();
-    let dateApproved = (e.target.elements.dateApproved as HTMLInputElement).value.toLowerCase();
-    let dateSigned = (e.target.elements.dateSigned as HTMLInputElement).value.toLowerCase();
-    let jsonObj = {
+    const { dispatch } = this.props;
+    const projectNames = (e.target.elements.projectName as HTMLInputElement).value.trim();
+    const contributorName = (e.target.elements.contributorName as HTMLInputElement).value.trim();
+    const appName = (e.target.elements.appName as HTMLInputElement).value.trim();
+    const sigName = (e.target.elements.sigName as HTMLInputElement).value.trim();
+    const contactName = (e.target.elements.contactName as HTMLInputElement).value.trim();
+    const desc = (e.target.elements.description as HTMLInputElement).value.toLowerCase();
+    const dateApproved = (e.target.elements.dateApproved as HTMLInputElement).value.toLowerCase();
+    const dateSigned = (e.target.elements.dateSigned as HTMLInputElement).value.toLowerCase();
+    const jsonObj = {
       project_id: this.state.project_id,
       project_name: projectNames === '' ? this.state.data.project_name : projectNames,
       contributor_names: contributorName === '' ? this.state.data.contributor_names : contributorName,
@@ -130,7 +130,7 @@ export default class CLAEditor extends React.Component<Props, State> {
 
     dispatch(claLogger.updateCla(jsonObj));
 
-    let getAlert = () => (
+    const getAlert = () => (
       <SweetAlert
         success
         title="Success"
@@ -163,15 +163,15 @@ export default class CLAEditor extends React.Component<Props, State> {
   getOptionsProjectNames = () => {
     return(this.state.data.cla_project_names.map(
       (object: any) => {
-        return (<option key={object.project_name} value={object.project_name}></option>)
+        return (<option key={object.project_name} value={object.project_name}></option>);
       },
     ));
   }
 
-  getOptionsApproverNames= () => {
+  getOptionsApproverNames = () => {
     return(this.state.data.cla_project_approvers_names.map(
       (alist: any) => {
-        return (<option key={alist.approver_alias} value={alist.approver_alias}></option>)
+        return (<option key={alist.approver_alias} value={alist.approver_alias}></option>);
       },
     ));
   }
@@ -186,7 +186,7 @@ export default class CLAEditor extends React.Component<Props, State> {
   }
 
   render() {
-    let projectName = this.state.data.project_name ? this.state.data.project_name : '';
+    const projectName = this.state.data.project_name ? this.state.data.project_name : '';
     if (projectName != null) {
       return (
         <form id="contributions-form" onSubmit={this.handleSubmit}>
@@ -212,7 +212,7 @@ export default class CLAEditor extends React.Component<Props, State> {
             <br/>
             <input type="text"  list="signatory_name" className="form-control" name="sigName" id="sigName" placeholder={this.state.data.signatory_name}/>
             <datalist id="signatory_name">
-              {this.state.data.display.signatory.map(user => {
+              {this.state.data.display.signatory.map((user) => {
                 return (<option key={user} value={user}/>);
               })}
             </datalist>
@@ -221,7 +221,7 @@ export default class CLAEditor extends React.Component<Props, State> {
             <br/>
             <input type="text"  list="contact" className="form-control" id="contactName" name="contactName" placeholder={this.state.data.contact_name}/>
             <datalist id="contact">
-              {this.state.data.display.poc.map(user => {
+              {this.state.data.display.poc.map((user) => {
                 return (<option key={user} value={user}/>);
               })}
             </datalist>

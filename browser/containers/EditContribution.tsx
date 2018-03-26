@@ -36,15 +36,15 @@ export default class EditContribution extends Component<Props, State> {
     };
   }
 
-  componentWillMount() {
-    let id = (this.props as any).match.params.contrib_id;
-    reqJSON(`/api/contributions/single/${id}`).then(temp => {
+  async componentWillMount() {
+    const id = (this.props as any).match.params.contrib_id;
+    reqJSON(`/api/contributions/single/${id}`).then((temp) => {
       this.setState({
         contrib_data: temp[0],
       });
     });
 
-    reqJSON('/api/projects').then(temp => {
+    reqJSON('/api/projects').then((temp) => {
       this.setState({
         projects: temp.projectList,
       });

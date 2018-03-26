@@ -14,17 +14,17 @@
 import * as db from '../../db/projects';
 
 export async function listProjects(req) {
-  let projectList = await db.listProjects();
+  const projectList = await db.listProjects();
   return { projectList };
 }
 
 export async function listApprovalProjects(req) {
-  let projectList = await db.listApprovalProjects();
+  const projectList = await db.listApprovalProjects();
   return { projectList };
 }
 
 export async function searchProjectById(req, id) {
-  let projectID = await db.searchProjectById(id);
+  const projectID = await db.searchProjectById(id);
   return { projectID };
 }
 
@@ -33,7 +33,7 @@ export async function searchProjectByName(req, name) {
 }
 
 export async function addProject(req, body) {
-  let projectList = await db.addProject(
+  const projectList = await db.addProject(
     body.project_name,
     body.project_url,
     body.project_license,

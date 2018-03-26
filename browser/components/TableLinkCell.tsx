@@ -33,8 +33,8 @@ export default class TableLinkCell extends React.Component<Partial<Props>, State
   }
 
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props;
-    let link = data[rowIndex][field];
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const link = data[rowIndex][field];
     return (
       <Cell {...props}>
         {this.renderLink(link)}

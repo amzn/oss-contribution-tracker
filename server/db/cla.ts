@@ -37,12 +37,12 @@ export async function getSingleCla(projetId) {
 }
 
 // Delete query for edit page
-export async function deleteSingleCla(projectId){
+export async function deleteSingleCla(projectId) {
   return await pg().none('delete from cla where project_id = $1', [projectId]);
 }
 
 // Update query
-export async function updateSingleCla(project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_names, additional_notes, project_id){
+export async function updateSingleCla(project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_names, additional_notes, project_id) {
   return await pg().none('update cla set project_name = $1, signatory_name = $2, approver_name = $3, contact_name = $4, date_signed = $5, date_approved = $6, ticket_link = $7, contributor_name = $8, additional_notes = $9 where project_id = $10',
     [project_name, signatory_name, approver_name, contact_name, date_signed, date_approved, ticket_link, contributor_names, additional_notes, project_id]);
 }

@@ -16,10 +16,10 @@ import thunk from 'redux-thunk';
 
 import app from './reducers';
 
-let createStoreWithMiddleware = applyMiddleware(
+const createStoreWithMiddleware = applyMiddleware(
   thunk,
 )(createStore);
 
-let store = createStoreWithMiddleware(app);
+const store = createStoreWithMiddleware(app);
 
 export default store;

@@ -28,7 +28,7 @@ interface State {
 export default class TableGitHubStatusCell extends React.Component<Partial<Props>, State> {
   renderGithubStatus(st) {
     let badge = '';
-    let status = st ? st.toLowerCase() : '';
+    const status = st ? st.toLowerCase() : '';
     if (status === 'denied') {
       badge = 'badge badge-danger';
     } else if (status === 'approved') {
@@ -45,8 +45,8 @@ export default class TableGitHubStatusCell extends React.Component<Partial<Props
     );
   }
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props;
-    let status = data[rowIndex][field];
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const status = data[rowIndex][field];
     return (
       <Cell {...props}>
         {this.renderGithubStatus(status)}

@@ -28,8 +28,8 @@ interface State {
 
 export default class TableEditCellForCla extends React.Component<Partial<Props>, State> {
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props;
-    let path = `/cla/${data[rowIndex][field]}`;
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const path = `/cla/${data[rowIndex][field]}`;
     return (
       <Cell {...props}>
         <div>

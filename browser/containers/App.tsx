@@ -26,7 +26,7 @@ import Approvals from './Approvals';
 import Contributions from './Contributions';
 import EditCLA from './EditCla';
 import EditContribution from './EditContribution';
-import Employee from'./Employee';
+import Employee from './Employee';
 import GithubLinkUpdater from './GithubLinkUpdater';
 import List from './List';
 import Metrics from './Metrics';
@@ -63,11 +63,11 @@ export class App extends React.Component<Props, State> {
         roles: [],
       },
     };
-  };
+  }
 
   componentWillMount() {
-    reqJSON('/api/user').then(user => this.setState({ user }));
-  };
+    reqJSON('/api/user').then((user) => this.setState({ user }));
+  }
 
   dismissError = () => {
     const { dispatch } = this.props;
@@ -75,7 +75,7 @@ export class App extends React.Component<Props, State> {
   }
 
   mapError = (err) => {
-    let dismissError = this.dismissError.bind(this);
+    const dismissError = this.dismissError.bind(this);
 
     if (err.code === 403) {
       return (<ErrorModal
@@ -94,13 +94,13 @@ export class App extends React.Component<Props, State> {
   }
 
   buildSecureRoutes = () => {
-    let routes = [];
+    const routes = [];
     if (this.state.user.access.includes(AccessTypes.admin)) {
       routes.push(<Route exact path="/admin" component={Admin} key="adminRoute"/>);
       routes.push(<Route path="/cla/:project_id" component={EditCLA} key="editCLARoute"/>);
       routes.push(<Route path="/approvals/:contrib_id" component={Approvals} key="approvalRoute"/>);
       routes.push(<Route path="/contribution/:contrib_id" component={EditContribution} key="editContributionRoute"/>);
-    };
+    }
     return routes;
   }
 

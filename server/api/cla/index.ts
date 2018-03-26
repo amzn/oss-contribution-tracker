@@ -14,37 +14,37 @@
 import * as db from '../../db/cla';
 
 export async function listCLA(req) {
-  let claTable = await db.getClaTable();
+  const claTable = await db.getClaTable();
   return {claTable};
 }
 
-export async function listCLAProjectNames(req){
-  let projectNames = await db.getClaProjectNames();
+export async function listCLAProjectNames(req) {
+  const projectNames = await db.getClaProjectNames();
   return{projectNames};
 }
 
 export async function addNewCLA(req, body) {
-  let contributionID = await db.pushNewCla(
+  const contributionID = await db.pushNewCla(
     body.project_name, body.signatory_name, body.approver_name, body.contact_name, body.date_signed, body.date_approved, body.ticket_link, body.contributor_names, body.additional_notes,
   );
   return { contributionID };
 }
 
 export async function updateCLA(req, body) {
-  let updatedCla = await db.updateSingleCla(
+  const updatedCla = await db.updateSingleCla(
     body.project_name, body.signatory_name, body.approver_name, body.contact_name, body.date_signed, body.date_approved, body.ticket_link, body.contributor_names, body.additional_notes, body.project_id,
   );
   return { updatedCla };
 }
 
 export async function deleteCLA(req, body) {
-  let deleteCla = await db.deleteSingleCla(
+  const deleteCla = await db.deleteSingleCla(
     body.project_id,
   );
   return { deleteCla };
 }
 
 export async function getCLA(req, id) {
-  let gotCla = await db.getSingleCla(id);
+  const gotCla = await db.getSingleCla(id);
   return { gotCla };
 }

@@ -27,8 +27,8 @@ interface State {
 
 export default class TableDateCell extends React.Component<Partial<Props>, State> {
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props;
-    let time = new Date(data[rowIndex][field]);
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const time = new Date(data[rowIndex][field]);
     return (
       <Cell {...props}>
         {time.getMonth() + 1}/{time.getDate()}/{time.getFullYear()}

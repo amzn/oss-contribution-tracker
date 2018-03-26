@@ -14,7 +14,7 @@
 import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 
- interface Props extends React.Props<any> {
+interface Props extends React.Props<any> {
    rowIndex: number;
    field: any;
    data: any;
@@ -22,12 +22,12 @@ import * as React from 'react';
    columnKey: string;
  }
 
- interface State extends React.Props<any> {
+interface State extends React.Props<any> {
  }
 
- export default class TableTextCell extends React.Component<Partial<Props>, State> {
+export default class TableTextCell extends React.Component<Partial<Props>, State> {
    render() {
-     let {rowIndex, field, data, col, columnKey, ...props} = this.props;
+     const {rowIndex, field, data, col, columnKey, ...props} = this.props;
      return (
        <Cell {...props}>
          {data[rowIndex][field]}

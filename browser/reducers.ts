@@ -18,7 +18,6 @@ import EmployeeTableAction from './actions/employeeTableAction';
 import commonReducer from './modules/common';
 import contributionReducer from './modules/contributions';
 
-
 export default combineReducers({
   common: commonReducer,
   contributions: contributionReducer,

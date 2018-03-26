@@ -53,7 +53,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
 
   handleSubmit = (e) => {
     const { dispatch } = this.props;
-    let field = e.target.elements;
+    const field = e.target.elements;
     e.preventDefault();
     let projectName = '';
     let needsProjectReview = false;
@@ -71,15 +71,15 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
       date: field.dateSelected.value.toLowerCase(),
       approver: field.approverName.value.toLowerCase(),
       contributor: field.contributorName.value.toLowerCase(),
-      needsProjectReview: needsProjectReview,
+      needsProjectReview,
       githubLink: field.githubLink.value.toLowerCase(),
     }));
   }
 
   approverList = (e?: any) => {
     if (this.props.approvers) {
-      let approvers = this.props.approvers;
-      return approvers.map(listValue => {
+      const approvers = this.props.approvers;
+      return approvers.map((listValue) => {
           return {
             label: listValue.approver_name ? listValue.approver_name : listValue.approver_alias,
             value: listValue.approver_id,
@@ -92,8 +92,8 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
   projectList = (e?: any) => {
     // check for length as this can return an empty object
     if (this.props.projects.length) {
-      let projects = this.props.projects;
-      return projects.map(listValue => {
+      const projects = this.props.projects;
+      return projects.map((listValue) => {
           return { label: listValue.project_name, value: listValue.project_id};
         },
       );
@@ -115,8 +115,8 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
   }
 
   render() {
-    let approverOptions = this.approverList();
-    let projectOptions = this.projectList();
+    const approverOptions = this.approverList();
+    const projectOptions = this.projectList();
     return (
       <div className="container">
         <div className="row">

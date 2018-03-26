@@ -38,14 +38,14 @@ export default class TableSummaryCell extends React.Component<Partial<Props>, St
         <span>
           {text.substring(0, 47)} <a tabIndex={0} data-toggle="popover" data-trigger="hover" data-placement="right" title="Contribution Summary" data-content={text}>...</a>
         </span>
-      )
+      );
     } else {
       return text;
     }
   }
 
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props; // Shorten alows for more flexibitly in reusing this component
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props; // Shorten alows for more flexibitly in reusing this component
     return (
       <Cell {...props}>
         {this.shortner(data[rowIndex][field]) }

@@ -13,15 +13,15 @@
  */
 import * as pgPromise from 'pg-promise';
 
-let options = {};
+const options = {};
 
 // note: pg-monitor isn't installed in prod; this doesn't work there intentionally.
 if (process.env.DEBUG_SQL) {
-  let monitor = require('pg-monitor');
+  const monitor = require('pg-monitor');
   monitor.attach(options);
 }
 
-let pgp = pgPromise(options);
+const pgp = pgPromise(options);
 let pg = null;
 
 export function connect(cn) {

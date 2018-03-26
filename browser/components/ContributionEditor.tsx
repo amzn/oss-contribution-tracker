@@ -87,19 +87,19 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
         project_id: '-9999',
         project_name: '',
       });
-    };
+    }
   }
 
   handleSubmit = (e) => {
     const { dispatch } = this.props;
-    let field = e.target.elements;
+    const field = e.target.elements;
     e.preventDefault();
     // Gather changes or pass existing values
     /*
       Was going to simplify with a loop but it would require identical variable names and it
       seemed more confusing than it was worth.
     */
-    let changes = this.state.contrib;
+    const changes = this.state.contrib;
 
     if (!this.state.projectDisabled) {
       changes.project_name = this.state.project_name;
@@ -108,55 +108,55 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     } else {
       changes.project_name = field.newProjectNameInput.value;
       changes.project_new = true;
-    };
+    }
 
     if (field.contributionDescInput.value.length !== 0) {
       changes.contribution_description = field.contributionDescInput.value;
-    };
+    }
 
     if (field.contributionDateInput.value.length !== 0) {
       changes.contribution_date = field.contributionDateInput.value;
-    };
+    }
 
     if (field.contributorAliasInput.value.length !== 0) {
       changes.contributor_alias = field.contributorAliasInput.value;
-    };
+    }
 
     if (field.githubStatusInput.value !== this.state.contrib.contribution_github_status) {
       changes.contribution_github_status = field.githubStatusInput.value;
-    };
+    }
 
     if (field.githubCommitUrlInput.value.length !== 0) {
       changes.contribution_commit_url = field.githubCommitUrlInput.value;
-    };
+    }
 
     if (field.contributionUrlInput.value.length !== 0) {
       changes.contribution_commit_url = field.contributionUrlInput.value;
-    };
+    }
 
     if (field.approvalStatusInput.value !== this.state.contrib.approval_status) {
       changes.approval_status = field.approvalStatusInput.value;
-    };
+    }
 
     if (field.approvalNotesInput.value.length !== 0) {
       changes.approval_notes = field.approvalNotesInput.value;
-    };
+    }
 
     if (field.approvalDateInput.value.length !== 0) {
       changes.approval_date = field.approvalDateInput.value;
-    };
+    }
 
     if (field.contributionSubmissionDateInput.value.length !== 0) {
       changes.contribution_submission_date = field.contributionSubmissionDateInput.value;
-    };
+    }
 
     if (field.contributionClosedDateInput.value.length !== 0) {
       changes.contribution_closed_date = field.contributionClosedDateInput.value;
-    };
+    }
 
     // dispatch changes to server
     dispatch(ContributionsActions.updateContribution(changes));
-    let getAlert = () => (
+    const getAlert = () => (
       <SweetAlert
         success
         title="Success"
@@ -187,12 +187,12 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     // check for length as this can return an empty object
     if (this.props.projects.length) {
       const projects = this.props.projects;
-      return projects.map(listValue => {
+      return projects.map((listValue) => {
         return { label: listValue.project_name, value: listValue.project_id };
       });
     } else {
       return [];
-    };
+    }
   }
 
   handleProjectChange = (proj) => {
@@ -204,19 +204,19 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
 
   toggleProjectSelect = (e) => {
     this.setState({projectDisabled: e.target.checked});
-    let elm = document.getElementById('new-project-text') as HTMLInputElement;
+    const elm = document.getElementById('new-project-text') as HTMLInputElement;
     elm.disabled = this.state.projectDisabled;
   }
 
   render() {
-    let values = [
+    const values = [
       { label: 'approved', value: 'approved' },
       { label: 'pending', value: 'pending' },
       { label: 'denied', value: 'denied' },
     ];
-    let projectOptions = this.projectList();
-    let initialProjectId = this.state.project_id ? this.state.project_id : ''; // Pulled this out as it wasn't appearing in the initial render
-    let approval_notes = this.state.contrib.approval_notes;
+    const projectOptions = this.projectList();
+    const initialProjectId = this.state.project_id ? this.state.project_id : ''; // Pulled this out as it wasn't appearing in the initial render
+    const approval_notes = this.state.contrib.approval_notes;
     return (
       <div className="container">
         <div className="row">

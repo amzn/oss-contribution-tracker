@@ -19,7 +19,7 @@ export const CHANGE_MODAL = 'app/contributions/change-modal';
 export const MODAL_STATUS = 'app/contributions/modal-status';
 
 // Reducer for adding new contributions
-let initial = {
+const initial = {
 };
 
 export default function reducer(state = initial, action: any = {}) {
@@ -31,43 +31,43 @@ export default function reducer(state = initial, action: any = {}) {
 
 /*** Action creators ***/
 export function addContribution(contrib) {
-  return dispatch => {
+  return (dispatch) => {
     return postJSON('/api/contributions/new', JSON.stringify(contrib))
       .then(() => {
         history.push('/contribute');
         window.location.reload();
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   };
 }
 
 export function approveContribution(contrib) {
-  return dispatch => {
+  return (dispatch) => {
     return postJSON('/api/contributions/approve', JSON.stringify(contrib))
       .then(() => {
         history.push('/admin');
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   };
 }
 
 export function updateContribution(contrib) {
-  return dispatch => {
+  return (dispatch) => {
     return postJSON('/api/contributions/update', JSON.stringify(contrib))
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   };
 }
 
 export function addContributionAutoApproval(contrib) {
-  return dispatch => {
+  return (dispatch) => {
     return postJSON('/api/contributions/newautoapproval', JSON.stringify(contrib))
-    .catch(error => console.error(error));
+    .catch((error) => console.error(error));
   };
 }
 
 export function updateGithubLink(contrib) {
-  return dispatch => {
+  return (dispatch) => {
     return postJSON('/api/contributions/update/link', JSON.stringify(contrib))
-    .catch(error => console.info(error));
+    .catch((error) => console.info(error));
   };
 }

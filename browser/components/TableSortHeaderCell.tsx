@@ -20,10 +20,10 @@ interface Props extends React.Props<any> {
   columnKey?: string;
   height?: number;
   width?: number;
-};
+}
 
 interface State extends React.Props<any> {
-};
+}
 
 const SortTypes = {
   ASC: 'ASC',
@@ -32,7 +32,7 @@ const SortTypes = {
 
 function reverseSortDirection(sortDir) {
   return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
-};
+}
 
 export default class TableSortHeaderCell extends React.Component<Props, State> {
   constructor(props) {
@@ -53,7 +53,7 @@ export default class TableSortHeaderCell extends React.Component<Props, State> {
   }
 
   render() {
-    let {sortDir, children, columnKey, height, width} = this.props;
+    const {sortDir, children, columnKey, height, width} = this.props;
     return (
       <Cell columnKey={columnKey} height={height} width={width}>
         <a onClick={this._onSortChange} className="im-pointer">

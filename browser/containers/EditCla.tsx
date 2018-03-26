@@ -33,11 +33,11 @@ interface State {
   contact_name: string;
   additional_notes: string;
   ticket_link: string;
-  cla_project_names: Array<any>;
-  cla_project_approvers_names: Array<any>;
+  cla_project_names: any[];
+  cla_project_approvers_names: any[];
   display: {
-    signatory: Array<string>,
-    poc: Array<string>,
+    signatory: string[],
+    poc: string[],
   };
 }
 
@@ -64,19 +64,19 @@ class EditCla extends React.Component<Partial<Props>, State> {
   }
 
   componentWillMount() {
-    reqJSON('/api/cla/projects').then(nameList => {
+    reqJSON('/api/cla/projects').then((nameList) => {
       this.setState({
         cla_project_names: nameList.projectNames,
       });
     });
-    reqJSON('/api/approvers').then(temp => {
+    reqJSON('/api/approvers').then((temp) => {
       this.setState({
         cla_project_approvers_names: temp.approverList,
       });
     });
-    let id = (this.props as any).match.params.project_id;
-    reqJSON(`/api/cla/getproject/${id}`).then( cla => {
-      let object = cla.gotCla[0];
+    const id = (this.props as any).match.params.project_id;
+    reqJSON(`/api/cla/getproject/${id}`).then( (cla) => {
+      const object = cla.gotCla[0];
       this.setState({
         project_name: object.project_name,
         signed_date: object.date_signed,
@@ -89,7 +89,7 @@ class EditCla extends React.Component<Partial<Props>, State> {
         additional_notes: object.additional_notes,
       });
     });
-    reqJSON('/api/config/display').then(config => {
+    reqJSON('/api/config/display').then((config) => {
       this.setState({
         display: config,
       });
@@ -103,6 +103,6 @@ class EditCla extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default connect(state => {
+export default connect((state) => {
   return{};
 })(EditCla);

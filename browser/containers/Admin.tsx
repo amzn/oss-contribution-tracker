@@ -36,7 +36,7 @@ interface State {
   claTable: any;
   claTableBoolean: any;
   claFormBoolean: any;
-  claProjectNames: Array<any>;
+  claProjectNames: any[];
 }
 
 export default class Admin extends Component<Props, State> {
@@ -62,7 +62,7 @@ export default class Admin extends Component<Props, State> {
   }
 
   getApprovals = () => {
-    reqJSON('/api/contributions/approvals').then(temp => {
+    reqJSON('/api/contributions/approvals').then((temp) => {
       this.setState({
         approvalList: temp,
       });
@@ -70,7 +70,7 @@ export default class Admin extends Component<Props, State> {
   }
 
   getCLAs = () => {
-    reqJSON('/api/cla').then(claList => {
+    reqJSON('/api/cla').then((claList) => {
       this.setState({
         claTable: claList.claTable,
       });
@@ -87,7 +87,7 @@ export default class Admin extends Component<Props, State> {
   }
 
   setContributionList = () => {
-    reqJSON('/api/contributions/bulk').then(temp => {
+    reqJSON('/api/contributions/bulk').then((temp) => {
       this.setState({
         contributionList: temp,
         editContributionListBoolean: true,
@@ -130,12 +130,12 @@ export default class Admin extends Component<Props, State> {
       this.setCLAFormTrue();
     } else {
       this.setCLAFormFalse();
-    };
+    }
     this.getCLAs(); // forces a refresh for the CLA lsit
   }
 
   render() {
-    let claTable = this.state.claTable;
+    const claTable = this.state.claTable;
     return (
       <div className="container-fluid" id="admin_container">
         <div className="row">

@@ -16,7 +16,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Underscore from 'underscore';
 
-import * as EmployeeTableAction from'../actions/employeeTableAction';
+import * as EmployeeTableAction from '../actions/employeeTableAction';
 import TableApprovalStatusCell from '../components/TableApprovalStatusCell';
 import TableDateCell from '../components/TableDateCell';
 import TableLinkCell from '../components/TableLinkCell';
@@ -37,7 +37,7 @@ interface Props extends OwnProps {
 interface State  {
   currAlias: any;
   sortDirection: string;
-  filteredDataList: Array<object>;
+  filteredDataList: object[];
 }
 
 const SortTypes = {
@@ -56,19 +56,19 @@ class AllEmployeeTable extends React.Component<Props, State> {
   }
 
   componentWillMount() {
-    let { dispatch, alias, filteredDataList } = this.props;
+    const { dispatch, alias, filteredDataList } = this.props;
     if (alias !== undefined && this.state.currAlias !== alias) {
       dispatch( EmployeeTableAction.fetchUserContribution(alias) );
       this.setState({
         currAlias: alias,
-        filteredDataList: filteredDataList,
+        filteredDataList,
       });
-    };
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    let { dispatch, alias } = this.props;
-    let { filteredDataList } = nextProps;
+    const { dispatch, alias } = this.props;
+    const { filteredDataList } = nextProps;
     if (alias === undefined && this.state.currAlias === '' || nextProps.alias !== this.state.currAlias) {
       dispatch( EmployeeTableAction.fetchUserContribution(alias) );
       this.setState({
@@ -77,13 +77,13 @@ class AllEmployeeTable extends React.Component<Props, State> {
     }
     if (filteredDataList !== undefined && filteredDataList !== this.state.filteredDataList) {
       this.setState({
-        filteredDataList: filteredDataList,
+        filteredDataList,
       });
-    };
+    }
   }
 
   _onSortChange = (key) => {
-    let sorted = Underscore.sortBy(this.state.filteredDataList, key);
+    const sorted = Underscore.sortBy(this.state.filteredDataList, key);
     if (this.state.sortDirection === SortTypes.ASC) {
       this.setState({
         sortDirection: SortTypes.DESC,
@@ -94,11 +94,11 @@ class AllEmployeeTable extends React.Component<Props, State> {
         sortDirection: SortTypes.ASC,
         filteredDataList: sorted,
       });
-    };
+    }
   }
 
   getTable = () => {
-    let { filteredDataList } = this.state;
+    const { filteredDataList } = this.state;
     if (this.state.currAlias && filteredDataList !== undefined && filteredDataList.length > 0) {
       return(
         <div key="contribution_edit_div">
@@ -163,7 +163,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  _onSortChange={() => {this._onSortChange('contribution_commit_url');}}
+                  _onSortChange={() => {this._onSortChange('contribution_commit_url'); }}
                   sortDir="contribution_commit_url">
                   Commit URL
                 </TableSortHeaderCell>
@@ -218,11 +218,11 @@ class AllEmployeeTable extends React.Component<Props, State> {
       );
     } else {
       return (<p>Enter an alias of a user above.</p>);
-    };
+    }
   }
 
   render() {
-    const tables = this.getTable()
+    const tables = this.getTable();
     return (
       <div>
         {tables}

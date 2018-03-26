@@ -15,7 +15,7 @@ import * as React from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 
-import * as claLogger from'../modules/claLogger';
+import * as claLogger from '../modules/claLogger';
 import { reqJSON } from '../util/index';
 
 interface Props {
@@ -32,12 +32,12 @@ interface State {
   signatory_name: string;
   contact_name: string;
   addition_notes: string;
-  cla_project_names: Array<any>;
-  cla_project_approvers_names: Array<any>;
+  cla_project_names: any[];
+  cla_project_approvers_names: any[];
   alert: any;
   display: {
-    signatory: Array<string>,
-    poc: Array<string>,
+    signatory: string[],
+    poc: string[],
   };
 }
 
@@ -65,16 +65,16 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let { dispatch } = this.props;
-    let projName = (e.target.elements.projectName as HTMLInputElement).value.trim();
-    let contribNames = (e.target.elements.contributorName as HTMLInputElement).value.trim();
-    let appName = (e.target.elements.appName as HTMLInputElement).value.trim();
-    let sigName = (e.target.elements.sigName as HTMLInputElement).value.trim();
-    let contactName = (e.target.elements.contactName as HTMLInputElement).value.trim();
-    let dateApproved = (e.target.elements.dateApproved as HTMLInputElement).value.toLowerCase();
-    let dateSigned = (e.target.elements.dateSigned as HTMLInputElement).value.toLowerCase();
-    let notes = (e.target.elements.description as HTMLInputElement).value.toLowerCase();
-    let jsonObj = {
+    const { dispatch } = this.props;
+    const projName = (e.target.elements.projectName as HTMLInputElement).value.trim();
+    const contribNames = (e.target.elements.contributorName as HTMLInputElement).value.trim();
+    const appName = (e.target.elements.appName as HTMLInputElement).value.trim();
+    const sigName = (e.target.elements.sigName as HTMLInputElement).value.trim();
+    const contactName = (e.target.elements.contactName as HTMLInputElement).value.trim();
+    const dateApproved = (e.target.elements.dateApproved as HTMLInputElement).value.toLowerCase();
+    const dateSigned = (e.target.elements.dateSigned as HTMLInputElement).value.toLowerCase();
+    const notes = (e.target.elements.description as HTMLInputElement).value.toLowerCase();
+    const jsonObj = {
       project_name: projName,
       contributor_names: contribNames,
       approver_name: appName,
@@ -87,7 +87,7 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
 
     dispatch(claLogger.postNewCla(jsonObj));
 
-    let getAlert = () => (
+    const getAlert = () => (
       <SweetAlert
         success
         title="Success"
@@ -111,28 +111,28 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
 
   getOptionsProjectNames = () => {
     return(this.state.cla_project_names.map(
-      object => (<option key={object.project_name} value={object.project_name}></option>),
+      (object) => (<option key={object.project_name} value={object.project_name}></option>),
     ));
   }
 
   getOptionsApproverNames = () => {
     return(this.state.cla_project_approvers_names.map(
-      alist => (<option key={alist.approver_alias} value={alist.approver_alias}></option>),
+      (alist) => (<option key={alist.approver_alias} value={alist.approver_alias}></option>),
     ));
   }
 
   componentWillMount() {
-    reqJSON('/api/cla/projects').then(nameList => {
+    reqJSON('/api/cla/projects').then((nameList) => {
       this.setState({
         cla_project_names: nameList.projectNames,
       });
     });
-     reqJSON('/api/approvers').then(temp => {
+    reqJSON('/api/approvers').then((temp) => {
       this.setState({
           cla_project_approvers_names: temp.approverList,
       });
     });
-    reqJSON('/api/config/display').then(config => {
+    reqJSON('/api/config/display').then((config) => {
       this.setState({
         display: config,
       });
@@ -160,14 +160,14 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
             <label>Signatory</label> <br/>
             <input type="text"  list="signatory_name" className="form-control" name="sigName" defaultValue={null} required/>
             <datalist id="signatory_name">
-              {this.state.display.signatory.map(user => {
+              {this.state.display.signatory.map((user) => {
                 return (<option key={user} value={user}/>);
               })}
              </datalist><br/>
             <label>Point of Contact</label> <br/>
             <input type="text"  list="contact" className="form-control" name="contactName" defaultValue={null} required/>
             <datalist id="contact">
-              {this.state.display.poc.map(user => {
+              {this.state.display.poc.map((user) => {
                 return (<option key={user} value={user}/>);
               })}
             </datalist><br/>
@@ -187,6 +187,6 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default connect(state => {
+export default connect((state) => {
   return{};
 })(CCLAForm) as any;

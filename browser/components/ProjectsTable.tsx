@@ -32,7 +32,7 @@ interface State {}
 export default class ProjectsTable extends React.Component<Props, State> {
   createTables = () => {
     // Iterates and renders tables
-    let type = this.props.type;
+    const type = this.props.type;
     let tableProps = {};
     switch (type) {
       case 'all':
@@ -48,11 +48,11 @@ export default class ProjectsTable extends React.Component<Props, State> {
         };
         break;
     }
-    let table = [];
-    let cl = this.props.contributionList;
-    for (let [key, value] of Object.entries(cl)) {
+    const table = [];
+    const cl = this.props.contributionList;
+    for (const [key, value] of Object.entries(cl)) {
       table.push(ProjectsTable.renderTables(key, value, tableProps));
-    };
+    }
     return table;
   }
 
@@ -149,7 +149,7 @@ export default class ProjectsTable extends React.Component<Props, State> {
   }
 
   render() {
-    let contributionList = this.props.contributionList;
+    const contributionList = this.props.contributionList;
     return (
       <div>
         { contributionList ? this.createTables() : '' }

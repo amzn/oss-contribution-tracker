@@ -23,15 +23,15 @@ interface State {
 
 export default class SimpleLineChart extends React.Component<Props, State> {
   stringToNumbers = () => {
-    let filtered = this.props.metricsDataByYear;
-    for (let element in filtered) {
+    const filtered = this.props.metricsDataByYear;
+    for (const element in filtered) {
       filtered[element].total_contributions = Number(filtered[element].total_contributions);
     }
     return filtered;
   }
 
   render() {
-    let data = this.stringToNumbers();
+    const data = this.stringToNumbers();
     return(
     <ComposedChart width={930} height={450} data={data}>
       <XAxis dataKey="year" />

@@ -28,8 +28,8 @@ interface State {
 
 export default class TableEditCheckboxCell extends React.Component<Partial<Props>, State> {
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props;
-    let path = `/contribution/${data[rowIndex][field]}`;
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const path = `/contribution/${data[rowIndex][field]}`;
     return (
       <Cell {...props}>
         <div>

@@ -26,7 +26,7 @@ interface State {
 
 export default class ErrorModal extends Component<Props, State> {
   render() {
-    let { title, message, explain, onDismiss } = this.props;
+    const { title, message, explain, onDismiss } = this.props;
 
     return (
       <div className="modal show" role="dialog">

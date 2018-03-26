@@ -19,19 +19,19 @@ import 'whatwg-fetch';
  * Write more that will cover use cases
  */
 export async function reqJSON(url, method = 'GET') {
-  let f = await fetch(url, {
+  const f = await fetch(url, {
     credentials: 'same-origin',
-    method: method,
+    method,
   });
   // Unpack promises
-  let hold = await f.json();
+  const hold = await f.json();
   return hold;
 }
 
 export async function postJSON(url, obj, method = 'POST') {
-  let f = await fetch(url, {
+  const f = await fetch(url, {
     credentials: 'same-origin',
-    method: method,
+    method,
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',

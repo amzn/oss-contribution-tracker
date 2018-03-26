@@ -20,8 +20,8 @@ import { RequestError } from '../../errors/index';
 import { getDiffSize } from '../../util/diffcheck';
 
 function sortContributions(list) {
-  let contributionList = {};
-  list.forEach(function (item) {
+  const contributionList = {};
+  list.forEach(function(item) {
     if (contributionList[item.project_name]) {
       contributionList[item.project_name].push(item);
     } else {
@@ -33,32 +33,32 @@ function sortContributions(list) {
 }
 
 export async function listContributions(req) {
-  let list = await dbContribution.listContributions();
+  const list = await dbContribution.listContributions();
   return sortContributions(list);
 }
 
 export async function listBulkContributions(req) {
-  let list = await dbContribution.listContributions();
+  const list = await dbContribution.listContributions();
   return list;
 }
 
 export async function listApprovalContributions(req) {
-  let list = await dbContribution.listApprovalContributions();
+  const list = await dbContribution.listApprovalContributions();
   return list;
 }
 
 export async function getAllContributorAlias(req) {
-  let list = await dbContribution.getAllContributorAlias();
+  const list = await dbContribution.getAllContributorAlias();
   return sortContributions(list);
 }
 
 export async function listUserContributions(req, username) {
-  let list = await dbContribution.listUserContributions(username);
+  const list = await dbContribution.listUserContributions(username);
   return sortContributions(list);
 }
 
 export async function getSingleContribution(req, id) {
-  let list = await dbContribution.getSingleContribution(id);
+  const list = await dbContribution.getSingleContribution(id);
   return list;
 }
 
@@ -76,12 +76,12 @@ export async function addNewContribution(req, body) {
   if (body.needsProjectReview) {
     // Since needsProjectReview is only set on a new project we can just add a project
     // TODO: toggle back to false once multiple people are submitting contributions
-    let resp = await dbProjects.addProject(body.package, null, null, true); // false);
+    const resp = await dbProjects.addProject(body.package, null, null, true); // false);
     projectId = resp.project_id;
   } else {
     projectId = body.package;
-  };
-  let contributionID = await dbContribution.addNewContribution(
+  }
+  const contributionID = await dbContribution.addNewContribution(
     projectId,
     body.description,
     body.date,
@@ -127,12 +127,12 @@ export async function diffCheck(req, body) {
 export async function addNewContributionAutoApproval(req, body) {
   let projectId = '';
   if (body.needsProjectReview) {
-    let resp = await dbProjects.addProject(body.package, null, null, true);
+    const resp = await dbProjects.addProject(body.package, null, null, true);
     projectId = resp.project_id;
   } else {
     projectId = body.package;
-  };
-  let contributionID = await dbContribution.addNewContributionApproved(
+  }
+  const contributionID = await dbContribution.addNewContributionApproved(
     projectId,
     body.description,
     body.date,
@@ -149,10 +149,10 @@ export async function updateContribution(req, body) {
   if (body.project_new) {
     // This is claimed to be a new project so let's find out and create if necessary
     // TODO: toggle back to false once multiple people are submitting contributions
-    let resp = await dbProjects.addProject(body.project_name, null, null, true); // false);
+    const resp = await dbProjects.addProject(body.project_name, null, null, true); // false);
     body.project_id = resp.project_id;
   }
-  let contributionID = await dbContribution.updateContribution(
+  const contributionID = await dbContribution.updateContribution(
     body.project_id,
     body.contribution_id,
     body.contribution_description,

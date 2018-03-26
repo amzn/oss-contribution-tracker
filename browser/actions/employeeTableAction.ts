@@ -39,8 +39,8 @@ export function receiveUserContributions(currUserContributions) {
 
 // Action creators
 export function fetchUserContribution(userName) {
-  return dispatch => {
-    return reqJSON(RECEIVE_CONTRIBUTIONS_OF_SELECTED_USER + userName).then(userContribution => {
+  return (dispatch) => {
+    return reqJSON(RECEIVE_CONTRIBUTIONS_OF_SELECTED_USER + userName).then((userContribution) => {
       dispatch(receiveUserContributions(userContribution));
     });
   };
@@ -48,9 +48,9 @@ export function fetchUserContribution(userName) {
 
 // Helper functions
 function filterContributionList(clist) {
-    let list = new Array();
-    Object.values<any>(clist.contributionList).map(array => {
-      array.map(object => { list.push(object); } );
+    const list = new Array();
+    Object.values<any>(clist.contributionList).map((array) => {
+      array.map((object) => { list.push(object); } );
     });
     return list;
   }

@@ -19,7 +19,7 @@ import config from '../config';
 export class LDAPAuth {
 
   getActiveUser(request): string {
-    let remoteUser = request.get('X-FORWARDED-USER') || `${config.fallbackUser}@`;
+    const remoteUser = request.get('X-FORWARDED-USER') || `${config.fallbackUser}@`;
     return remoteUser.substring(0, remoteUser.indexOf('@'));
   }
 
@@ -28,12 +28,12 @@ export class LDAPAuth {
       scope: 'sub',
       filter: 'memberuid=' + encodeURIComponent(user),
       attributes: ['cn'],
-    }, obj => `ldap:${obj.cn}`);
+    }, (obj) => `ldap:${obj.cn}`);
     const posixGroups = await this._ldapsearch(`ou=posix groups,ou=infrastructure,o=${config.ldap.o}`, {
       scope: 'sub',
       filter: 'memberuid=' + encodeURIComponent(user),
       attributes: ['cn'],
-    }, obj => `posix:${obj.cn}`);
+    }, (obj) => `posix:${obj.cn}`);
     return [].concat(ldapGroups, posixGroups);
   }
 
@@ -45,8 +45,8 @@ export class LDAPAuth {
       scope: 'sub',
       filter: 'uid=' + encodeURIComponent(user),
       attributes: 'gecos',
-    }, obj => obj.gecos)
-      .then(results => {
+    }, (obj) => obj.gecos)
+      .then((results) => {
         if (results.length === 0) {
           return null;
         }
@@ -62,15 +62,14 @@ export class LDAPAuth {
       scope: 'sub',
       filter: 'uid=' + encodeURIComponent(user),
       attributes: config.ldap.attributes,
-    }, obj => obj)
-      .then(results => {
+    }, (obj) => obj)
+      .then((results) => {
         if (results.length === 0) {
           return null;
         }
         return results;
       });
   }
-
 
   /**
    * Generic LDAP search.
@@ -79,10 +78,10 @@ export class LDAPAuth {
    * `pick` before adding to a list. At end of result set, resolves promise.
    */
   _ldapsearch(base, opts, pick): Promise<any[]> {
-    let client = ldap.createClient({
+    const client = ldap.createClient({
       url: config.ldap.url,
     });
-    client.on('error', err => {
+    client.on('error', (err) => {
       // connection errors will hard-crash node, so catch them here
       winston.warn('Unexpected ldap connection error', err);
     });
@@ -90,16 +89,17 @@ export class LDAPAuth {
     // search LDAP for group membership
     return new Promise((resolve, reject) => {
       client.search(base, opts, (err, res) => {
-        if (err)
+        if (err) {
           return reject(new Error(err));
+        }
 
-        let results = [];
+        const results = [];
 
         // build a list, resolving when complete
-        res.on('searchEntry', entry => {
+        res.on('searchEntry', (entry) => {
           results.push(pick(entry.object));
         });
-        res.on('error', err => {
+        res.on('error', (err) => {
           client.unbind();
           reject(new Error(err));
         });

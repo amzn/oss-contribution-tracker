@@ -23,10 +23,10 @@ enum Chunk {
   Del,
 }
 
-function getDiffChunks(diff: string): [Chunk, string[]][] {
+function getDiffChunks(diff: string): Array<[Chunk, string[]]> {
   const lines = diff.split('\n');
 
-  const chunks: [Chunk, string[]][] = [];
+  const chunks: Array<[Chunk, string[]]> = [];
   let currentChunk: string[] = [];
   let state: ParseState = ParseState.Irrelevant;
 
@@ -70,47 +70,31 @@ function getDiffChunks(diff: string): [Chunk, string[]][] {
         continue;
       }
       currentChunk = [trimmed];
-    }
-
-    else if (state === ParseState.ChunkAdd) {
+    } else if (state === ParseState.ChunkAdd) {
       // no state change; keep adding lines to chunk
       if (line.startsWith('+')) {
         currentChunk.push(trimmed);
-      }
-      // switching to del; finalize previous chunk and start new one
-      else if (line.startsWith('-')) {
+      } else if (line.startsWith('-')) {
         commitChunk(trimmed);
         state = ParseState.ChunkDel;
-      }
-      // end of chunk reached; finalize previous chunk
-      else if (line.startsWith(' ')) {
+      } else if (line.startsWith(' ')) {
         commitChunk(trimmed);
         state = ParseState.ChunkEmpty;
-      }
-      // non-diff content; assume we're now out of context
-      else {
+      } else {
         commitChunk(trimmed);
         state = ParseState.Irrelevant;
       }
-    }
-
-    else if (state === ParseState.ChunkDel) {
+    } else if (state === ParseState.ChunkDel) {
       // no state change; keep adding lines to chunk
       if (line.startsWith('-')) {
         currentChunk.push(trimmed);
-      }
-      // switching to add; finalize previous chunk and start new one
-      else if (line.startsWith('+')) {
+      } else if (line.startsWith('+')) {
         commitChunk(trimmed);
         state = ParseState.ChunkAdd;
-      }
-      // end of chunk reached; finalize previous chunk
-      else if (line.startsWith(' ')) {
+      } else if (line.startsWith(' ')) {
         commitChunk(trimmed);
         state = ParseState.ChunkEmpty;
-      }
-      // non-diff content; assume we're now out of context
-      else {
+      } else {
         commitChunk(trimmed);
         state = ParseState.Irrelevant;
       }

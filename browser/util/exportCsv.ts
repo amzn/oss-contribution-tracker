@@ -13,13 +13,13 @@
  */
 // Converting json to csv format
   async function convertToCSV(objArray) {
-    let array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
     let csv = '';
     for (let i = 0; i < array.length; i++) {
       let line = '';
-      for (let index in array[i]) {
-        if (line !== '') line += ',';
-          line += array[i][index];
+      for (const index in array[i]) {
+        if (line !== '') { line += ','; }
+        line += array[i][index];
       }
       csv += line + '\r\n';
     }
@@ -27,9 +27,9 @@
   }
   // function on triggering of the download button
   export async function onClickDownload(filteredDataList) {
-    let csvData = new Blob([await convertToCSV(filteredDataList)], {type: 'text/csv;charset=utf-8;'});
-    let csvURL = window.URL.createObjectURL(csvData);
-    let tempLink = document.createElement('a');
+    const csvData = new Blob([await convertToCSV(filteredDataList)], {type: 'text/csv;charset=utf-8;'});
+    const csvURL = window.URL.createObjectURL(csvData);
+    const tempLink = document.createElement('a');
     tempLink.style.display = 'none';
     tempLink.href = csvURL;
     tempLink.setAttribute('download', 'ActiveEvent_data.csv');

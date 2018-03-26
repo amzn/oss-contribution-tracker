@@ -22,8 +22,8 @@ interface Props {
 }
 
 interface State {
-  user: string,
-  contributionList: object,
+  user: string;
+  contributionList: object;
 }
 
 class GithubLinkUpdater extends React.Component<Props, State> {
@@ -52,10 +52,10 @@ class GithubLinkUpdater extends React.Component<Props, State> {
     const list = {};
     for (const key of Object.keys(cL)) {
       const value = cL[key];
-      value.map(entry => {
+      value.map((entry) => {
         list[entry.contribution_id] = entry;
       });
-    };
+    }
     this.setState({
       contributionList: list,
     });
@@ -70,6 +70,6 @@ class GithubLinkUpdater extends React.Component<Props, State> {
   }
 }
 
-export default connect(state => {
+export default connect((state) => {
   return {  };
 })(GithubLinkUpdater);

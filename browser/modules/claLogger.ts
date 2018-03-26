@@ -17,21 +17,21 @@ import { postJSON } from '../util/index';
 
 // New Cla
 export function postNewCla(cla) {
-  return dispatch => {
-    return postJSON('/api/cla/submit', JSON.stringify(cla)).catch(error => console.log(error));
+  return (dispatch) => {
+    return postJSON('/api/cla/submit', JSON.stringify(cla)).catch((error) => console.log(error));
   };
 }
 
 // update function for edit cla
 export function updateCla(claUpdated) {
-  return dispatch => {
-    return postJSON('/api/cla/update', JSON.stringify(claUpdated)).catch(error => console.log(error));
+  return (dispatch) => {
+    return postJSON('/api/cla/update', JSON.stringify(claUpdated)).catch((error) => console.log(error));
   };
 }
 
 // delete entries from cla
 export function deleteClaEntry(id) {
-  return dispatch => {
-    return postJSON('/api/cla/delete', JSON.stringify(id)).catch(error => console.log(error));
+  return (dispatch) => {
+    return postJSON('/api/cla/delete', JSON.stringify(id)).catch((error) => console.log(error));
   };
 }

@@ -33,7 +33,7 @@ class List extends React.Component<Props, State> {
   }
 
   componentWillMount() {
-    reqJSON('/api/contributions').then(temp => {
+    reqJSON('/api/contributions').then((temp) => {
       this.setState({contributionList: temp.contributionList});
     });
   }
@@ -47,6 +47,6 @@ class List extends React.Component<Props, State> {
   }
 }
 
-export default connect(state => {
+export default connect((state) => {
   return {  };
 })(List);

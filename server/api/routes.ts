@@ -19,7 +19,7 @@ import LDAP from '../auth/ldap';
 import config from '../config';
 
 import * as approversAPI from './approvers';
-import * as claAPI from'./cla';
+import * as claAPI from './cla';
 import * as contributionsAPI from './contributions';
 import * as metricsAPI from './metrics';
 import * as projectsAPI from './projects';
@@ -62,7 +62,7 @@ router.get('/config/display', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 router.get('/metrics/contrib/user/counts', (req, res, next) => {
@@ -135,7 +135,7 @@ router.post('/approvers/new', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 router.get('/approvers/:approverId', (req, res, next) => {
@@ -169,7 +169,7 @@ router.post('/contributions/approve', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 router.get('/contributions/:username', (req, res, next) => {
@@ -215,7 +215,7 @@ router.post('/contributions/newautoapproval', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 router.post('/contributions/update', async (req, res, next) => {
@@ -229,7 +229,7 @@ router.post('/contributions/update', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 router.post('/contributions/update/link', async (req, res, next) => {
@@ -246,14 +246,14 @@ router.post('/contributions/update/link', async (req, res, next) => {
       res.send({
         msg: 'Failed to update entry.',
       });
-    };
+    }
   } else {
     winston.warn(`${user} not allowed to update contribution link`);
     res.status(401);
     res.send({
       error: 'Not allowed to update contribution link',
     });
-  };
+  }
 });
 
 /**
@@ -276,7 +276,7 @@ router.get('/cla/getproject/:id', (req, res, next) => {
 });
 
 // Delete CLA
-router.post('/cla/delete', async(req, res, next) => {
+router.post('/cla/delete', async (req, res, next) => {
   const access = (req as any).UserAccess;
   if (access.includes(AccessTypes.admin)) {
     pack(claAPI.deleteCLA(req, req.body), res, next);
@@ -287,7 +287,7 @@ router.post('/cla/delete', async(req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 // Edit CLA
@@ -302,7 +302,7 @@ router.post('/cla/update', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 // New CLA post request
@@ -317,11 +317,11 @@ router.post('/cla/submit', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 // error handling for all of the above
-router.use(function (err: any, req: any, res: any, next: any) {
+router.use(function(err: any, req: any, res: any, next: any) {
   if (err.name === 'UnauthorizedError'
       || err.name === 'AccessError'
       || err.name === 'RequestError') {
@@ -337,9 +337,9 @@ router.use(function (err: any, req: any, res: any, next: any) {
  * Send API call results, calling error middleware on failure.
  */
 function pack(promise, res, next) {
-  if (!res || !next) throw new Error('Missing response or next middleware parameters');
+  if (!res || !next) { throw new Error('Missing response or next middleware parameters'); }
   return promise
-    .then(x => {
+    .then((x) => {
       if (x === null) {
         res.status(404).send('Object not found');
       } else {
@@ -370,10 +370,10 @@ enum AccessTypes {
 }
 // Middleware that stuffs user access levels into req.UserAccess
 export async function checkAccess(req, res, next) {
-  let user = await getUser(req);
+  const user = await getUser(req);
   // Checks that the user has access to their requested information
-  let groups = await LDAP.getGroups(user);
-  let access = [];
+  const groups = await LDAP.getGroups(user);
+  const access = [];
   let len = config.admin.posixGroup.length;
   // Check if in admin groups
   for (let i = 0; i < len; i++) {

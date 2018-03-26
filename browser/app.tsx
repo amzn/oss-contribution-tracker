@@ -21,7 +21,6 @@ import store from './store';
 
 import App from './containers/App';
 
-
 // routes listed here should point to redux-enabled containers
 window.addEventListener('DOMContentLoaded', () => {
   render(

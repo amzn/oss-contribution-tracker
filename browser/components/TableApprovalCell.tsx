@@ -29,8 +29,8 @@ interface State {
 export default class TableApprovalCell extends React.Component<Partial<Props>, State> {
 
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props;
-    let id = data[rowIndex].contribution_id;
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const id = data[rowIndex].contribution_id;
     return (
       <Cell {...props}>
         <div className="row">

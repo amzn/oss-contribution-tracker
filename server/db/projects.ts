@@ -36,7 +36,7 @@ export async function searchProjectByName(name) {
 // Add a new project to the DB
 export async function addProject(name, contribUrl, license, verified) {
   // Check if project already exists and add if it doesn't
-  let check = pg().oneOrNone('select project_id from projects where project_name = $1', [name]);
+  const check = pg().oneOrNone('select project_id from projects where project_name = $1', [name]);
   if (check) {
     return pg().one('insert into projects (project_name, project_url, project_license, project_verified) values ($1, $2, $3, $4) returning project_id', [name, contribUrl, license, verified]);
   }

@@ -28,7 +28,7 @@ interface State {
 export default class TableApprovalStatusCell extends React.Component<Partial<Props>, State> {
   renderApprovalStatus(st) {
     let badge = '';
-    let status = st.toLowerCase();
+    const status = st.toLowerCase();
     if (status === 'denied') {
       badge = 'badge badge-danger';
     } else if (status === 'approved') {
@@ -43,8 +43,8 @@ export default class TableApprovalStatusCell extends React.Component<Partial<Pro
     );
   }
   render() {
-    let {rowIndex, field, data, col, columnKey, ...props} = this.props;
-    let status = data[rowIndex][field];
+    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const status = data[rowIndex][field];
     return (
       <Cell {...props}>
         {this.renderApprovalStatus(status)}

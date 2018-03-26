@@ -34,8 +34,8 @@ export default class MetricsLists extends React.Component<Props, State> {
   }
 
   metricsAll = () => {
-    let list = this.props.allMetrics;
-    return list.map(item => {
+    const list = this.props.allMetrics;
+    return list.map((item) => {
      return <li key={'allMetrics_' + item.year}> {item.year} : {item.total_contributions} contributions ({item.contributor_count} distinct contributors to {item.project_count} distinct projects) </li>;
     });
   }
@@ -49,28 +49,28 @@ export default class MetricsLists extends React.Component<Props, State> {
     } else {
       list = [];
     }
-    return list.map(item => {
+    return list.map((item) => {
       return <li key={'topProjectsByYear_' + item.project_name + item.count}>{item.count} - {item.project_name}</li>;
     });
   }
 
   topProjectsAllTime = () => {
-    let list = this.props.topContribProjectsAllTime.slice(0, 10);
-    return list.map(item => {
+    const list = this.props.topContribProjectsAllTime.slice(0, 10);
+    return list.map((item) => {
       return <li key={'topProjectsAllTime_' + item.project_name}>{item.count} - {item.project_name}</li>;
     });
   }
 
   topContributors = (list) => {
-    return list ? list.map(item => {
+    return list ? list.map((item) => {
       return <li key={'topContributors_' + item.alias}>{item.alias} | {item.count}</li>;
     }) : <div />;
   }
 
   render() {
-    let metrics = this.metricsAll();
-    let topProjectsAll = this.topProjectsAllTime();
-    let curYear = new Date().getFullYear();
+    const metrics = this.metricsAll();
+    const topProjectsAll = this.topProjectsAllTime();
+    const curYear = new Date().getFullYear();
     return (
       <div>
       <div id="metrics">

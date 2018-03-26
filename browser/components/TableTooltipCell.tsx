@@ -22,7 +22,7 @@ interface Props {
   col: any;
   columnKey: string;
 }
-interface State{
+interface State {
   show: any;
 }
 export default class TooltipCell extends React.Component<Partial<Props>, State> {
@@ -33,8 +33,8 @@ export default class TooltipCell extends React.Component<Partial<Props>, State> 
     };
   }
   render() {
-    let {data, rowIndex, field, ...props} = this.props;
-    let value = data[rowIndex][field];
+    const {data, rowIndex, field, ...props} = this.props;
+    const value = data[rowIndex][field];
     return (
       <Cell {...props}
       onMouseEnter = {() => { ReactTooltip.show(); }}
@@ -45,4 +45,4 @@ export default class TooltipCell extends React.Component<Partial<Props>, State> 
       </Cell>
     );
   }
-};
+}
