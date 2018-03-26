@@ -22,10 +22,7 @@ interface Props {
   columnKey: string;
 }
 
-interface State {
-}
-
-export default class TableApprovalStatusCell extends React.Component<Partial<Props>, State> {
+export default class TableApprovalStatusCell extends React.Component<Partial<Props>, {}> {
   renderApprovalStatus(st) {
     let badge = '';
     const status = st.toLowerCase();

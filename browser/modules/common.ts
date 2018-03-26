@@ -43,6 +43,7 @@ export default function reducer(state = initial, action: any = {}) {
 
 export function setGeneralError(message) {
   if (message != null) {
+    // tslint:disable-next-line:no-console
     console.error(message);
   }
   return {

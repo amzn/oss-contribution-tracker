@@ -13,26 +13,40 @@
  */
 import pg from './index';
 
+// tslint:disable:variable-name
+
 export function usersAndCounts() {
-  return pg().query('select contributor_alias as alias, count(contributor_alias) as count from contributions group by contributor_alias order by count asc');
+  return pg().query('select contributor_alias as alias, count(contributor_alias) as count ' +
+    'from contributions group by contributor_alias order by count asc');
 }
 
 export function topContribProjectsAllTime() {
-  return pg().query('select lower(P.project_name) as project_name, count(C.project_id) from contributions C, projects P where P.project_id = C.project_id group by P.project_name order by count desc');
+  return pg().query('select lower(P.project_name) as project_name, count(C.project_id) ' +
+    'from contributions C, projects P where P.project_id = C.project_id ' +
+    'group by P.project_name order by count desc');
 }
 
 export function topContribProjectsByYear(year: number) {
-  return pg().query('select lower(P.project_name) as project_name, count(C.project_id) from contributions C, projects P where P.project_id = C.project_id and C.contribution_date >= \'$1-01-01 00:00:00\' and C.contribution_date < \'$2-01-01 00:00:00\' group by P.project_name order by count desc', [year, year + 1]);
+  return pg().query('select lower(P.project_name) as project_name, count(C.project_id) ' +
+    'from contributions C, projects P where P.project_id = C.project_id and ' +
+    'C.contribution_date >= \'$1-01-01 00:00:00\' and C.contribution_date < \'$2-01-01 00:00:00\' ' +
+    'group by P.project_name order by count desc',
+    [year, year + 1]);
 }
 
 export function contribCountByYear(year: number) {
-  return pg().query('select \'$1\' as year, count(*) from contributions where contribution_date >= \'$1-01-01 00:00:00\' and contribution_date < \'$2-01-01 00:00:00\'', [year, year + 1]);
+  return pg().query('select \'$1\' as year, count(*) from contributions ' +
+    'where contribution_date >= \'$1-01-01 00:00:00\' and contribution_date < \'$2-01-01 00:00:00\'',
+    [year, year + 1]);
 }
 
 export function contribCountByYearAll() {
-  return pg().query('select extract(year from contribution_date) as year, count(*) from contributions group by year order by year');
+  return pg().query('select extract(year from contribution_date) as year, count(*) ' +
+    'from contributions group by year order by year');
 }
 
 export function allMetrics() {
-  return pg().query('select extract(year from contribution_date) as year, count(*) as total_contributions, count(distinct contributor_alias) as contributor_count, count(distinct project_id) as project_count from contributions group by year order by year');
+  return pg().query('select extract(year from contribution_date) as year, ' +
+    'count(*) as total_contributions, count(distinct contributor_alias) as contributor_count, ' +
+    'count(distinct project_id) as project_count from contributions group by year order by year');
 }

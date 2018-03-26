@@ -11,18 +11,15 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import  {Cell}  from 'fixed-data-table';
+import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 
 interface Props extends React.Props<any> {
   sortDir: string;
-  _onSortChange: any;
+  onSortChange: any;
   columnKey?: string;
   height?: number;
   width?: number;
-}
-
-interface State extends React.Props<any> {
 }
 
 const SortTypes = {
@@ -34,18 +31,11 @@ function reverseSortDirection(sortDir) {
   return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
 }
 
-export default class TableSortHeaderCell extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this._onSortChange = this._onSortChange.bind(this);
-    this.state = {
-    };
-  }
-
-  _onSortChange(e) {
+export default class TableSortHeaderCell extends React.Component<Props, {}> {
+  onSortChange = (e) => {
     e.preventDefault();
-    if (this.props._onSortChange) {
-      this.props._onSortChange(
+    if (this.props.onSortChange) {
+      this.props.onSortChange(
         this.props.columnKey,
         this.props.sortDir ? reverseSortDirection(this.props.sortDir) : SortTypes.DESC,
       );
@@ -56,7 +46,7 @@ export default class TableSortHeaderCell extends React.Component<Props, State> {
     const {sortDir, children, columnKey, height, width} = this.props;
     return (
       <Cell columnKey={columnKey} height={height} width={width}>
-        <a onClick={this._onSortChange} className="im-pointer">
+        <a onClick={this.onSortChange} className="im-pointer">
           {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
         </a>
       </Cell>

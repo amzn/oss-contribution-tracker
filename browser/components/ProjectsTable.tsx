@@ -27,9 +27,7 @@ interface Props {
   dispatch: object;
 }
 
-interface State {}
-
-export default class ProjectsTable extends React.Component<Props, State> {
+export default class ProjectsTable extends React.Component<Props, {}> {
   createTables = () => {
     // Iterates and renders tables
     const type = this.props.type;

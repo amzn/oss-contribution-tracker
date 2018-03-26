@@ -22,10 +22,7 @@ interface Props extends React.Props<any> {
    columnKey: string;
  }
 
-interface State extends React.Props<any> {
- }
-
-export default class TableTextCell extends React.Component<Partial<Props>, State> {
+export default class TableTextCell extends React.Component<Partial<Props>, {}> {
    render() {
      const {rowIndex, field, data, col, columnKey, ...props} = this.props;
      return (

@@ -22,10 +22,7 @@ interface Props {
   columnKey: string;
 }
 
-interface State {
-}
-
-export default class TableDateCell extends React.Component<Partial<Props>, State> {
+export default class TableDateCell extends React.Component<Partial<Props>, {}> {
   render() {
     const {rowIndex, field, data, col, columnKey, ...props} = this.props;
     const time = new Date(data[rowIndex][field]);

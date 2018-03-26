@@ -215,7 +215,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       { label: 'denied', value: 'denied' },
     ];
     const projectOptions = this.projectList();
-    const initialProjectId = this.state.project_id ? this.state.project_id : ''; // Pulled this out as it wasn't appearing in the initial render
+    const initialProjectId = this.state.project_id || '';
     const approval_notes = this.state.contrib.approval_notes;
     return (
       <div className="container">
@@ -242,19 +242,23 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
               </div>
               <div className="form-group">
                 <label>Contributor Alias</label>
-                <input type="text" className="form-control" id="contributorAliasInput" placeholder={this.state.contrib.contributor_alias} />
+                <input type="text" className="form-control" id="contributorAliasInput"
+                  placeholder={this.state.contrib.contributor_alias} />
               </div>
               <div className="form-group">
                 <label>Date of Contribution</label>
-                <input type="date" className="form-control" id="contributionDateInput" name="contributionDateInput" />
+                <input type="date" className="form-control" id="contributionDateInput"
+                  name="contributionDateInput" />
               </div>
               <div className="form-group">
                 <label>Contribution Notification Date</label>
-                <input type="date" className="form-control" id="contributionSubmissionDateInput" name="contributionSubmissionDateInput" />
+                <input type="date" className="form-control" id="contributionSubmissionDateInput"
+                  name="contributionSubmissionDateInput" />
               </div>
               <div className="form-group">
                 <label>Approval Date</label>
-                <input type="date" className="form-control" id="approvalDateInput" name="approvalDateInput" />
+                <input type="date" className="form-control" id="approvalDateInput"
+                  name="approvalDateInput" />
               </div>
               <div className="form-group">
                 <label>Contribution Closed Date</label>
@@ -276,15 +280,18 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
               </div>
               <div className="form-group">
                 <label>GitHub Commit URL</label>
-                <input type="text" className="form-control" id="githubCommitUrlInput" placeholder={this.state.contrib.contribution_commit_url} />
+                <input type="text" className="form-control" id="githubCommitUrlInput"
+                  placeholder={this.state.contrib.contribution_commit_url} />
               </div>
               <div className="form-group">
                 <label>Contribution URL</label>
-                <input type="text" className="form-control" id="contributionUrlInput" placeholder={this.state.contrib.contribution_url} />
+                <input type="text" className="form-control" id="contributionUrlInput"
+                  placeholder={this.state.contrib.contribution_url} />
               </div>
               <div className="form-group">
                 <label>Contribution Description</label>
-                <textarea className="form-control" rows={2} id="contributionDescInput" placeholder={this.state.contrib.contribution_description} />
+                <textarea className="form-control" rows={2} id="contributionDescInput"
+                  placeholder={this.state.contrib.contribution_description} />
               </div>
               <div className="form-group">
                 <label>Internal Approval Status</label>
@@ -302,7 +309,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
               </div>
               <div className="form-group">
                 <label>Approval Notes</label>
-                <textarea className="form-control" rows={2} id="approvalNotesInput" placeholder={approval_notes} />
+                <textarea className="form-control" rows={2} id="approvalNotesInput"
+                  placeholder={approval_notes} />
               </div>
               <div className="form-group">
                 <Link className="btn btn-secondary" id="to-admin" to="/admin">Cancel</Link>

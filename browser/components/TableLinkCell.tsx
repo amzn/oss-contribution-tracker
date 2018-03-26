@@ -22,10 +22,7 @@ interface Props {
   columnKey: string;
 }
 
-interface State {
-}
-
-export default class TableLinkCell extends React.Component<Partial<Props>, State> {
+export default class TableLinkCell extends React.Component<Partial<Props>, {}> {
   renderLink(link) {
     if (link) {
       return <a href={link}>Link</a>;

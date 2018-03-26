@@ -22,7 +22,7 @@ export async function topContribProjectsAllTime(req) {
 }
 
 export async function contribCountByYear(req, year) {
-  const contribCount = await db.contribCountByYear(parseInt(year));
+  const contribCount = await db.contribCountByYear(parseInt(year, 10));
   return contribCount[0]; // query returns in structure of [{}] so we strip it
 }
 
@@ -31,7 +31,7 @@ export async function contribCountByYearAll(req) {
 }
 
 export async function topContribProjectsByYear(req, year) {
-  return await db.topContribProjectsByYear(parseInt(year));
+  return await db.topContribProjectsByYear(parseInt(year, 10));
 }
 
 export async function allMetrics(req) {

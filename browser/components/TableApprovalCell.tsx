@@ -23,10 +23,7 @@ interface Props {
   columnKey: string;
 }
 
-interface State {
-}
-
-export default class TableApprovalCell extends React.Component<Partial<Props>, State> {
+export default class TableApprovalCell extends React.Component<Partial<Props>, {}> {
 
   render() {
     const {rowIndex, field, data, col, columnKey, ...props} = this.props;

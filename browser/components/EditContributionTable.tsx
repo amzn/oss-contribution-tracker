@@ -56,7 +56,7 @@ export default class EditContributionTable extends React.Component<Props, State>
       filteredDataList: nextProps.contributionList,
     });
   }
-  _onFilterChange = (e, colName) => {
+  onFilterChange = (e, colName) => {
     if (!e.target.value) {
       this.setState({
         filteredDataList: this.state.contributionList,
@@ -95,6 +95,7 @@ export default class EditContributionTable extends React.Component<Props, State>
         headText = 'Contributor';
         break;
       default:
+        // tslint:disable-next-line:no-console
         console.warn('Unknown columnKey');
         break;
     }
@@ -105,7 +106,7 @@ export default class EditContributionTable extends React.Component<Props, State>
           <span>{ headText }</span>
           <br/>
           <input type="search" className="form-control form-control-sm"
-            onChange={(e) => this._onFilterChange(e, colName.columnKey)}
+            onChange={(e) => this.onFilterChange(e, colName.columnKey)}
             style={{width: 90 + '%'}} />
         </Cell>
       </div>

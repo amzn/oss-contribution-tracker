@@ -41,20 +41,18 @@ export default class Contributions extends Component<Props, State> {
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     // Maybe store user info in redux once I have session stuff
-    reqJSON('/api/projects').then((temp) => {
-      this.setState({
-        projects: temp.projectList,
-      });
+    const projects = await reqJSON('/api/projects');
+    this.setState({
+      projects: projects.projectList,
     });
 
-    reqJSON('/api/approvers').then((temp) => {
-      this.setState({
-        approvers: {
-          name: temp.approverList,
-        },
-      });
+    const approvers = await reqJSON('/api/approvers');
+    this.setState({
+      approvers: {
+        name: approvers.approverList,
+      },
     });
   }
 

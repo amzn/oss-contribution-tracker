@@ -11,29 +11,26 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 // Converting json to csv format
-  async function convertToCSV(objArray) {
-    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
-    let csv = '';
-    for (let i = 0; i < array.length; i++) {
-      let line = '';
-      for (const index in array[i]) {
-        if (line !== '') { line += ','; }
-        line += array[i][index];
-      }
-      csv += line + '\r\n';
-    }
-    return csv;
+function convertToCSV(objArray) {
+  const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+  let csv = '';
+  for (const row of array) {
+    csv += row.join(',') + '\r\n';
   }
-  // function on triggering of the download button
-  export async function onClickDownload(filteredDataList) {
-    const csvData = new Blob([await convertToCSV(filteredDataList)], {type: 'text/csv;charset=utf-8;'});
-    const csvURL = window.URL.createObjectURL(csvData);
-    const tempLink = document.createElement('a');
-    tempLink.style.display = 'none';
-    tempLink.href = csvURL;
-    tempLink.setAttribute('download', 'ActiveEvent_data.csv');
-    document.body.appendChild(tempLink);
-    tempLink.click();
-    document.body.removeChild(tempLink);
-  }
+  return csv;
+}
+
+// function on triggering of the download button
+export function onClickDownload(filteredDataList) {
+  const csvData = new Blob([convertToCSV(filteredDataList)], {type: 'text/csv;charset=utf-8;'});
+  const csvURL = window.URL.createObjectURL(csvData);
+  const tempLink = document.createElement('a');
+  tempLink.style.display = 'none';
+  tempLink.href = csvURL;
+  tempLink.setAttribute('download', 'data.csv');
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+}

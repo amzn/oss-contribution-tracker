@@ -27,7 +27,7 @@ interface Props extends React.Props<any> {
   approvalList: any;
 }
 
-interface State extends React.Props<any> {
+interface State {
   approvalList: object[];
   sortDirection: string;
 }
@@ -51,7 +51,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
       });
   }
 
-  _onSortChange = (key) => {
+  onSortChange = (key) => {
     const sorted = Underscore.sortBy(this.props.approvalList, key);
     if (this.state.sortDirection === SortTypes.ASC) {
       this.setState({
@@ -78,7 +78,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('project_name'); }}
+                onSortChange={() => {this.onSortChange('project_name'); }}
                 sortDir="project_name">
                 Project
               </TableSortHeaderCell>
@@ -94,7 +94,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('contribution_description'); }}
+                onSortChange={() => {this.onSortChange('contribution_description'); }}
                 sortDir="contribution_description">
                 Contribution Description
               </TableSortHeaderCell>
@@ -111,7 +111,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('contribution_url'); }}
+                onSortChange={() => {this.onSortChange('contribution_url'); }}
                 sortDir="contribution_url">
                 Contribution URL
               </TableSortHeaderCell>
@@ -129,7 +129,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
             header=
             {
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('contribution_commit_url'); }}
+                onSortChange={() => {this.onSortChange('contribution_commit_url'); }}
                 sortDir="contribution_commit_url">
                 Commit URL
               </TableSortHeaderCell>
@@ -146,7 +146,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('contribution_submission_date'); }}
+                onSortChange={() => {this.onSortChange('contribution_submission_date'); }}
                 sortDir="contribution_submission_date">
                 Submission Date
               </TableSortHeaderCell>
@@ -163,7 +163,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('contributor_alias'); }}
+                onSortChange={() => {this.onSortChange('contributor_alias'); }}
                 sortDir="contributor_alias">
                 Contributor Alias
               </TableSortHeaderCell>
@@ -180,7 +180,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                _onSortChange={() => {this._onSortChange('project_id'); }}
+                onSortChange={() => {this.onSortChange('project_id'); }}
                 sortDir="project_id">
                 Approve / Deny
               </TableSortHeaderCell>

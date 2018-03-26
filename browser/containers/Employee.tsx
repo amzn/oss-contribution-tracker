@@ -22,7 +22,7 @@ interface Props extends React.Props<any> {
   employeeData: any;
 }
 
-interface State extends React.Props<any> {
+interface State {
   currentAlias: string;
   search: string;
   aliasList: any[];
@@ -55,11 +55,14 @@ class Employee extends React.Component<Props, State> {
 
   componentWillReceiveProps() {
     const { employeeData } = this.props;
-    employeeData.aliasNames ? this.filterAliasNames(employeeData.aliasNames) : '';
+    if (employeeData.aliasNames) {
+      this.filterAliasNames(employeeData.aliasNames);
+    }
   }
 
   filterAliasNames = (alias) => {
-    const newArray = Object.keys(alias.contributionList.undefined).map((key) => alias.contributionList.undefined[key].alias);
+    const newArray = Object.keys(alias.contributionList.undefined)
+      .map((key) => alias.contributionList.undefined[key].alias);
     const aliasSet = new Set(newArray.sort());
     const aliasArray = Array.from(aliasSet);
     this.setState({
@@ -73,7 +76,8 @@ class Employee extends React.Component<Props, State> {
     const currentAlias = this.state.currentAlias === '' ? employeeData.user : this.state.currentAlias;
     return (
       <div>
-        <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch} placeholder="Contributor Alias" className="form-control" />
+        <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch}
+          placeholder="Contributor Alias" className="form-control" />
         <datalist id="browsers">
           {this.state.aliasList.map((alias) => (<option key={alias} value={alias}/>))}
         </datalist>

@@ -22,7 +22,9 @@ if (process.env.DOMAIN == null) {
 }
 
 // use require() instead of import to set env beforehand
+// tslint:disable-next-line:no-var-requires
 const config = require('./config').default;
+// tslint:disable-next-line:no-var-requires
 const app = require('./app');
 
 app.disableCSP();

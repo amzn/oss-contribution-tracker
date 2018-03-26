@@ -14,13 +14,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-interface Props {
-}
-
-interface State {
-}
-
-export default class ApproveDenyForm extends React.Component<Props, State> {
+export default class ApproveDenyForm extends React.Component<{}, {}> {
   handleApproval = () => {
     // TODO: nothing here yet but will implement later.
   }

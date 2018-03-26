@@ -17,14 +17,11 @@ import { reqJSON } from '../util/index';
 
 import ContributionsTable from '../components/ContributionsTable';
 
-interface Props {
-}
-
 interface State {
   contributionList: any;
 }
 
-class List extends React.Component<Props, State> {
+class List extends React.Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,10 +29,9 @@ class List extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
-    reqJSON('/api/contributions').then((temp) => {
-      this.setState({contributionList: temp.contributionList});
-    });
+  async componentWillMount() {
+    const contributions = await reqJSON('/api/contributions');
+    this.setState({contributionList: contributions.contributionList});
   }
 
   render() {
@@ -47,6 +43,4 @@ class List extends React.Component<Props, State> {
   }
 }
 
-export default connect((state) => {
-  return {  };
-})(List);
+export default connect((state) => ({}))(List);

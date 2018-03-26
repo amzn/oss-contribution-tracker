@@ -22,10 +22,7 @@ interface Props {
   columnKey: string;
 }
 
-interface State {
-}
-
-export default class TableGitHubStatusCell extends React.Component<Partial<Props>, State> {
+export default class TableGitHubStatusCell extends React.Component<Partial<Props>, {}> {
   renderGithubStatus(st) {
     let badge = '';
     const status = st ? st.toLowerCase() : '';

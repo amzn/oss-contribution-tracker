@@ -74,10 +74,12 @@ class Approvals extends React.Component<Props, State> {
           <label>Approve/Deny</label>
           <br/>
           <div className="btn-group" role="group" aria-label="...">
-            <button id="approveBtn" type="button" className="btn btn-success btn-sm active" onClick={this.approveContrib} disabled={this.state.acceptHighlight}>
+            <button id="approveBtn" type="button" className="btn btn-success btn-sm active"
+              onClick={this.approveContrib} disabled={this.state.acceptHighlight}>
               <i className="fa fa-check" />
             </button>
-            <button id="denyBtn" type="button" className="btn btn-danger btn-sm active" onClick={this.denyContrib} disabled={this.state.declineHighlight}>
+            <button id="denyBtn" type="button" className="btn btn-danger btn-sm active"
+              onClick={this.denyContrib} disabled={this.state.declineHighlight}>
               <i className="fa fa-ban" />
             </button>
           </div>
@@ -96,6 +98,4 @@ class Approvals extends React.Component<Props, State> {
   }
 }
 
-export default connect((state) => {
-  return{};
-})(Approvals);
+export default connect((state) => ({}))(Approvals);

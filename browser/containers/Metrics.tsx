@@ -21,7 +21,7 @@ import ExtensionPoint from '../util/ExtensionPoint';
 interface Props extends React.Props<any> {
 }
 
-interface State extends React.Props<any> {
+interface State {
   usersAndCounts: any;
   contribCountByYearAll: any;
   topContribProjectsAllTime: any;
@@ -43,38 +43,42 @@ export default class Metrics extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
-    reqJSON('/api/metrics/all').then((temp) => {
-      const topTenContributor = [], topTwentyContributor = [], topFiftyContributor = [], topOneHunderedContributor = [];
-      // sorting into the groups I care about
-      temp.usersAndCounts.forEach(function(item) {
-        if (parseInt(item.count) >= 10 && parseInt(item.count) < 20) {
-          topTenContributor.push(item);
-        } else if (parseInt(item.count) >= 20 && parseInt(item.count) < 50) {
-          topTwentyContributor.push(item);
-        } else if (parseInt(item.count) >= 50 && parseInt(item.count) < 100) {
-          topFiftyContributor.push(item);
-        } else if (parseInt(item.count) >= 100) {
-          topOneHunderedContributor.push(item);
-        }
-      });
-      this.setState({
-        allMetrics: temp.allMetrics,
-        topContribProjectsLastYear: temp.topContribProjectsLastYear,
-        topContribProjectsThisYear: temp.topContribProjectsThisYear,
-        topContribProjectsAllTime: temp.topContribProjectsAllTime,
-        contribCountByYearAll: temp.contribCountByYearAll,
-        usersAndCounts: {
-          ten: topTenContributor.reverse(),
-          twenty: topTwentyContributor.reverse(),
-          fifty: topFiftyContributor.reverse(),
-          onehundo: topOneHunderedContributor.reverse(),
-        },
-      });
+  async componentWillMount() {
+    const metrics = await reqJSON('/api/metrics/all');
+    const topTenContributor = [];
+    const topTwentyContributor = [];
+    const topFiftyContributor = [];
+    const topOneHunderedContributor = [];
+    // sorting into the groups I care about
+    metrics.usersAndCounts.forEach(function(item) {
+      if (parseInt(item.count, 10) >= 10 && parseInt(item.count, 10) < 20) {
+        topTenContributor.push(item);
+      } else if (parseInt(item.count, 10) >= 20 && parseInt(item.count, 10) < 50) {
+        topTwentyContributor.push(item);
+      } else if (parseInt(item.count, 10) >= 50 && parseInt(item.count, 10) < 100) {
+        topFiftyContributor.push(item);
+      } else if (parseInt(item.count, 10) >= 100) {
+        topOneHunderedContributor.push(item);
+      }
+    });
+    this.setState({
+      allMetrics: metrics.allMetrics,
+      topContribProjectsLastYear: metrics.topContribProjectsLastYear,
+      topContribProjectsThisYear: metrics.topContribProjectsThisYear,
+      topContribProjectsAllTime: metrics.topContribProjectsAllTime,
+      contribCountByYearAll: metrics.contribCountByYearAll,
+      usersAndCounts: {
+        ten: topTenContributor.reverse(),
+        twenty: topTwentyContributor.reverse(),
+        fifty: topFiftyContributor.reverse(),
+        onehundo: topOneHunderedContributor.reverse(),
+      },
     });
   }
 
-  getContent = (allMetrics, usersAndCounts, contribCountByYearAll, topContribProjectsAllTime, topContribProjectsThisYear, topContribProjectsLastYear) => {
+  getContent = (allMetrics, usersAndCounts, contribCountByYearAll,
+                topContribProjectsAllTime, topContribProjectsThisYear,
+                topContribProjectsLastYear) => {
     let content;
     if (allMetrics.length > 0) {
       content = (<MetricsLists
@@ -96,7 +100,9 @@ export default class Metrics extends React.Component<Props, State> {
   }
 
   render() {
-    const metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts, this.state.contribCountByYearAll, this.state.topContribProjectsAllTime, this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
+    const metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts,
+      this.state.contribCountByYearAll, this.state.topContribProjectsAllTime,
+      this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
     return (
       <div>
         <ExtensionPoint ext="landing-content" >
