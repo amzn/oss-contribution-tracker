@@ -49,7 +49,7 @@ export function fetchUserContribution(userName) {
 // Helper functions
 function filterContributionList(clist) {
     let list = new Array();
-    Object.values(clist.contributionList).map(array => {
+    Object.values<any>(clist.contributionList).map(array => {
       array.map(object => { list.push(object); } );
     });
     return list;
