@@ -53,9 +53,9 @@ export function receiveAliasNames(alias) {
 // Action creators
 export function fetchDataListAlias() {
   return (dispatch) => {
-    return  reqJSON(RECEIVE_ALIAS_NAMES).then((alias) => {
+    return reqJSON(RECEIVE_ALIAS_NAMES).then((alias) => {
       dispatch(receiveAliasNames(alias));
-    }) ;
+    });
   };
 }
 

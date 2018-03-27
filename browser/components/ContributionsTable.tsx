@@ -57,13 +57,9 @@ class ContributionsTable extends React.Component<Props, State> {
   createTables = (contributionList) => {
     const type = this.props.type;
     let tableProps = {};
-    /*
-      These are the items that will be stored in state and the same name
-      which is why I have used the abbreviations here to reduce confusion.
-    */
-    const t = new Map();
-    const pN = new Array();
-    let sP = null;
+    const newTables = new Map();
+    const newProjectNames = new Array();
+
     switch (type) {
       case 'all':
         tableProps = {
@@ -79,15 +75,15 @@ class ContributionsTable extends React.Component<Props, State> {
         break;
     }
     for (const [key, value] of Object.entries(contributionList)) {
-      t.set(key, ContributionsTable.renderTables(key, value, tableProps));
-      pN.push(key.toLowerCase());
+      newTables.set(key, ContributionsTable.renderTables(key, value, tableProps));
+      newProjectNames.push(key.toLowerCase());
     }
-    pN.sort();
-    sP = null;
+    newProjectNames.sort();
+
     this.setState({
-      tables: t,
-      projectNames: pN,
-      selectedProject: sP,
+      tables: newTables,
+      projectNames: newProjectNames,
+      selectedProject: null,
     });
   }
 

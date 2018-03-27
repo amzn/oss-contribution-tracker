@@ -34,7 +34,7 @@ export default function reducer(state = initial, action: any = {}) {
 /*** Action creators ***/
 export function addContribution(contrib) {
   return (dispatch) => {
-    return postJSON('/api/contributions/new', JSON.stringify(contrib))
+    return postJSON('/api/contributions/new', contrib)
       .then(() => {
         history.push('/contribute');
         window.location.reload();
@@ -45,7 +45,7 @@ export function addContribution(contrib) {
 
 export function approveContribution(contrib) {
   return (dispatch) => {
-    return postJSON('/api/contributions/approve', JSON.stringify(contrib))
+    return postJSON('/api/contributions/approve', contrib)
       .then(() => {
         history.push('/admin');
       })
@@ -55,21 +55,21 @@ export function approveContribution(contrib) {
 
 export function updateContribution(contrib) {
   return (dispatch) => {
-    return postJSON('/api/contributions/update', JSON.stringify(contrib))
+    return postJSON('/api/contributions/update', contrib)
       .catch((error) => console.error(error));
   };
 }
 
 export function addContributionAutoApproval(contrib) {
   return (dispatch) => {
-    return postJSON('/api/contributions/newautoapproval', JSON.stringify(contrib))
-    .catch((error) => console.error(error));
+    return postJSON('/api/contributions/newautoapproval', contrib)
+      .catch((error) => console.error(error));
   };
 }
 
 export function updateGithubLink(contrib) {
   return (dispatch) => {
-    return postJSON('/api/contributions/update/link', JSON.stringify(contrib))
-    .catch((error) => console.info(error));
+    return postJSON('/api/contributions/update/link', contrib)
+      .catch((error) => console.info(error));
   };
 }

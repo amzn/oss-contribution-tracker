@@ -18,6 +18,7 @@ import * as winston from 'winston';
 import LDAP from '../auth/ldap';
 import config from '../config';
 
+import { AccessError } from '../errors';
 import * as approversAPI from './approvers';
 import * as claAPI from './cla';
 import * as contributionsAPI from './contributions';
@@ -131,10 +132,7 @@ router.post('/approvers/new', async (req, res, next) => {
   } else {
     const user = await getUser(req);
     winston.warn(`${user} did not have permissions to access /approvers/new`);
-    res.status(403);
-    res.send({
-      error: 'You do not posses the permissions to access that',
-    });
+    return next(new AccessError('no access to adding approvers'));
   }
 });
 
@@ -165,10 +163,7 @@ router.post('/contributions/approve', async (req, res, next) => {
   } else {
     const user = await getUser(req);
     winston.warn(`${user} did not have permissions to access /contributions/approve`);
-    res.status(403);
-    res.send({
-      error: 'You do not posses the permissions to access that',
-    });
+    return next(new AccessError('no access to contribution approval'));
   }
 });
 
@@ -188,8 +183,7 @@ router.post('/contributions/new/auto', async (req, res, next) => {
   const user = await getUser(req);
   const roles = await getRoles(user);
   if (!roles.has('auto-approve')) {
-    res.status(401).send('no access to auto-approve');
-    return;
+    return next(new AccessError('no access to auto-approve'));
   }
   pack(contributionsAPI.addNewAutoApprovedContribution(req, req.body, user), res, next);
 });
@@ -198,24 +192,9 @@ router.post('/contributions/diffcheck', async (req, res, next) => {
   const user = await getUser(req);
   const roles = await getRoles(user);
   if (!roles.has('auto-approve')) {
-    res.status(401).send('no access to auto-approve');
-    return;
+    return next(new AccessError('no access to auto-approve'));
   }
   pack(contributionsAPI.diffCheck(req, req.body), res, next);
-});
-
-router.post('/contributions/newautoapproval', async (req, res, next) => {
-  const access = (req as any).UserAccess;
-  if (access.includes(AccessTypes.admin)) {
-    pack(contributionsAPI.addNewContributionAutoApproval(req, req.body), res, next);
-  } else {
-    const user = await getUser(req);
-    winston.warn(`${user} did not have permissions to access /contributions/newautoapproval`);
-    res.status(403);
-    res.send({
-      error: 'You do not posses the permissions to access that',
-    });
-  }
 });
 
 router.post('/contributions/update', async (req, res, next) => {
@@ -225,10 +204,7 @@ router.post('/contributions/update', async (req, res, next) => {
   } else {
     const user = await getUser(req);
     winston.warn(`${user} did not have permissions to access /contributions/update`);
-    res.status(403);
-    res.send({
-      error: 'You do not posses the permissions to access that',
-    });
+    return next(new AccessError('no access to contribution updates'));
   }
 });
 
@@ -249,10 +225,7 @@ router.post('/contributions/update/link', async (req, res, next) => {
     }
   } else {
     winston.warn(`${user} not allowed to update contribution link`);
-    res.status(401);
-    res.send({
-      error: 'Not allowed to update contribution link',
-    });
+    return next(new AccessError('no access to update contribution link'));
   }
 });
 
@@ -283,10 +256,7 @@ router.post('/cla/delete', async (req, res, next) => {
   } else {
     const user = await getUser(req);
     winston.warn(`${user} did not have permissions to access /cla/delete`);
-    res.status(403);
-    res.send({
-      error: 'You do not posses the permissions to access that',
-    });
+    return next(new AccessError('no access to CLA management'));
   }
 });
 
@@ -298,10 +268,7 @@ router.post('/cla/update', async (req, res, next) => {
   } else {
     const user = await getUser(req);
     winston.warn(`${user} did not have permissions to access /cla/update`);
-    res.status(403);
-    res.send({
-      error: 'You do not posses the permissions to access that',
-    });
+    return next(new AccessError('no access to CLA management'));
   }
 });
 
@@ -313,10 +280,7 @@ router.post('/cla/submit', async (req, res, next) => {
   } else {
     const user = await getUser(req);
     winston.warn(`${user} did not have permissions to access /cla/submit`);
-    res.status(403);
-    res.send({
-      error: 'You do not posses the permissions to access that',
-    });
+    return next(new AccessError('no access to CLA management'));
   }
 });
 
@@ -346,10 +310,7 @@ function pack(promise, res, next) {
         res.send(x);
       }
     })
-    .catch((err) => {
-      winston.error(err);
-      res.status(500).send('Internal error');
-    });
+    .catch(next);
 }
 
 async function getUser(req): Promise<string> {

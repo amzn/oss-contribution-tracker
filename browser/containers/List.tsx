@@ -29,15 +29,17 @@ class List extends React.Component<{}, State> {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const contributions = await reqJSON('/api/contributions');
     this.setState({contributionList: contributions.contributionList});
   }
 
   render() {
+    const { contributionList } = this.state;
+
     return (
       <div id="contributionsListAll">
-        <ContributionsTable contributionList={ this.state.contributionList } type="all" />
+        <ContributionsTable contributionList={contributionList} type="all" />
       </div>
     );
   }
