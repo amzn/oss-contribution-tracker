@@ -69,7 +69,6 @@ export function addContributionAutoApproval(contrib) {
 
 export function updateGithubLink(contrib) {
   return (dispatch) => {
-    return postJSON('/api/contributions/update/link', contrib)
-      .catch((error) => console.info(error));
+    return postJSON('/api/contributions/update/link', contrib);
   };
 }

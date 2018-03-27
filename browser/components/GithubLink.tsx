@@ -64,18 +64,21 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     const { dispatch } = this.props;
     const contribId = entry.contribution_id.toString();
     const url = event.currentTarget.url.value.trim();
-    const rtn = await dispatch(ContributionsActions.updateGithubLink({
-      contrib_id: contribId,
-      link: url,
-      user: this.state.user,
-    }));
-    if (rtn.status === 200) {
+
+    try {
+      await dispatch(ContributionsActions.updateGithubLink({
+        contrib_id: contribId,
+        link: url,
+        user: this.state.user,
+      }));
       const list = this.state.contributionList;
       delete list[contribId];
       this.setState({
         contributionList: this.state.contributionList,
       });
-    } else {
+    } catch (err) {
+      // tslint:disable-next-line:no-console
+      console.error(err);
       const getAlert = () => (
         <SweetAlert title="Failure to update link" onConfirm={this.hideAlertRedirect}>
           Unable to save your contribution link. Please contact your site administrator.
