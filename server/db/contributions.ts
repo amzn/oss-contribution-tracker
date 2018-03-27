@@ -83,21 +83,6 @@ export async function addNewContribution(project_id, description, contribution_d
   );
 }
 
-// Auto approval for simple contributions
-export async function addNewContributionApproved(project_id, description, contribution_date,
-                                                 approver, contributor_alias, contribution_project_review,
-                                                 githublink, approvalNotes) {
-  return await pg().none( // fill out all fields as it was easier
-    'insert into contributions (project_id, contribution_description, contribution_date, ' +
-    'contributor_alias, contribution_github_status, contribution_commit_url, approver_id, ' +
-    'approval_status, approval_notes, approval_date, contribution_submission_date, ' +
-    'contribution_closed_date, contribution_project_review) ' +
-    'values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
-    [project_id, description, contribution_date, contributor_alias, 'pending', githublink, 4,
-    'approved', approvalNotes, null, contribution_date, null, contribution_project_review],
-  );
-}
-
 // Update approval column of a specific contribution
 export async function approveContribution(id, notes, status) {
   return await pg().none(

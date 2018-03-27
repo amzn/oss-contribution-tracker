@@ -22,43 +22,34 @@ interface Props {
 }
 
 interface State {
-  user: {
-    name: string;
-  };
-  projects: any;
-  approvers: any;
+  projects: any[];
+  approvers: any[];
 }
 
 export default class Contributions extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        name: '',
-      },
-      projects: {},
-      approvers: {},
+      projects: [],
+      approvers: [],
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     // Maybe store user info in redux once I have session stuff
     const projects = await reqJSON('/api/projects');
-    this.setState({
-      projects: projects.projectList,
-    });
-
     const approvers = await reqJSON('/api/approvers');
     this.setState({
-      approvers: {
-        name: approvers.approverList,
-      },
+      projects: projects.projectList,
+      approvers: approvers.approverList,
     });
   }
 
   render() {
+    const { approvers, projects } = this.state;
+
     return (
-      <ContributionsForm approvers={this.state.approvers.name} projects={this.state.projects} />
+      <ContributionsForm approvers={approvers} projects={projects} />
     );
   }
 }

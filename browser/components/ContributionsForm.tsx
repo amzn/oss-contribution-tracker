@@ -145,7 +145,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
                         onChange={this.toggleProjectSelect} />
                       <label htmlFor="newProject" className="form-check-label">
                         New Project
-                </label>
+                      </label>
                     </span>
                   </div>
                   <input id="new-project-text" type="text" className="form-control"
