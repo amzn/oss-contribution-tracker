@@ -124,27 +124,6 @@ export async function diffCheck(req, body) {
   };
 }
 
-export async function addNewContributionAutoApproval(req, body) {
-  let projectId = '';
-  if (body.needsProjectReview) {
-    const resp = await dbProjects.addProject(body.package, null, null, true);
-    projectId = resp.project_id;
-  } else {
-    projectId = body.package;
-  }
-  const contributionID = await dbContribution.addNewContributionApproved(
-    projectId,
-    body.description,
-    body.date,
-    body.approver,
-    body.contributor.trim(),
-    body.needsProjectReview,
-    body.githubLink,
-    body.approvalNotes,
-  );
-  return { contributionID };
-}
-
 export async function updateContribution(req, body) {
   if (body.project_new) {
     // This is claimed to be a new project so let's find out and create if necessary
