@@ -64,11 +64,12 @@ export async function getSingleContribution(req, id) {
 
 export async function approveContribution(req, body) {
   // Add check to ensure approving user has correct rights
-  return await dbContribution.approveContribution(
+  await dbContribution.approveContribution(
     body.contributionId,
     body.approvalNotes,
     body.approvalStatus,
   );
+  return { contributionId: body.contributionId };
 }
 
 export async function addNewContribution(req, body) {
