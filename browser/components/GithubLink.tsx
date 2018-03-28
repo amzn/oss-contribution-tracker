@@ -94,8 +94,7 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     const display = [];
     for (const key of Object.keys(this.state.contributionList)) {
       const value = this.state.contributionList[key];
-      const status = value.approval_status;
-      if (status === 'approved-pending-link') {
+      if (!value.contribution_commit_url) {
         display.push(
           <tr key={value.contribution_id}>
             <td>{value.project_name}</td>
@@ -120,10 +119,10 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     return (
       <div className="container">
         <div className="row">
-          <div id="github-link-container" className="col-lg-9"><br/><br/>
+          <div id="github-link-container" className="col-lg-12"><br/><br/>
             <h3>Your contributions awaiting links</h3>
             { this.state.alert }
-            <table className="table table-striped table-bordered">
+            <table className="table table-striped table-bordered mt-3">
               <thead>
                 <tr key="github-link-table-head">
                   <th>Project</th>
