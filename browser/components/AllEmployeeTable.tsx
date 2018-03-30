@@ -163,23 +163,6 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  onSortChange={() => {this.onSortChange('contribution_commit_url'); }}
-                  sortDir="contribution_commit_url">
-                  Commit URL
-                </TableSortHeaderCell>
-              }
-              cell={
-                <TableLinkCell
-                  data={filteredDataList ? filteredDataList : []}
-                  field="contribution_commit_url"
-                />
-              }
-              flexGrow={2}
-              width={75}
-            />
-            <Column
-              header={
-                <TableSortHeaderCell
                   onSortChange={() => {this.onSortChange('contribution_submission_date'); }}
                   sortDir="contribution_submission_date">
                   Submission Date

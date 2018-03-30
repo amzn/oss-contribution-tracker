@@ -6,7 +6,6 @@ CREATE TABLE contributions (
   contributor_alias TEXT NOT NULL,
   contribution_github_status TEXT,
   contribution_url TEXT,
-  contribution_commit_url TEXT,
   approver_id INTEGER REFERENCES approvers (approver_id) NOT NULL,
   approval_status TEXT NOT NULL,
   approval_notes TEXT,

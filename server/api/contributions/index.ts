@@ -140,7 +140,6 @@ export async function updateContribution(req, body) {
     body.contributor_alias.trim(),
     body.contribution_github_status,
     body.contribution_url,
-    body.contribution_commit_url,
     body.approval_status,
     body.approval_notes,
     body.approval_date,

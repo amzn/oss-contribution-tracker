@@ -126,12 +126,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       changes.contribution_github_status = field.githubStatusInput.value;
     }
 
-    if (field.githubCommitUrlInput.value.length !== 0) {
-      changes.contribution_commit_url = field.githubCommitUrlInput.value;
-    }
-
     if (field.contributionUrlInput.value.length !== 0) {
-      changes.contribution_commit_url = field.contributionUrlInput.value;
+      changes.contribution_url = field.contributionUrlInput.value;
     }
 
     if (field.approvalStatusInput.value !== this.state.contrib.approval_status) {
@@ -277,11 +273,6 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   menuContainerStyle={{ zIndex: 5 }}
                   openOnFocus={true}
                 />
-              </div>
-              <div className="form-group">
-                <label>GitHub Commit URL</label>
-                <input type="text" className="form-control" id="githubCommitUrlInput"
-                  placeholder={this.state.contrib.contribution_commit_url} />
               </div>
               <div className="form-group">
                 <label>Contribution URL</label>

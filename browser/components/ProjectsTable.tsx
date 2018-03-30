@@ -101,7 +101,7 @@ export default class ProjectsTable extends React.Component<Props, {}> {
             cell={
               <TableLinkCell
                 data={item}
-                field="contribution_commit_url"
+                field="contribution_url"
               />
             }
             width={75}
