@@ -183,21 +183,6 @@ export default class EditContributionTable extends React.Component<Props, State>
             width={125}
           />
           <Column
-            key={'contribution_edit_commit_url'}
-            columnKey="commit_url"
-            header={
-                <Cell>Commit URL</Cell>
-            }
-            cell={
-              <TableLinkCell
-                data={filtered}
-                field="contribution_commit_url"
-                col="commit_url"
-              />
-            }
-            width={125}
-          />
-          <Column
             key={'contribution_edit_submission_date'}
             columnKey="submission_date"
             header={ this.searchHeader.bind('submission_date') }

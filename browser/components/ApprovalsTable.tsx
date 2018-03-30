@@ -126,24 +126,6 @@ export default class ApprovalsTable extends React.Component<Props, State> {
             width={125}
           />
           <Column
-            header=
-            {
-              <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('contribution_commit_url'); }}
-                sortDir="contribution_commit_url">
-                Commit URL
-              </TableSortHeaderCell>
-            }
-            cell={
-              <TableLinkCell
-                data={this.state.approvalList}
-                field="contribution_commit_url"
-              />
-            }
-            flexGrow={2}
-            width={75}
-          />
-          <Column
             header={
               <TableSortHeaderCell
                 onSortChange={() => {this.onSortChange('contribution_submission_date'); }}

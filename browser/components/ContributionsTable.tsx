@@ -63,7 +63,7 @@ class ContributionsTable extends React.Component<Props, State> {
     switch (type) {
       case 'all':
         tableProps = {
-          summaryWidth: 275,
+          summaryWidth: 350,
           contributor: true,
         };
         break;
@@ -73,6 +73,8 @@ class ContributionsTable extends React.Component<Props, State> {
           contributor: false,
         };
         break;
+      default:
+        console.error('Improper type passed to createTables.')
     }
     for (const [key, value] of Object.entries(contributionList)) {
       newTables.set(key, ContributionsTable.renderTables(key, value, tableProps));
@@ -149,17 +151,6 @@ class ContributionsTable extends React.Component<Props, State> {
               <TableLinkCell
                 data={item}
                 field="contribution_url"
-              />
-            }
-            width={75}
-          />
-          <Column
-            key={item.name + '_commit_url'}
-            header={<Cell>Commit URL</Cell>}
-            cell={
-              <TableLinkCell
-                data={item}
-                field="contribution_commit_url"
               />
             }
             width={75}

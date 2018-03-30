@@ -94,7 +94,7 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     const display = [];
     for (const key of Object.keys(this.state.contributionList)) {
       const value = this.state.contributionList[key];
-      if (!value.contribution_commit_url) {
+      if (!value.contribution_url) {
         display.push(
           <tr key={value.contribution_id}>
             <td>{value.project_name}</td>
