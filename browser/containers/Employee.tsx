@@ -13,6 +13,7 @@
  */
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import * as EmployeeActions from '../actions/employeeAction';
 import AllEmployeeTable from '../components/AllEmployeeTable';
@@ -76,6 +77,13 @@ class Employee extends React.Component<Props, State> {
     const currentAlias = this.state.currentAlias === '' ? employeeData.user : this.state.currentAlias;
     return (
       <div>
+        <div className="col-md-3">
+          <h4>
+            <Link to="/contribute/link">
+              View Your Contributions Requiring Links
+            </Link>
+          </h4>
+        </div>
         <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch}
           placeholder="Contributor Alias" className="form-control" />
         <datalist id="browsers">
