@@ -59,7 +59,7 @@ function getDiffChunks(diff: string): Array<[Chunk, string[]]> {
     const trimmed = line.substr(1).trim();
 
     if (state === ParseState.ChunkEmpty) {
-      if (line.startsWith(' ')) {
+      if (line.startsWith(' ') || line === '') {
         continue;
       } else if (line.startsWith('+')) {
         state = ParseState.ChunkAdd;
@@ -77,7 +77,7 @@ function getDiffChunks(diff: string): Array<[Chunk, string[]]> {
       } else if (line.startsWith('-')) {
         commitChunk(trimmed);
         state = ParseState.ChunkDel;
-      } else if (line.startsWith(' ')) {
+      } else if (line.startsWith(' ') || line === '') {
         commitChunk(trimmed);
         state = ParseState.ChunkEmpty;
       } else {
@@ -91,7 +91,7 @@ function getDiffChunks(diff: string): Array<[Chunk, string[]]> {
       } else if (line.startsWith('+')) {
         commitChunk(trimmed);
         state = ParseState.ChunkAdd;
-      } else if (line.startsWith(' ')) {
+      } else if (line.startsWith(' ') || line === '') {
         commitChunk(trimmed);
         state = ParseState.ChunkEmpty;
       } else {
