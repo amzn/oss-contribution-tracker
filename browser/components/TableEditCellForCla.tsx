@@ -23,9 +23,12 @@ interface Props {
   columnKey: string;
 }
 
-export default class TableEditCellForCla extends React.Component<Partial<Props>, {}> {
+export default class TableEditCellForCla extends React.Component<
+  Partial<Props>,
+  {}
+> {
   render() {
-    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
     const path = `/cla/${data[rowIndex][field]}`;
     return (
       <Cell {...props}>

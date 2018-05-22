@@ -18,8 +18,7 @@ import MetricsLists from '../components/MetricsLists';
 
 import ExtensionPoint from '../util/ExtensionPoint';
 
-interface Props extends React.Props<any> {
-}
+interface Props extends React.Props<any> {}
 
 interface State {
   usersAndCounts: any;
@@ -53,9 +52,15 @@ export default class Metrics extends React.Component<Props, State> {
     metrics.usersAndCounts.forEach(function(item) {
       if (parseInt(item.count, 10) >= 10 && parseInt(item.count, 10) < 20) {
         topTenContributor.push(item);
-      } else if (parseInt(item.count, 10) >= 20 && parseInt(item.count, 10) < 50) {
+      } else if (
+        parseInt(item.count, 10) >= 20 &&
+        parseInt(item.count, 10) < 50
+      ) {
         topTwentyContributor.push(item);
-      } else if (parseInt(item.count, 10) >= 50 && parseInt(item.count, 10) < 100) {
+      } else if (
+        parseInt(item.count, 10) >= 50 &&
+        parseInt(item.count, 10) < 100
+      ) {
         topFiftyContributor.push(item);
       } else if (parseInt(item.count, 10) >= 100) {
         topOneHunderedContributor.push(item);
@@ -76,19 +81,26 @@ export default class Metrics extends React.Component<Props, State> {
     });
   }
 
-  getContent = (allMetrics, usersAndCounts, contribCountByYearAll,
-                topContribProjectsAllTime, topContribProjectsThisYear,
-                topContribProjectsLastYear) => {
+  getContent = (
+    allMetrics,
+    usersAndCounts,
+    contribCountByYearAll,
+    topContribProjectsAllTime,
+    topContribProjectsThisYear,
+    topContribProjectsLastYear
+  ) => {
     let content;
     if (allMetrics.length > 0) {
-      content = (<MetricsLists
-        usersAndCounts={usersAndCounts}
-        contribCountByYearAll={contribCountByYearAll}
-        topContribProjectsAllTime={topContribProjectsAllTime}
-        topContribProjectsThisYear={topContribProjectsThisYear}
-        topContribProjectsLastYear={topContribProjectsLastYear}
-        allMetrics={allMetrics}
-      />);
+      content = (
+        <MetricsLists
+          usersAndCounts={usersAndCounts}
+          contribCountByYearAll={contribCountByYearAll}
+          topContribProjectsAllTime={topContribProjectsAllTime}
+          topContribProjectsThisYear={topContribProjectsThisYear}
+          topContribProjectsLastYear={topContribProjectsLastYear}
+          allMetrics={allMetrics}
+        />
+      );
     } else {
       content = (
         <div id="metrics">
@@ -97,17 +109,21 @@ export default class Metrics extends React.Component<Props, State> {
       );
     }
     return content;
-  }
+  };
 
   render() {
-    const metrics = this.getContent(this.state.allMetrics, this.state.usersAndCounts,
-      this.state.contribCountByYearAll, this.state.topContribProjectsAllTime,
-      this.state.topContribProjectsThisYear, this.state.topContribProjectsLastYear);
+    const metrics = this.getContent(
+      this.state.allMetrics,
+      this.state.usersAndCounts,
+      this.state.contribCountByYearAll,
+      this.state.topContribProjectsAllTime,
+      this.state.topContribProjectsThisYear,
+      this.state.topContribProjectsLastYear
+    );
     return (
       <div>
-        <ExtensionPoint ext="landing-content" >
-          { metrics }
-        </ExtensionPoint>
-      </div>);
+        <ExtensionPoint ext="landing-content">{metrics}</ExtensionPoint>
+      </div>
+    );
   }
 }

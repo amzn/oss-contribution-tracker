@@ -51,7 +51,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
     };
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     const { dispatch } = this.props;
     const field = e.target.elements;
     e.preventDefault();
@@ -65,54 +65,56 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
     }
 
     // dispatch to server
-    dispatch(ContributionsActions.addContribution({
-      package: projectName.toLowerCase(),
-      description: field.fixDescription.value.toLowerCase(),
-      date: field.dateSelected.value.toLowerCase(),
-      approver: field.approverName.value.toLowerCase(),
-      contributor: field.contributorName.value.toLowerCase(),
-      needsProjectReview,
-      githubLink: field.githubLink.value.toLowerCase(),
-    }));
-  }
+    dispatch(
+      ContributionsActions.addContribution({
+        package: projectName.toLowerCase(),
+        description: field.fixDescription.value.toLowerCase(),
+        date: field.dateSelected.value.toLowerCase(),
+        approver: field.approverName.value.toLowerCase(),
+        contributor: field.contributorName.value.toLowerCase(),
+        needsProjectReview,
+        githubLink: field.githubLink.value.toLowerCase(),
+      })
+    );
+  };
 
   approverList = (e?: any) => {
     if (this.props.approvers) {
       const approvers = this.props.approvers;
-      return approvers.map((listValue) => {
-          return {
-            label: listValue.approver_name ? listValue.approver_name : listValue.approver_alias,
-            value: listValue.approver_id,
-          };
-        },
-      );
+      return approvers.map(listValue => {
+        return {
+          label: listValue.approver_name
+            ? listValue.approver_name
+            : listValue.approver_alias,
+          value: listValue.approver_id,
+        };
+      });
     }
-  }
+  };
 
   projectList = (e?: any) => {
     // check for length as this can return an empty object
     if (this.props.projects.length) {
       const projects = this.props.projects;
-      return projects.map((listValue) => {
-          return { label: listValue.project_name, value: listValue.project_id};
-        },
-      );
+      return projects.map(listValue => {
+        return { label: listValue.project_name, value: listValue.project_id };
+      });
     }
-  }
+  };
 
-  handleApproverChange = (e) => {
-    this.setState({approver: e});
-  }
+  handleApproverChange = e => {
+    this.setState({ approver: e });
+  };
 
-  handleProjectChange = (e) => {
-    this.setState({project: e});
-  }
+  handleProjectChange = e => {
+    this.setState({ project: e });
+  };
 
-  toggleProjectSelect = (e) => {
+  toggleProjectSelect = e => {
     this.setState({
       projectDisabled: e.target.checked,
     });
-  }
+  };
 
   render() {
     const approverOptions = this.approverList();
@@ -139,28 +141,48 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
                 <div className="input-group mt-1">
                   <div className="input-group-prepend">
                     <span className="input-group-text">
-                      <input type="checkbox" id="newProject"
+                      <input
+                        type="checkbox"
+                        id="newProject"
                         className="ml-0 mr-1"
                         checked={this.state.projectDisabled}
-                        onChange={this.toggleProjectSelect} />
+                        onChange={this.toggleProjectSelect}
+                      />
                       <label htmlFor="newProject" className="form-check-label">
                         New Project
                       </label>
                     </span>
                   </div>
-                  <input id="new-project-text" type="text" className="form-control"
-                    name="newProjectName" disabled={!this.state.projectDisabled} required={true} />
+                  <input
+                    id="new-project-text"
+                    type="text"
+                    className="form-control"
+                    name="newProjectName"
+                    disabled={!this.state.projectDisabled}
+                    required={true}
+                  />
                 </div>
               </div>
 
               <div className="form-group">
                 <label>Description of fix</label>
-                <textarea id="fixDescription" className="form-control" rows={3} name="fixDescription" required={true} />
+                <textarea
+                  id="fixDescription"
+                  className="form-control"
+                  rows={3}
+                  name="fixDescription"
+                  required={true}
+                />
               </div>
 
               <div className="form-group">
                 <label>Contribution date</label>
-                <input type="date" className="form-control" name="dateSelected" required={true}/>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="dateSelected"
+                  required={true}
+                />
               </div>
 
               <div className="form-group">
@@ -179,15 +201,24 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
 
               <div className="form-group">
                 <label>Contributor alias</label>
-                <input type="text" className="form-control" name="contributorName" required={true} />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="contributorName"
+                  required={true}
+                />
               </div>
 
               <div className="form-group">
                 <label>Contribution Link (optional)</label>
                 <input type="text" className="form-control" name="githubLink" />
               </div>
-              <Link className="btn btn-secondary" id="to-home" to="/">Cancel</Link>
-              <button className="btn btn-primary" type="submit">Submit</button>
+              <Link className="btn btn-secondary" id="to-home" to="/">
+                Cancel
+              </Link>
+              <button className="btn btn-primary" type="submit">
+                Submit
+              </button>
             </form>
           </div>
         </div>

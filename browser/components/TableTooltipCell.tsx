@@ -25,7 +25,10 @@ interface Props {
 interface State {
   show: any;
 }
-export default class TooltipCell extends React.Component<Partial<Props>, State> {
+export default class TooltipCell extends React.Component<
+  Partial<Props>,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,12 +36,18 @@ export default class TooltipCell extends React.Component<Partial<Props>, State> 
     };
   }
   render() {
-    const {data, rowIndex, field, ...props} = this.props;
+    const { data, rowIndex, field, ...props } = this.props;
     const value = data[rowIndex][field];
     return (
-      <Cell {...props}
-      onMouseEnter = {() => { ReactTooltip.show(); }}
-      onMouseLeave = {() => { ReactTooltip.hide(); }}>
+      <Cell
+        {...props}
+        onMouseEnter={() => {
+          ReactTooltip.show();
+        }}
+        onMouseLeave={() => {
+          ReactTooltip.hide();
+        }}
+      >
         <a data-tip={value} className="im-pointer">
           <i className="fa fa-pencil-square" />
         </a>

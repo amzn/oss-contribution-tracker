@@ -38,59 +38,81 @@ class Approvals extends React.Component<Props, State> {
     };
   }
 
-  handleApproval = (e) => {
+  handleApproval = e => {
     const { dispatch } = this.props;
     const field = e.target.elements;
     e.preventDefault();
 
     // dispatch to server
-    dispatch(ContributionsActions.approveContribution({
-      approvalNotes: field.approvalNotes.value,
-      approvalStatus: this.state.approvalStatus,
-      contributionId: (this.props as any).match.params.contrib_id,
-    }));
-  }
+    dispatch(
+      ContributionsActions.approveContribution({
+        approvalNotes: field.approvalNotes.value,
+        approvalStatus: this.state.approvalStatus,
+        contributionId: (this.props as any).match.params.contrib_id,
+      })
+    );
+  };
 
-  approveContrib = (e) => {
+  approveContrib = e => {
     this.setState({
       approvalStatus: 'approved',
       acceptHighlight: true,
       declineHighlight: false,
     });
-  }
+  };
 
-  denyContrib = (e) => {
+  denyContrib = e => {
     this.setState({
       approvalStatus: 'denied',
       acceptHighlight: false,
       declineHighlight: true,
     });
-  }
+  };
 
   render() {
     return (
       <form onSubmit={this.handleApproval}>
         <div className="form-group">
           <label>Approve/Deny</label>
-          <br/>
+          <br />
           <div className="btn-group" role="group" aria-label="...">
-            <button id="approveBtn" type="button" className="btn btn-success btn-sm active"
-              onClick={this.approveContrib} disabled={this.state.acceptHighlight}>
+            <button
+              id="approveBtn"
+              type="button"
+              className="btn btn-success btn-sm active"
+              onClick={this.approveContrib}
+              disabled={this.state.acceptHighlight}
+            >
               <i className="fa fa-check" />
             </button>
-            <button id="denyBtn" type="button" className="btn btn-danger btn-sm active"
-              onClick={this.denyContrib} disabled={this.state.declineHighlight}>
+            <button
+              id="denyBtn"
+              type="button"
+              className="btn btn-danger btn-sm active"
+              onClick={this.denyContrib}
+              disabled={this.state.declineHighlight}
+            >
               <i className="fa fa-ban" />
             </button>
           </div>
-          <br/>
-          <label>Approval Notes</label> <br/>
-          <textarea className="form-control" rows={3} name="approvalNotes" required={true} /> <br/>
+          <br />
+          <label>Approval Notes</label> <br />
+          <textarea
+            className="form-control"
+            rows={3}
+            name="approvalNotes"
+            required={true}
+          />{' '}
+          <br />
         </div>
         <div className="col-md-10">
           <div className="pullRight">
-            <Link className="btn btn-secondary" to="/admin">Cancel</Link>
-            <button className="btn btn-primary" type="submit">Submit</button>
+            <Link className="btn btn-secondary" to="/admin">
+              Cancel
+            </Link>
+            <button className="btn btn-primary" type="submit">
+              Submit
+            </button>
           </div>
         </div>
       </form>
@@ -98,4 +120,4 @@ class Approvals extends React.Component<Props, State> {
   }
 }
 
-export default connect((state) => ({}))(Approvals);
+export default connect(state => ({}))(Approvals);

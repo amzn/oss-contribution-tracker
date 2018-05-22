@@ -11,7 +11,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import {Cell} from 'fixed-data-table';
+import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 
 interface Props {
@@ -22,7 +22,10 @@ interface Props {
   columnKey: string;
 }
 
-export default class TableApprovalStatusCell extends React.Component<Partial<Props>, {}> {
+export default class TableApprovalStatusCell extends React.Component<
+  Partial<Props>,
+  {}
+> {
   renderApprovalStatus(st) {
     let badge = '';
     const status = st.toLowerCase();
@@ -33,19 +36,15 @@ export default class TableApprovalStatusCell extends React.Component<Partial<Pro
     } else {
       badge = 'badge badge-primary';
     }
-    return(
+    return (
       <div>
         <span className={badge}>{status}</span>
       </div>
     );
   }
   render() {
-    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
     const status = data[rowIndex][field];
-    return (
-      <Cell {...props}>
-        {this.renderApprovalStatus(status)}
-      </Cell>
-    );
+    return <Cell {...props}>{this.renderApprovalStatus(status)}</Cell>;
   }
 }

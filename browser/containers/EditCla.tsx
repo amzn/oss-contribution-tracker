@@ -14,7 +14,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { reqJSON  } from '../util/index';
+import { reqJSON } from '../util/index';
 
 import CLAEditor from '../components/CLAEditor';
 
@@ -36,8 +36,8 @@ interface State {
   cla_project_names: any[];
   cla_project_approvers_names: any[];
   display: {
-    signatory: string[],
-    poc: string[],
+    signatory: string[];
+    poc: string[];
   };
 }
 
@@ -93,10 +93,13 @@ class EditCla extends React.Component<Partial<Props>, State> {
 
   render() {
     return (
-      <CLAEditor project_id={(this.props as any).match.params.project_id}
-        dispatch={this.props.dispatch} data={this.state} />
+      <CLAEditor
+        project_id={(this.props as any).match.params.project_id}
+        dispatch={this.props.dispatch}
+        data={this.state}
+      />
     );
   }
 }
 
-export default connect((state) => ({}))(EditCla);
+export default connect(state => ({}))(EditCla);

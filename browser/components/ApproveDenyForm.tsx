@@ -17,20 +17,30 @@ import { Link } from 'react-router-dom';
 export default class ApproveDenyForm extends React.Component<{}, {}> {
   handleApproval = () => {
     // TODO: nothing here yet but will implement later.
-  }
+  };
 
   render() {
     return (
       <div>
         <form onSubmit={this.handleApproval}>
           <div className="form-group">
-            <label>Approval Notes</label> <br/>
-            <textarea className="form-control" rows={3} name="approvalNotes" required={true} /> <br/>
+            <label>Approval Notes</label> <br />
+            <textarea
+              className="form-control"
+              rows={3}
+              name="approvalNotes"
+              required={true}
+            />{' '}
+            <br />
           </div>
           <div className="col-md-10">
             <div className="pullRight">
-              <Link className="btn btn-secondary" to="/admin">Cancel</Link>
-              <button className="btn btn-primary" type="submit">Submit</button>
+              <Link className="btn btn-secondary" to="/admin">
+                Cancel
+              </Link>
+              <button className="btn btn-primary" type="submit">
+                Submit
+              </button>
             </div>
           </div>
         </form>

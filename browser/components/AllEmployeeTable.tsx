@@ -11,7 +11,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import {Column, Table } from 'fixed-data-table';
+import { Column, Table } from 'fixed-data-table';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Underscore from 'underscore';
@@ -34,7 +34,7 @@ interface Props extends OwnProps {
   filteredDataList: any;
 }
 
-interface State  {
+interface State {
   currAlias: any;
   sortDirection: string;
   filteredDataList: object[];
@@ -51,14 +51,16 @@ class AllEmployeeTable extends React.Component<Props, State> {
     this.state = {
       currAlias: '',
       sortDirection: SortTypes.ASC,
-      filteredDataList: this.props.filteredDataList ? this.props.filteredDataList : [],
+      filteredDataList: this.props.filteredDataList
+        ? this.props.filteredDataList
+        : [],
     };
   }
 
   componentWillMount() {
     const { dispatch, alias, filteredDataList } = this.props;
     if (alias !== undefined && this.state.currAlias !== alias) {
-      dispatch( EmployeeTableAction.fetchUserContribution(alias) );
+      dispatch(EmployeeTableAction.fetchUserContribution(alias));
       this.setState({
         currAlias: alias,
         filteredDataList,
@@ -69,20 +71,26 @@ class AllEmployeeTable extends React.Component<Props, State> {
   componentWillReceiveProps(nextProps) {
     const { dispatch, alias } = this.props;
     const { filteredDataList } = nextProps;
-    if (alias === undefined && this.state.currAlias === '' || nextProps.alias !== this.state.currAlias) {
-      dispatch( EmployeeTableAction.fetchUserContribution(alias) );
+    if (
+      (alias === undefined && this.state.currAlias === '') ||
+      nextProps.alias !== this.state.currAlias
+    ) {
+      dispatch(EmployeeTableAction.fetchUserContribution(alias));
       this.setState({
         currAlias: alias,
       });
     }
-    if (filteredDataList !== undefined && filteredDataList !== this.state.filteredDataList) {
+    if (
+      filteredDataList !== undefined &&
+      filteredDataList !== this.state.filteredDataList
+    ) {
       this.setState({
         filteredDataList,
       });
     }
   }
 
-  onSortChange = (key) => {
+  onSortChange = key => {
     const sorted = Underscore.sortBy(this.state.filteredDataList, key);
     if (this.state.sortDirection === SortTypes.ASC) {
       this.setState({
@@ -95,26 +103,34 @@ class AllEmployeeTable extends React.Component<Props, State> {
         filteredDataList: sorted,
       });
     }
-  }
+  };
 
   getTable = () => {
     const { filteredDataList } = this.state;
-    if (this.state.currAlias && filteredDataList !== undefined && filteredDataList.length > 0) {
-      return(
+    if (
+      this.state.currAlias &&
+      filteredDataList !== undefined &&
+      filteredDataList.length > 0
+    ) {
+      return (
         <div key="contribution_edit_div">
           <h2>Contributions by {this.state.currAlias}</h2>
-          <ExtensionPoint ext="ldap-info" alias={this.state.currAlias}/>
+          <ExtensionPoint ext="ldap-info" alias={this.state.currAlias} />
           <Table
             rowsCount={filteredDataList ? filteredDataList.length : 0}
             rowHeight={50}
             headerHeight={50}
             width={1000}
-            maxHeight={500}>
+            maxHeight={500}
+          >
             <Column
               header={
                 <TableSortHeaderCell
-                  onSortChange={() => {this.onSortChange('project_name'); }}
-                  sortDir="project_name">
+                  onSortChange={() => {
+                    this.onSortChange('project_name');
+                  }}
+                  sortDir="project_name"
+                >
                   Project
                 </TableSortHeaderCell>
               }
@@ -129,8 +145,11 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  onSortChange={() => {this.onSortChange('contribution_description'); }}
-                  sortDir="contribution_description">
+                  onSortChange={() => {
+                    this.onSortChange('contribution_description');
+                  }}
+                  sortDir="contribution_description"
+                >
                   Contribution Description
                 </TableSortHeaderCell>
               }
@@ -146,8 +165,11 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  onSortChange={() => {this.onSortChange('contribution_url'); }}
-                  sortDir="contribution_url">
+                  onSortChange={() => {
+                    this.onSortChange('contribution_url');
+                  }}
+                  sortDir="contribution_url"
+                >
                   Contribution URL
                 </TableSortHeaderCell>
               }
@@ -163,8 +185,11 @@ class AllEmployeeTable extends React.Component<Props, State> {
             <Column
               header={
                 <TableSortHeaderCell
-                  onSortChange={() => {this.onSortChange('contribution_submission_date'); }}
-                  sortDir="contribution_submission_date">
+                  onSortChange={() => {
+                    this.onSortChange('contribution_submission_date');
+                  }}
+                  sortDir="contribution_submission_date"
+                >
                   Submission Date
                 </TableSortHeaderCell>
               }
@@ -182,8 +207,11 @@ class AllEmployeeTable extends React.Component<Props, State> {
               columnKey="approval_status"
               header={
                 <TableSortHeaderCell
-                  onSortChange={() => {this.onSortChange('approval_status'); }}
-                  sortDir="approval_status">
+                  onSortChange={() => {
+                    this.onSortChange('approval_status');
+                  }}
+                  sortDir="approval_status"
+                >
                   Approval Status
                 </TableSortHeaderCell>
               }
@@ -200,17 +228,13 @@ class AllEmployeeTable extends React.Component<Props, State> {
         </div>
       );
     } else {
-      return (<p>Enter an alias of a user above.</p>);
+      return <p>Enter an alias of a user above.</p>;
     }
-  }
+  };
 
   render() {
     const tables = this.getTable();
-    return (
-      <div>
-        {tables}
-      </div>
-    );
+    return <div>{tables}</div>;
   }
 }
 

@@ -54,7 +54,7 @@ class ContributionsTable extends React.Component<Props, State> {
     this.createTables(nextProps.contributionList);
   }
 
-  createTables = (contributionList) => {
+  createTables = contributionList => {
     const type = this.props.type;
     let tableProps = {};
     const newTables = new Map();
@@ -77,7 +77,10 @@ class ContributionsTable extends React.Component<Props, State> {
         throw new Error('Improper type passed to createTables.');
     }
     for (const [key, value] of Object.entries(contributionList)) {
-      newTables.set(key, ContributionsTable.renderTables(key, value, tableProps));
+      newTables.set(
+        key,
+        ContributionsTable.renderTables(key, value, tableProps)
+      );
       newProjectNames.push(key.toLowerCase());
     }
     newProjectNames.sort();
@@ -87,21 +90,21 @@ class ContributionsTable extends React.Component<Props, State> {
       projectNames: newProjectNames,
       selectedProject: null,
     });
-  }
+  };
 
-  updateSelectedProject = (item) => (e) => {
+  updateSelectedProject = item => e => {
     e.preventDefault();
     this.setState({
       selectedProject: item,
     });
-  }
+  };
 
-  storeSearch = (e) => {
+  storeSearch = e => {
     this.setState({
       search: e.currentTarget.value.toLowerCase(),
       selectedProject: null,
     });
-  }
+  };
 
   static contributorEntry = (item, exists) => {
     if (exists) {
@@ -120,7 +123,7 @@ class ContributionsTable extends React.Component<Props, State> {
         />
       );
     }
-  }
+  };
 
   static renderTables = (name, item, tableProps) => {
     return (
@@ -132,37 +135,27 @@ class ContributionsTable extends React.Component<Props, State> {
           rowHeight={50}
           headerHeight={50}
           width={850}
-          maxHeight={500}>
+          maxHeight={500}
+        >
           <Column
             key={item.name + '_summary'}
             header={<Cell>Summary</Cell>}
             cell={
-              <TableSummaryCell
-                data={item}
-                field="contribution_description"
-              />
+              <TableSummaryCell data={item} field="contribution_description" />
             }
             width={tableProps.summaryWidth}
           />
           <Column
             key={item.name + '_url'}
             header={<Cell>Context URL</Cell>}
-            cell={
-              <TableLinkCell
-                data={item}
-                field="contribution_url"
-              />
-            }
+            cell={<TableLinkCell data={item} field="contribution_url" />}
             width={75}
           />
           <Column
             key={item.name + '_submission_date'}
             header={<Cell>Submission Date</Cell>}
             cell={
-              <TableDateCell
-                data={item}
-                field="contribution_submission_date"
-              />
+              <TableDateCell data={item} field="contribution_submission_date" />
             }
             width={100}
           />
@@ -170,10 +163,7 @@ class ContributionsTable extends React.Component<Props, State> {
             key={item.name + '_approval_status'}
             header={<Cell>Approval Status</Cell>}
             cell={
-              <TableApprovalStatusCell
-                data={item}
-                field="approval_status"
-              />
+              <TableApprovalStatusCell data={item} field="approval_status" />
             }
             width={100}
           />
@@ -188,44 +178,59 @@ class ContributionsTable extends React.Component<Props, State> {
             }
             width={100}
           />
-          {tableProps.contributor ? ContributionsTable.contributorEntry(item, tableProps.contributor) : <div/>}
+          {tableProps.contributor ? (
+            ContributionsTable.contributorEntry(item, tableProps.contributor)
+          ) : (
+            <div />
+          )}
         </Table>
-        <br/>
+        <br />
       </div>
     );
-  }
+  };
 
-  getTable = (arrayList) => {
+  getTable = arrayList => {
     if (arrayList.length === 0) {
-      return (<h4>No contributions found</h4>);
+      return <h4>No contributions found</h4>;
     } else {
       return this.state.tables.get(this.state.selectedProject);
     }
-  }
+  };
 
   render() {
-    const newList = this.state.projectNames.filter((name) => {
+    const newList = this.state.projectNames.filter(name => {
       return name.toLowerCase().indexOf(this.state.search) > -1;
     });
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-3">
-            <input type="text" id="projectLISearch" className="form-control"
-              onInput={this.storeSearch} placeholder="Search projects" />
+            <input
+              type="text"
+              id="projectLISearch"
+              className="form-control"
+              onInput={this.storeSearch}
+              placeholder="Search projects"
+            />
             <div id="projectSearchResults" className="list-group mt-1">
               {newList.map((name, i) => (
-                <a key={i} href="#" className="list-group-item list-group-item-action"
-                  onClick={this.updateSelectedProject(name)}>
+                <a
+                  key={i}
+                  href="#"
+                  className="list-group-item list-group-item-action"
+                  onClick={this.updateSelectedProject(name)}
+                >
                   {name}
                 </a>
               ))}
             </div>
           </div>
           <div className="col-sm-9">
-            {this.state.selectedProject
-              ? this.getTable(newList)
-              : <p>Search for and select a project to see contributions.</p>}
+            {this.state.selectedProject ? (
+              this.getTable(newList)
+            ) : (
+              <p>Search for and select a project to see contributions.</p>
+            )}
           </div>
         </div>
       </div>

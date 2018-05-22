@@ -52,7 +52,7 @@ export default class ProjectsTable extends React.Component<Props, {}> {
       table.push(ProjectsTable.renderTables(key, value, tableProps));
     }
     return table;
-  }
+  };
 
   static contributorEntry = (item, exists) => {
     if (exists) {
@@ -60,17 +60,12 @@ export default class ProjectsTable extends React.Component<Props, {}> {
         <Column
           key={item.name + '_contributor'}
           header={<Cell>Contributor</Cell>}
-          cell={
-            <TableTextCell
-              data={item}
-              field="contributor_alias"
-            />
-          }
+          cell={<TableTextCell data={item} field="contributor_alias" />}
           width={125}
         />
       );
     }
-  }
+  };
 
   static renderTables = (name, item, tableProps) => {
     let count = 0;
@@ -83,37 +78,27 @@ export default class ProjectsTable extends React.Component<Props, {}> {
           rowHeight={50}
           headerHeight={50}
           width={950}
-          maxHeight={500}>
+          maxHeight={500}
+        >
           <Column
             key={item.name + '_summary'}
             header={<Cell>Summary</Cell>}
             cell={
-              <TableSummaryCell
-                data={item}
-                field="contribution_description"
-              />
+              <TableSummaryCell data={item} field="contribution_description" />
             }
             width={tableProps.summaryWidth}
           />
           <Column
             key={item.name + '_url'}
             header={<Cell>Commit URL</Cell>}
-            cell={
-              <TableLinkCell
-                data={item}
-                field="contribution_url"
-              />
-            }
+            cell={<TableLinkCell data={item} field="contribution_url" />}
             width={75}
           />
           <Column
             key={item.name + '_submission_date'}
             header={<Cell>Submission Date</Cell>}
             cell={
-              <TableDateCell
-                data={item}
-                field="contribution_submission_date"
-              />
+              <TableDateCell data={item} field="contribution_submission_date" />
             }
             width={100}
           />
@@ -121,10 +106,7 @@ export default class ProjectsTable extends React.Component<Props, {}> {
             key={item.name + '_approval_status'}
             header={<Cell>Approval Status</Cell>}
             cell={
-              <TableApprovalStatusCell
-                data={item}
-                field="approval_status"
-              />
+              <TableApprovalStatusCell data={item} field="approval_status" />
             }
             width={125}
           />
@@ -139,19 +121,19 @@ export default class ProjectsTable extends React.Component<Props, {}> {
             }
             width={125}
           />
-          {tableProps.contributor ? ProjectsTable.contributorEntry(item, tableProps.contributor) : <div/>}
+          {tableProps.contributor ? (
+            ProjectsTable.contributorEntry(item, tableProps.contributor)
+          ) : (
+            <div />
+          )}
         </Table>
-        <br/>
+        <br />
       </div>
     );
-  }
+  };
 
   render() {
     const contributionList = this.props.contributionList;
-    return (
-      <div>
-        { contributionList ? this.createTables() : '' }
-      </div>
-    );
+    return <div>{contributionList ? this.createTables() : ''}</div>;
   }
 }

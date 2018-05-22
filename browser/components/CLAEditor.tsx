@@ -34,8 +34,8 @@ interface State {
     contact_name: string;
     contributor_names: string;
     display: {
-      signatory: string[],
-      poc: string[],
+      signatory: string[];
+      poc: string[];
     };
     project_name: string;
     signatory_name: string;
@@ -66,26 +66,26 @@ export default class CLAEditor extends React.Component<Props, State> {
     });
   }
 
-  handleDelete = (e) => {
+  handleDelete = e => {
     e.preventDefault();
     const getAlertDelete = () => (
-    <SweetAlert
-      warning={true}
-      showCancel={true}
-      confirmBtnText="Yes, delete it!"
-      confirmBtnBsStyle="danger"
-      cancelBtnBsStyle="default"
-      title="Are you sure? There's no coming back."
-      onConfirm={() => this.deleteFile()}
-      onCancel={() => this.hideAlert()}
-    >
-      This entry will be deleted!
-    </SweetAlert>
+      <SweetAlert
+        warning={true}
+        showCancel={true}
+        confirmBtnText="Yes, delete it!"
+        confirmBtnBsStyle="danger"
+        cancelBtnBsStyle="default"
+        title="Are you sure? There's no coming back."
+        onConfirm={() => this.deleteFile()}
+        onCancel={() => this.hideAlert()}
+      >
+        This entry will be deleted!
+      </SweetAlert>
     );
     this.setState({
       alert: getAlertDelete(),
     });
-  }
+  };
 
   deleteFile = () => {
     const { dispatch } = this.props;
@@ -103,26 +103,39 @@ export default class CLAEditor extends React.Component<Props, State> {
     this.setState({
       alert: getAlertConfirmDelete(),
     });
-  }
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const { dispatch } = this.props;
-    const projectNames = (e.target.elements.projectName as HTMLInputElement).value.trim();
-    const contributorName = (e.target.elements.contributorName as HTMLInputElement).value.trim();
-    const appName = (e.target.elements.appName as HTMLInputElement).value.trim();
-    const sigName = (e.target.elements.sigName as HTMLInputElement).value.trim();
-    const contactName = (e.target.elements.contactName as HTMLInputElement).value.trim();
-    const desc = (e.target.elements.description as HTMLInputElement).value.toLowerCase();
-    const dateApproved = (e.target.elements.dateApproved as HTMLInputElement).value.toLowerCase();
-    const dateSigned = (e.target.elements.dateSigned as HTMLInputElement).value.toLowerCase();
+    const projectNames = (e.target.elements
+      .projectName as HTMLInputElement).value.trim();
+    const contributorName = (e.target.elements
+      .contributorName as HTMLInputElement).value.trim();
+    const appName = (e.target.elements
+      .appName as HTMLInputElement).value.trim();
+    const sigName = (e.target.elements
+      .sigName as HTMLInputElement).value.trim();
+    const contactName = (e.target.elements
+      .contactName as HTMLInputElement).value.trim();
+    const desc = (e.target.elements
+      .description as HTMLInputElement).value.toLowerCase();
+    const dateApproved = (e.target.elements
+      .dateApproved as HTMLInputElement).value.toLowerCase();
+    const dateSigned = (e.target.elements
+      .dateSigned as HTMLInputElement).value.toLowerCase();
     const jsonObj = {
       project_id: this.state.project_id,
-      project_name: projectNames === '' ? this.state.data.project_name : projectNames,
-      contributor_names: contributorName === '' ? this.state.data.contributor_names : contributorName,
-      approver_name: appName  === '' ? this.state.data.approver_name : appName,
-      signatory_name: sigName  === '' ? this.state.data.signatory_name : sigName,
-      contact_name: contactName === '' ? this.state.data.contact_name : contactName,
+      project_name:
+        projectNames === '' ? this.state.data.project_name : projectNames,
+      contributor_names:
+        contributorName === ''
+          ? this.state.data.contributor_names
+          : contributorName,
+      approver_name: appName === '' ? this.state.data.approver_name : appName,
+      signatory_name: sigName === '' ? this.state.data.signatory_name : sigName,
+      contact_name:
+        contactName === '' ? this.state.data.contact_name : contactName,
       additional_notes: desc === '' ? this.state.data.additional_notes : desc,
       date_approved: dateApproved,
       date_signed: dateSigned,
@@ -136,126 +149,178 @@ export default class CLAEditor extends React.Component<Props, State> {
         title="Success"
         onConfirm={() => this.hideAlert()}
       >
-          Entry has been updated
+        Entry has been updated
       </SweetAlert>
     );
     this.setState({
       alert: getAlert(),
     });
-  }
+  };
 
   hideAlert = () => {
     this.setState({
       alert: null,
     }),
-    document.getElementById('to-admin').click();
-  }
+      document.getElementById('to-admin').click();
+  };
 
-  handleDateChangeForApproval = (e) => {
+  handleDateChangeForApproval = e => {
     this.setState({
       data: {
         ...this.state.data,
         approved_date: e,
       },
     });
-  }
+  };
 
   getOptionsProjectNames = () => {
-    return(this.state.data.cla_project_names.map(
-      (object: any) => {
-        return (<option key={object.project_name} value={object.project_name} />);
-      },
-    ));
-  }
+    return this.state.data.cla_project_names.map((object: any) => {
+      return <option key={object.project_name} value={object.project_name} />;
+    });
+  };
 
   getOptionsApproverNames = () => {
-    return(this.state.data.cla_project_approvers_names.map(
-      (alist: any) => {
-        return (<option key={alist.approver_alias} value={alist.approver_alias} />);
-      },
-    ));
-  }
+    return this.state.data.cla_project_approvers_names.map((alist: any) => {
+      return <option key={alist.approver_alias} value={alist.approver_alias} />;
+    });
+  };
 
-  handleDateChangeForSigned = (e) => {
+  handleDateChangeForSigned = e => {
     this.setState({
       data: {
         ...this.state.data,
         signed_date: e,
       },
     });
-  }
+  };
 
   render() {
-    const projectName = this.state.data.project_name ? this.state.data.project_name : '';
+    const projectName = this.state.data.project_name
+      ? this.state.data.project_name
+      : '';
     if (projectName != null) {
       return (
         <form id="contributions-form" onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>Project name</label>
-            <br/>
-            <input type="text" list="project_name" id="projectName" className="form-control"
-              name="projectName" placeholder={this.state.data.project_name}/>
+            <br />
+            <input
+              type="text"
+              list="project_name"
+              id="projectName"
+              className="form-control"
+              name="projectName"
+              placeholder={this.state.data.project_name}
+            />
             <datalist id="project_name">
               {this.getOptionsProjectNames()}
             </datalist>
-            <br/>
+            <br />
             <label>Contributor(s)</label>
-            <br/>
-            <input type="text" className="form-control" id="contributorName"
-              name="contributorName" placeholder={this.state.data.contributor_names}/><br/>
+            <br />
+            <input
+              type="text"
+              className="form-control"
+              id="contributorName"
+              name="contributorName"
+              placeholder={this.state.data.contributor_names}
+            />
+            <br />
             <label>Approver</label>
-            <br/>
-            <input type="text" list="approver_names" className="form-control"
-              name="appName" id="appName" placeholder={this.state.data.approver_name}/>
+            <br />
+            <input
+              type="text"
+              list="approver_names"
+              className="form-control"
+              name="appName"
+              id="appName"
+              placeholder={this.state.data.approver_name}
+            />
             <datalist id="approver_names">
               {this.getOptionsApproverNames()}
             </datalist>
-            <br/>
+            <br />
             <label>Signatory</label>
-            <br/>
-            <input type="text"  list="signatory_name" className="form-control"
-              name="sigName" id="sigName" placeholder={this.state.data.signatory_name}/>
+            <br />
+            <input
+              type="text"
+              list="signatory_name"
+              className="form-control"
+              name="sigName"
+              id="sigName"
+              placeholder={this.state.data.signatory_name}
+            />
             <datalist id="signatory_name">
-              {this.state.data.display.signatory.map((user) => {
-                return (<option key={user} value={user}/>);
+              {this.state.data.display.signatory.map(user => {
+                return <option key={user} value={user} />;
               })}
             </datalist>
-            <br/>
+            <br />
             <label>Point of Contact</label>
-            <br/>
-            <input type="text"  list="contact" className="form-control" id="contactName"
-              name="contactName" placeholder={this.state.data.contact_name}/>
+            <br />
+            <input
+              type="text"
+              list="contact"
+              className="form-control"
+              id="contactName"
+              name="contactName"
+              placeholder={this.state.data.contact_name}
+            />
             <datalist id="contact">
-              {this.state.data.display.poc.map((user) => {
-                return (<option key={user} value={user}/>);
+              {this.state.data.display.poc.map(user => {
+                return <option key={user} value={user} />;
               })}
             </datalist>
-            <br/>
+            <br />
             <label>Date Signed</label>
-            <input type="date" className="form-control" name="dateSigned" id="dateSigned"
-              onChange={this.handleDateChangeForSigned} required={true} />
-            <br/>
+            <input
+              type="date"
+              className="form-control"
+              name="dateSigned"
+              id="dateSigned"
+              onChange={this.handleDateChangeForSigned}
+              required={true}
+            />
+            <br />
             <label>Date Approved</label>
-            <input type="date" className="form-control" name="dateApproved" id="dateApproved"
-              onChange={this.handleDateChangeForApproval} required={true} />
-            <br/>
+            <input
+              type="date"
+              className="form-control"
+              name="dateApproved"
+              id="dateApproved"
+              onChange={this.handleDateChangeForApproval}
+              required={true}
+            />
+            <br />
             <label>Additional Notes</label>
-            <br/>
-            <textarea id="description" className="form-control" rows={3}
-              placeholder={this.state.data.additional_notes} name="description" required={true} />
+            <br />
+            <textarea
+              id="description"
+              className="form-control"
+              rows={3}
+              placeholder={this.state.data.additional_notes}
+              name="description"
+              required={true}
+            />
           </div>
           <div className="col-md-10">
             <div className="pullRight">
-              <Link className="btn btn-secondary" id="to-admin" to="/admin">Cancel</Link>
-              <button className="btn btn-danger" onClick={this.handleDelete}>Delete</button>
-              <button className="btn btn-primary" type="submit">Make Changes</button>
+              <Link className="btn btn-secondary" id="to-admin" to="/admin">
+                Cancel
+              </Link>
+              <button className="btn btn-danger" onClick={this.handleDelete}>
+                Delete
+              </button>
+              <button className="btn btn-primary" type="submit">
+                Make Changes
+              </button>
             </div>
           </div>
           {this.state.alert}
         </form>
       );
     } else {
-      return <div/>;
+      return <div />;
     }
   }
 }

@@ -32,18 +32,20 @@ function reverseSortDirection(sortDir) {
 }
 
 export default class TableSortHeaderCell extends React.Component<Props, {}> {
-  onSortChange = (e) => {
+  onSortChange = e => {
     e.preventDefault();
     if (this.props.onSortChange) {
       this.props.onSortChange(
         this.props.columnKey,
-        this.props.sortDir ? reverseSortDirection(this.props.sortDir) : SortTypes.DESC,
+        this.props.sortDir
+          ? reverseSortDirection(this.props.sortDir)
+          : SortTypes.DESC
       );
     }
-  }
+  };
 
   render() {
-    const {sortDir, children, columnKey, height, width} = this.props;
+    const { sortDir, children, columnKey, height, width } = this.props;
     return (
       <Cell columnKey={columnKey} height={height} width={width}>
         <a onClick={this.onSortChange} className="im-pointer">

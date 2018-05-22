@@ -14,7 +14,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 
-import { reqJSON  } from '../util/index';
+import { reqJSON } from '../util/index';
 
 import ContributionEditor from '../components/ContributionEditor';
 
@@ -53,7 +53,10 @@ export default class EditContribution extends Component<Props, State> {
     return (
       <div className="container">
         <div className="container-fluid">
-          <ContributionEditor contrib_data={this.state.contrib_data} projects={this.state.projects} />
+          <ContributionEditor
+            contrib_data={this.state.contrib_data}
+            projects={this.state.projects}
+          />
         </div>
       </div>
     );

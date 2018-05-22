@@ -24,16 +24,19 @@ interface Props {
 }
 
 export default class MetricsLists extends React.Component<Props, {}> {
-
   metricsAll = () => {
     const list = this.props.allMetrics;
-    return list.map((item) => {
-      return <li key={'allMetrics_' + item.year}>
-        {item.year}: {item.total_contributions} contributions
-        ({item.contributor_count} distinct contributors to {item.project_count} distinct projects)
-      </li>;
+    return list.map(item => {
+      return (
+        <li key={'allMetrics_' + item.year}>
+          {item.year}: {item.total_contributions} contributions ({
+            item.contributor_count
+          }{' '}
+          distinct contributors to {item.project_count} distinct projects)
+        </li>
+      );
     });
-  }
+  };
 
   topProjectsByYear = (year, type) => {
     let list;
@@ -44,27 +47,39 @@ export default class MetricsLists extends React.Component<Props, {}> {
     } else {
       list = [];
     }
-    return list.map((item) => {
-      return <li key={'topProjectsByYear_' + item.project_name + item.count}>
-        {item.count} - {item.project_name}
-      </li>;
+    return list.map(item => {
+      return (
+        <li key={'topProjectsByYear_' + item.project_name + item.count}>
+          {item.count} - {item.project_name}
+        </li>
+      );
     });
-  }
+  };
 
   topProjectsAllTime = () => {
     const list = this.props.topContribProjectsAllTime.slice(0, 10);
-    return list.map((item) => {
-      return <li key={'topProjectsAllTime_' + item.project_name}>
-        {item.count} - {item.project_name}
-      </li>;
+    return list.map(item => {
+      return (
+        <li key={'topProjectsAllTime_' + item.project_name}>
+          {item.count} - {item.project_name}
+        </li>
+      );
     });
-  }
+  };
 
-  topContributors = (list) => {
-    return list ? list.map((item) => {
-      return <li key={'topContributors_' + item.alias}>{item.alias} | {item.count}</li>;
-    }) : <div />;
-  }
+  topContributors = list => {
+    return list ? (
+      list.map(item => {
+        return (
+          <li key={'topContributors_' + item.alias}>
+            {item.alias} | {item.count}
+          </li>
+        );
+      })
+    ) : (
+      <div />
+    );
+  };
 
   render() {
     const metrics = this.metricsAll();
@@ -72,50 +87,34 @@ export default class MetricsLists extends React.Component<Props, {}> {
     const curYear = new Date().getFullYear();
     return (
       <div>
-      <div id="metrics">
-        <h2>Metrics</h2>
-        <h4>Contributions by Year</h4>
-        <div id="chart">
-        <SimpleLineChart metricsDataByYear ={this.props.allMetrics}/>
+        <div id="metrics">
+          <h2>Metrics</h2>
+          <h4>Contributions by Year</h4>
+          <div id="chart">
+            <SimpleLineChart metricsDataByYear={this.props.allMetrics} />
+          </div>
+          <ul>{metrics}</ul>
+          <h4>Top Project Contributions ({curYear})</h4>
+          <ul>{this.topProjectsByYear(curYear, 'cur')}</ul>
+
+          <h4>Top Project Contributions ({curYear - 1})</h4>
+          <ul>{this.topProjectsByYear(curYear - 1, 'last')}</ul>
+
+          <h4>Top Project Contributions (all time)</h4>
+          <ul>{topProjectsAll}</ul>
+
+          <h4>Top Contributors 100+</h4>
+          <ul>{this.topContributors(this.props.usersAndCounts.onehundo)}</ul>
+
+          <h4>Top Contributors 50+</h4>
+          <ul>{this.topContributors(this.props.usersAndCounts.fifty)}</ul>
+
+          <h4>Top Contributors 20+</h4>
+          <ul>{this.topContributors(this.props.usersAndCounts.twenty)}</ul>
+
+          <h4>Top Contributors 10+</h4>
+          <ul>{this.topContributors(this.props.usersAndCounts.ten)}</ul>
         </div>
-        <ul>
-          {metrics}
-        </ul>
-        <h4>Top Project Contributions ({curYear})</h4>
-        <ul>
-          {this.topProjectsByYear(curYear, 'cur')}
-        </ul>
-
-        <h4>Top Project Contributions ({curYear - 1})</h4>
-        <ul>
-          {this.topProjectsByYear(curYear - 1, 'last')}
-        </ul>
-
-        <h4>Top Project Contributions (all time)</h4>
-        <ul>
-          {topProjectsAll}
-        </ul>
-
-        <h4>Top Contributors 100+</h4>
-        <ul>
-          {this.topContributors(this.props.usersAndCounts.onehundo)}
-        </ul>
-
-        <h4>Top Contributors 50+</h4>
-        <ul>
-          {this.topContributors(this.props.usersAndCounts.fifty)}
-        </ul>
-
-        <h4>Top Contributors 20+</h4>
-        <ul>
-          {this.topContributors(this.props.usersAndCounts.twenty)}
-        </ul>
-
-        <h4>Top Contributors 10+</h4>
-        <ul>
-          {this.topContributors(this.props.usersAndCounts.ten)}
-        </ul>
-      </div>
       </div>
     );
   }

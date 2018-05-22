@@ -11,7 +11,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import {Cell} from 'fixed-data-table';
+import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -23,16 +23,20 @@ interface Props {
   columnKey: string;
 }
 
-export default class TableApprovalCell extends React.Component<Partial<Props>, {}> {
-
+export default class TableApprovalCell extends React.Component<
+  Partial<Props>,
+  {}
+> {
   render() {
-    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
     const id = data[rowIndex].contribution_id;
     return (
       <Cell {...props}>
         <div className="row">
           <div className="col-md-6">
-            <Link className="btn btn-info" to={`/approvals/${id}`}>Approve/Deny</Link>
+            <Link className="btn btn-info" to={`/approvals/${id}`}>
+              Approve/Deny
+            </Link>
           </div>
         </div>
       </Cell>

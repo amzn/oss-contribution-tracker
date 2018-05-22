@@ -15,20 +15,16 @@ import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 
 interface Props extends React.Props<any> {
-   rowIndex: number;
-   field: any;
-   data: any;
-   col: any;
-   columnKey: string;
- }
+  rowIndex: number;
+  field: any;
+  data: any;
+  col: any;
+  columnKey: string;
+}
 
 export default class TableTextCell extends React.Component<Partial<Props>, {}> {
-   render() {
-     const {rowIndex, field, data, col, columnKey, ...props} = this.props;
-     return (
-       <Cell {...props}>
-         {data[rowIndex][field]}
-       </Cell>
-     );
-   }
- }
+  render() {
+    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
+    return <Cell {...props}>{data[rowIndex][field]}</Cell>;
+  }
+}

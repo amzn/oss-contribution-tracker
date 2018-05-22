@@ -57,7 +57,7 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     this.setState({
       alert: null,
     });
-  }
+  };
 
   handleLinkSubmit = async (event, entry) => {
     event.preventDefault();
@@ -66,11 +66,13 @@ class GithubLink extends React.Component<Partial<Props>, State> {
     const url = event.currentTarget.url.value.trim();
 
     try {
-      await dispatch(ContributionsActions.updateGithubLink({
-        contrib_id: contribId,
-        link: url,
-        user: this.state.user,
-      }));
+      await dispatch(
+        ContributionsActions.updateGithubLink({
+          contrib_id: contribId,
+          link: url,
+          user: this.state.user,
+        })
+      );
       const list = this.state.contributionList;
       delete list[contribId];
       this.setState({
@@ -80,15 +82,19 @@ class GithubLink extends React.Component<Partial<Props>, State> {
       // tslint:disable-next-line:no-console
       console.error(err);
       const getAlert = () => (
-        <SweetAlert title="Failure to update link" onConfirm={this.hideAlertRedirect}>
-          Unable to save your contribution link. Please contact your site administrator.
+        <SweetAlert
+          title="Failure to update link"
+          onConfirm={this.hideAlertRedirect}
+        >
+          Unable to save your contribution link. Please contact your site
+          administrator.
         </SweetAlert>
       );
       this.setState({
         alert: getAlert(),
       });
     }
-  }
+  };
 
   renderTable = () => {
     const display = [];
@@ -100,28 +106,39 @@ class GithubLink extends React.Component<Partial<Props>, State> {
             <td>{value.project_name}</td>
             <td>{value.contribution_description}</td>
             <td>
-              <form className="form-inline" onSubmit={(e) => this.handleLinkSubmit(e, value)} style={{display: 'flex'}}>
-                <input name="url" type="text" className="form-control" style={{flex: '1 0 auto'}} />
+              <form
+                className="form-inline"
+                onSubmit={e => this.handleLinkSubmit(e, value)}
+                style={{ display: 'flex' }}
+              >
+                <input
+                  name="url"
+                  type="text"
+                  className="form-control"
+                  style={{ flex: '1 0 auto' }}
+                />
                 <button type="submit" className="btn btn-success">
                   Save <span className="glyphicon glyphicon-ok" />
                 </button>
               </form>
             </td>
-          </tr>,
+          </tr>
         );
       }
     }
     return display;
-  }
+  };
 
   render() {
     const tables = this.renderTable();
     return (
       <div className="container">
         <div className="row">
-          <div id="github-link-container" className="col-lg-12"><br/><br/>
+          <div id="github-link-container" className="col-lg-12">
+            <br />
+            <br />
             <h3>Your contributions awaiting links</h3>
-            { this.state.alert }
+            {this.state.alert}
             <table className="table table-striped table-bordered mt-3">
               <thead>
                 <tr key="github-link-table-head">
@@ -130,9 +147,7 @@ class GithubLink extends React.Component<Partial<Props>, State> {
                   <th>Contribution Link</th>
                 </tr>
               </thead>
-              <tbody>
-                {tables}
-              </tbody>
+              <tbody>{tables}</tbody>
             </table>
           </div>
         </div>
@@ -141,4 +156,4 @@ class GithubLink extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default connect((state) => ({}))(GithubLink) as any; // hacky and I need to fix the redux stuff
+export default connect(state => ({}))(GithubLink) as any; // hacky and I need to fix the redux stuff

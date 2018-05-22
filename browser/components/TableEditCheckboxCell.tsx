@@ -23,9 +23,12 @@ interface Props {
   columnKey: string;
 }
 
-export default class TableEditCheckboxCell extends React.Component<Partial<Props>, {}> {
+export default class TableEditCheckboxCell extends React.Component<
+  Partial<Props>,
+  {}
+> {
   render() {
-    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
     const path = `/contribution/${data[rowIndex][field]}`;
     return (
       <Cell {...props}>

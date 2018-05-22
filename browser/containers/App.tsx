@@ -73,37 +73,57 @@ export class App extends React.Component<Props, State> {
   dismissError = () => {
     const { dispatch } = this.props;
     dispatch(setGeneralError(null));
-  }
+  };
 
-  mapError = (err) => {
+  mapError = err => {
     const dismissError = this.dismissError.bind(this);
 
     if (err.code === 403) {
-      return (<ErrorModal
+      return (
+        <ErrorModal
+          message={err.message}
+          onDismiss={dismissError}
+          title="You might not have access to this resource"
+          explain="If you think you need access to this item, contact your administrators."
+        />
+      );
+    }
+    return (
+      <ErrorModal
         message={err.message}
         onDismiss={dismissError}
-        title="You might not have access to this resource"
-        explain="If you think you need access to this item, contact your administrators."
-      />);
-    }
-    return (<ErrorModal
-      message={err.message}
-      onDismiss={dismissError}
-      title="Something went wrong"
-      explain="Please try that again."
-    />);
-  }
+        title="Something went wrong"
+        explain="Please try that again."
+      />
+    );
+  };
 
   buildSecureRoutes = () => {
     const routes = [];
     if (this.state.user.access.includes(AccessTypes.admin)) {
-      routes.push(<Route exact={true} path="/admin" component={Admin} key="adminRoute"/>);
-      routes.push(<Route path="/cla/:project_id" component={EditCLA} key="editCLARoute"/>);
-      routes.push(<Route path="/approvals/:contrib_id" component={Approvals} key="approvalRoute"/>);
-      routes.push(<Route path="/contribution/:contrib_id" component={EditContribution} key="editContributionRoute"/>);
+      routes.push(
+        <Route exact={true} path="/admin" component={Admin} key="adminRoute" />
+      );
+      routes.push(
+        <Route path="/cla/:project_id" component={EditCLA} key="editCLARoute" />
+      );
+      routes.push(
+        <Route
+          path="/approvals/:contrib_id"
+          component={Approvals}
+          key="approvalRoute"
+        />
+      );
+      routes.push(
+        <Route
+          path="/contribution/:contrib_id"
+          component={EditContribution}
+          key="editContributionRoute"
+        />
+      );
     }
     return routes;
-  }
+  };
 
   render() {
     const { generalError } = this.props;
@@ -115,34 +135,48 @@ export class App extends React.Component<Props, State> {
       <div>
         <nav className="navbar navbar-expand-sm navbar-light bg-light">
           <ExtensionPoint ext="navbar-logo">
-            <Link to="/" className="navbar-brand">OSS Contribution Tracker</Link>
+            <Link to="/" className="navbar-brand">
+              OSS Contribution Tracker
+            </Link>
           </ExtensionPoint>
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav ml-auto">
-              { user.access.includes(AccessTypes.admin) &&
-                (<div className="collapse navbar-collapse">
+              {user.access.includes(AccessTypes.admin) && (
+                <div className="collapse navbar-collapse">
                   <li className="nav-item">
-                    <Link to="/admin" className="nav-link">Admin</Link>
+                    <Link to="/admin" className="nav-link">
+                      Admin
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <ExtensionPoint ext="navbar-admin-links" user={user} />
                   </li>
-                </div>)
-              }
+                </div>
+              )}
               <ExtensionPoint ext="navbar-links" user={user} />
               <li className="nav-item">
                 <ExtensionPoint ext="navbar-contribution" user={user}>
-                  <Link to="/contribute" className="nav-link">New Contribution</Link>
+                  <Link to="/contribute" className="nav-link">
+                    New Contribution
+                  </Link>
                 </ExtensionPoint>
               </li>
               <li className="nav-item">
-                <Link to="/list" className="nav-link">Contributions By Project</Link>
+                <Link to="/list" className="nav-link">
+                  Contributions By Project
+                </Link>
               </li>
               <li className="nav-item">
-                <Link to="/employee" className="nav-link">Contributions By User</Link>
+                <Link to="/employee" className="nav-link">
+                  Contributions By User
+                </Link>
               </li>
               <li className="nav-item">
-                <a target="_blank" href="https://github.com/amzn/oss-contribution-tracker/issues" className="nav-link">
+                <a
+                  target="_blank"
+                  href="https://github.com/amzn/oss-contribution-tracker/issues"
+                  className="nav-link"
+                >
                   <i className="fa fa-question-circle" /> Help
                 </a>
               </li>
@@ -151,7 +185,7 @@ export class App extends React.Component<Props, State> {
           </div>
         </nav>
 
-        { generalError != null ? this.mapError(generalError) : '' }
+        {generalError != null ? this.mapError(generalError) : ''}
 
         <div className="container-fluid mt-4">
           <div className="row">
@@ -160,26 +194,32 @@ export class App extends React.Component<Props, State> {
                 <Route exact={true} path="/" component={Metrics} />
                 <Route exact={true} path="/employee" component={Employee} />
                 <Route exact={true} path="/list" component={List} />
-                <Route exact={true} path="/contribute" component={Contributions} />
-                <Route exact={true} path="/contribute/link" component={GithubLinkUpdater} />
+                <Route
+                  exact={true}
+                  path="/contribute"
+                  component={Contributions}
+                />
+                <Route
+                  exact={true}
+                  path="/contribute/link"
+                  component={GithubLinkUpdater}
+                />
                 {securedRoutes}
-                <ExtensionPoint ext="routes-additional"/>
+                <ExtensionPoint ext="routes-additional" />
               </Switch>
             </div>
           </div>
 
           <div className="row mt-4">
             <div className="mx-auto col-lg-11">
-              <hr/>
+              <hr />
               <ExtensionPoint ext="footer" />
             </div>
           </div>
         </div>
       </div>
-
     );
   }
-
 }
 
 export default connect((state: { common: any }) => state.common)(App);

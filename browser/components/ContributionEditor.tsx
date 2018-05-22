@@ -62,7 +62,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       */
       if (this.state.contribution_github_status === '') {
         this.setState({
-          contribution_github_status: nextProps.contrib_data.contribution_github_status,
+          contribution_github_status:
+            nextProps.contrib_data.contribution_github_status,
         });
       }
       if (this.state.approval_status === '') {
@@ -90,7 +91,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     const { dispatch } = this.props;
     const field = e.target.elements;
     e.preventDefault();
@@ -122,7 +123,10 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       changes.contributor_alias = field.contributorAliasInput.value;
     }
 
-    if (field.githubStatusInput.value !== this.state.contrib.contribution_github_status) {
+    if (
+      field.githubStatusInput.value !==
+      this.state.contrib.contribution_github_status
+    ) {
       changes.contribution_github_status = field.githubStatusInput.value;
     }
 
@@ -130,7 +134,9 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       changes.contribution_url = field.contributionUrlInput.value;
     }
 
-    if (field.approvalStatusInput.value !== this.state.contrib.approval_status) {
+    if (
+      field.approvalStatusInput.value !== this.state.contrib.approval_status
+    ) {
       changes.approval_status = field.approvalStatusInput.value;
     }
 
@@ -143,11 +149,13 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     }
 
     if (field.contributionSubmissionDateInput.value.length !== 0) {
-      changes.contribution_submission_date = field.contributionSubmissionDateInput.value;
+      changes.contribution_submission_date =
+        field.contributionSubmissionDateInput.value;
     }
 
     if (field.contributionClosedDateInput.value.length !== 0) {
-      changes.contribution_closed_date = field.contributionClosedDateInput.value;
+      changes.contribution_closed_date =
+        field.contributionClosedDateInput.value;
     }
 
     // dispatch changes to server
@@ -156,20 +164,22 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       <SweetAlert
         success={true}
         title="Success"
-        onConfirm={() => this.hideAlert()}>Entry has been updated
+        onConfirm={() => this.hideAlert()}
+      >
+        Entry has been updated
       </SweetAlert>
     );
     this.setState({
       alert: getAlert(),
     });
-  }
+  };
 
   hideAlert = () => {
     this.setState({
       alert: null,
     });
     document.getElementById('to-admin').click();
-  }
+  };
 
   handleSelectChange = (change, loc) => {
     if (this.state[loc] !== change.value) {
@@ -177,32 +187,32 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
         [loc]: change.value,
       });
     }
-  }
+  };
 
   projectList = (e?: any) => {
     // check for length as this can return an empty object
     if (this.props.projects.length) {
       const projects = this.props.projects;
-      return projects.map((listValue) => {
+      return projects.map(listValue => {
         return { label: listValue.project_name, value: listValue.project_id };
       });
     } else {
       return [];
     }
-  }
+  };
 
-  handleProjectChange = (proj) => {
+  handleProjectChange = proj => {
     this.setState({
       project_name: proj.label,
       project_id: proj.value,
     });
-  }
+  };
 
-  toggleProjectSelect = (e) => {
-    this.setState({projectDisabled: e.target.checked});
+  toggleProjectSelect = e => {
+    this.setState({ projectDisabled: e.target.checked });
     const elm = document.getElementById('new-project-text') as HTMLInputElement;
     elm.disabled = this.state.projectDisabled;
-  }
+  };
 
   render() {
     const values = [
@@ -238,27 +248,47 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
               </div>
               <div className="form-group">
                 <label>Contributor Alias</label>
-                <input type="text" className="form-control" id="contributorAliasInput"
-                  placeholder={this.state.contrib.contributor_alias} />
+                <input
+                  type="text"
+                  className="form-control"
+                  id="contributorAliasInput"
+                  placeholder={this.state.contrib.contributor_alias}
+                />
               </div>
               <div className="form-group">
                 <label>Date of Contribution</label>
-                <input type="date" className="form-control" id="contributionDateInput"
-                  name="contributionDateInput" />
+                <input
+                  type="date"
+                  className="form-control"
+                  id="contributionDateInput"
+                  name="contributionDateInput"
+                />
               </div>
               <div className="form-group">
                 <label>Contribution Notification Date</label>
-                <input type="date" className="form-control" id="contributionSubmissionDateInput"
-                  name="contributionSubmissionDateInput" />
+                <input
+                  type="date"
+                  className="form-control"
+                  id="contributionSubmissionDateInput"
+                  name="contributionSubmissionDateInput"
+                />
               </div>
               <div className="form-group">
                 <label>Approval Date</label>
-                <input type="date" className="form-control" id="approvalDateInput"
-                  name="approvalDateInput" />
+                <input
+                  type="date"
+                  className="form-control"
+                  id="approvalDateInput"
+                  name="approvalDateInput"
+                />
               </div>
               <div className="form-group">
                 <label>Contribution Closed Date</label>
-                <input type="date" className="form-control" name="contributionClosedDateInput" />
+                <input
+                  type="date"
+                  className="form-control"
+                  name="contributionClosedDateInput"
+                />
               </div>
               <div className="form-group">
                 <label>GitHub Status</label>
@@ -266,7 +296,12 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   name="githubStatusInput"
                   placeholder={this.state.contribution_github_status}
                   options={values}
-                  onChange={(change) => this.handleSelectChange(change, 'contribution_github_status')}
+                  onChange={change =>
+                    this.handleSelectChange(
+                      change,
+                      'contribution_github_status'
+                    )
+                  }
                   value={this.state.contribution_github_status}
                   clearable={false}
                   autosize={true}
@@ -276,13 +311,21 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
               </div>
               <div className="form-group">
                 <label>Contribution URL</label>
-                <input type="text" className="form-control" id="contributionUrlInput"
-                  placeholder={this.state.contrib.contribution_url} />
+                <input
+                  type="text"
+                  className="form-control"
+                  id="contributionUrlInput"
+                  placeholder={this.state.contrib.contribution_url}
+                />
               </div>
               <div className="form-group">
                 <label>Contribution Description</label>
-                <textarea className="form-control" rows={2} id="contributionDescInput"
-                  placeholder={this.state.contrib.contribution_description} />
+                <textarea
+                  className="form-control"
+                  rows={2}
+                  id="contributionDescInput"
+                  placeholder={this.state.contrib.contribution_description}
+                />
               </div>
               <div className="form-group">
                 <label>Internal Approval Status</label>
@@ -290,7 +333,9 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   name="approvalStatusInput"
                   placeholder={this.state.approval_status}
                   options={values}
-                  onChange={(change) => this.handleSelectChange(change, 'approval_status')}
+                  onChange={change =>
+                    this.handleSelectChange(change, 'approval_status')
+                  }
                   value={this.state.approval_status}
                   clearable={false}
                   autosize={true}
@@ -300,12 +345,20 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
               </div>
               <div className="form-group">
                 <label>Approval Notes</label>
-                <textarea className="form-control" rows={2} id="approvalNotesInput"
-                  placeholder={approval_notes} />
+                <textarea
+                  className="form-control"
+                  rows={2}
+                  id="approvalNotesInput"
+                  placeholder={approval_notes}
+                />
               </div>
               <div className="form-group">
-                <Link className="btn btn-secondary" id="to-admin" to="/admin">Cancel</Link>
-                <button className="btn btn-primary" type="submit">Submit</button>
+                <Link className="btn btn-secondary" id="to-admin" to="/admin">
+                  Cancel
+                </Link>
+                <button className="btn btn-primary" type="submit">
+                  Submit
+                </button>
               </div>
             </form>
             {this.state.alert}

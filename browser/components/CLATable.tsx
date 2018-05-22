@@ -58,7 +58,7 @@ export default class ClaTable extends React.Component<Props, State> {
     console.error(error);
   }
 
-  onSortChange = (key) => {
+  onSortChange = key => {
     const sorted = Underscore.sortBy(this.state.cla, key);
     if (this.state.sortDirection === SortTypes.ASC) {
       this.setState({
@@ -71,7 +71,7 @@ export default class ClaTable extends React.Component<Props, State> {
         cla: sorted,
       });
     }
-  }
+  };
 
   getTable = () => {
     return (
@@ -82,54 +82,54 @@ export default class ClaTable extends React.Component<Props, State> {
           headerHeight={50}
           width={1250}
           maxHeight={500}
-          onScrollEnd = {() => { ReactTooltip.rebuild(); }}
+          onScrollEnd={() => {
+            ReactTooltip.rebuild();
+          }}
         >
           <Column
-              key={'edit_link'}
-              header={
-                <TableSortHeaderCell
-                  onSortChange={() => { this.onSortChange('project_id'); }}
-                  sortDir="project_id">
-                  Edit
-                </TableSortHeaderCell>
-              }
-              cell={
-                <TableEditCellForCla
-                  data={this.state.cla}
-                  field="project_id"
-                />
-              }
-              width={50}
+            key={'edit_link'}
+            header={
+              <TableSortHeaderCell
+                onSortChange={() => {
+                  this.onSortChange('project_id');
+                }}
+                sortDir="project_id"
+              >
+                Edit
+              </TableSortHeaderCell>
+            }
+            cell={
+              <TableEditCellForCla data={this.state.cla} field="project_id" />
+            }
+            width={50}
           />
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => { this.onSortChange('project_name'); }}
-                sortDir="project_name">
+                onSortChange={() => {
+                  this.onSortChange('project_name');
+                }}
+                sortDir="project_name"
+              >
                 Project
               </TableSortHeaderCell>
             }
-            cell={
-              <TableTextCell
-                data={this.state.cla}
-                field="project_name"
-              />
-            }
+            cell={<TableTextCell data={this.state.cla} field="project_name" />}
             width={100}
           />
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('contributor_name'); }}
-                sortDir="contributor_name">
+                onSortChange={() => {
+                  this.onSortChange('contributor_name');
+                }}
+                sortDir="contributor_name"
+              >
                 Contributor[s]
               </TableSortHeaderCell>
             }
             cell={
-              <TableTextCell
-                data={this.state.cla}
-                field="contributor_name"
-              />
+              <TableTextCell data={this.state.cla} field="contributor_name" />
             }
             flexGrow={2}
             width={225}
@@ -137,16 +137,16 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('signatory_name'); }}
-                sortDir="signatory_name">
+                onSortChange={() => {
+                  this.onSortChange('signatory_name');
+                }}
+                sortDir="signatory_name"
+              >
                 Signatory Name
               </TableSortHeaderCell>
             }
             cell={
-              <TableSummaryCell
-                data={this.state.cla}
-                field="signatory_name"
-              />
+              <TableSummaryCell data={this.state.cla} field="signatory_name" />
             }
             flexGrow={2}
             width={125}
@@ -154,16 +154,16 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('approver_name'); }}
-                sortDir="approver_name">
+                onSortChange={() => {
+                  this.onSortChange('approver_name');
+                }}
+                sortDir="approver_name"
+              >
                 Approver Name
               </TableSortHeaderCell>
             }
             cell={
-              <TableSummaryCell
-                data={this.state.cla}
-                field="approver_name"
-              />
+              <TableSummaryCell data={this.state.cla} field="approver_name" />
             }
             flexGrow={2}
             width={100}
@@ -171,69 +171,60 @@ export default class ClaTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('contact_name'); }}
-                sortDir="contact_name">
+                onSortChange={() => {
+                  this.onSortChange('contact_name');
+                }}
+                sortDir="contact_name"
+              >
                 Point of Contact
               </TableSortHeaderCell>
             }
-            cell={
-              <TableTextCell
-                data={this.state.cla}
-                field="contact_name"
-              />
-            }
-            flexGrow={2}
-            width={75}
-          />
-          <Column
-            header=
-            {
-              <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('ticket_link'); }}
-                sortDir="ticket_link">
-                Ticket URL
-              </TableSortHeaderCell>
-            }
-            cell={
-              <TableLinkCell
-                data={this.state.cla}
-                field="ticket_link"
-              />
-            }
+            cell={<TableTextCell data={this.state.cla} field="contact_name" />}
             flexGrow={2}
             width={75}
           />
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('date_approved'); }}
-                sortDir="date_approved">
+                onSortChange={() => {
+                  this.onSortChange('ticket_link');
+                }}
+                sortDir="ticket_link"
+              >
+                Ticket URL
+              </TableSortHeaderCell>
+            }
+            cell={<TableLinkCell data={this.state.cla} field="ticket_link" />}
+            flexGrow={2}
+            width={75}
+          />
+          <Column
+            header={
+              <TableSortHeaderCell
+                onSortChange={() => {
+                  this.onSortChange('date_approved');
+                }}
+                sortDir="date_approved"
+              >
                 Date Approved
               </TableSortHeaderCell>
             }
-            cell={
-              <TableDateCell
-                data={this.state.cla}
-                field="date_approved"
-              />
-            }
+            cell={<TableDateCell data={this.state.cla} field="date_approved" />}
             flexGrow={2}
             width={100}
           />
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('date_signed'); }}
-                sortDir="date_signed">
+                onSortChange={() => {
+                  this.onSortChange('date_signed');
+                }}
+                sortDir="date_signed"
+              >
                 Date Signed
               </TableSortHeaderCell>
             }
-            cell={
-              <TableDateCell
-                data={this.state.cla}
-                field="date_signed"
-              />
-            }
+            cell={<TableDateCell data={this.state.cla} field="date_signed" />}
             flexGrow={2}
             width={100}
           />
@@ -241,25 +232,26 @@ export default class ClaTable extends React.Component<Props, State> {
             key={'notes_link'}
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('additional_notes'); }}
-                sortDir="additional_notes">
+                onSortChange={() => {
+                  this.onSortChange('additional_notes');
+                }}
+                sortDir="additional_notes"
+              >
                 Notes
               </TableSortHeaderCell>
             }
-            cell={<TooltipCell data={this.state.cla} field="additional_notes"/>}
+            cell={
+              <TooltipCell data={this.state.cla} field="additional_notes" />
+            }
             width={65}
           />
         </Table>
-        <ReactTooltip place="top" type="dark" effect="float"/>
+        <ReactTooltip place="top" type="dark" effect="float" />
       </div>
     );
-  }
+  };
 
   render() {
-    return(
-      <div>
-        {this.getTable()}
-      </div>
-    );
+    return <div>{this.getTable()}</div>;
   }
 }

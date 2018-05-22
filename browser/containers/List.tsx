@@ -31,7 +31,7 @@ class List extends React.Component<{}, State> {
 
   async componentDidMount() {
     const contributions = await reqJSON('/api/contributions');
-    this.setState({contributionList: contributions.contributionList});
+    this.setState({ contributionList: contributions.contributionList });
   }
 
   render() {
@@ -45,4 +45,4 @@ class List extends React.Component<{}, State> {
   }
 }
 
-export default connect((state) => ({}))(List);
+export default connect(state => ({}))(List);

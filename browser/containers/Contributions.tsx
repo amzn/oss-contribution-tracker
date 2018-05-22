@@ -15,7 +15,7 @@ import * as React from 'react';
 import { Component } from 'react';
 
 import ContributionsForm from '../components/ContributionsForm';
-import { reqJSON  } from '../util/index';
+import { reqJSON } from '../util/index';
 
 interface Props {
   dispatch: any;
@@ -48,8 +48,6 @@ export default class Contributions extends Component<Props, State> {
   render() {
     const { approvers, projects } = this.state;
 
-    return (
-      <ContributionsForm approvers={approvers} projects={projects} />
-    );
+    return <ContributionsForm approvers={approvers} projects={projects} />;
   }
 }

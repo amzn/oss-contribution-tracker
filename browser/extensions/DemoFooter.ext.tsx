@@ -16,12 +16,11 @@ import * as React from 'react';
 
 import { register } from '../ext';
 
-register('footer', (props) => {
+register('footer', props => {
   return (
     <div>
-      <a href="https://github.com/amzn/oss-contribution-tracker">
-        Github
-      </a> | <a href="https://github.com/amzn/oss-contribution-tracker/blob/master/LICENSE">
+      <a href="https://github.com/amzn/oss-contribution-tracker">Github</a> |{' '}
+      <a href="https://github.com/amzn/oss-contribution-tracker/blob/master/LICENSE">
         License Information
       </a>
     </div>

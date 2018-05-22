@@ -22,34 +22,42 @@ interface Props extends React.Props<any> {
   columnKey: string;
 }
 
-export default class TableSummaryCell extends React.Component<Partial<Props>, {}> {
+export default class TableSummaryCell extends React.Component<
+  Partial<Props>,
+  {}
+> {
   componentDidUpdate() {
     $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
     $('[data-toggle="popover"]').popover({ container: 'body' });
   }
 
-  shortner = (text) => {
+  shortner = text => {
     // checks if text is over 50 characters and adds tool tip for full text
     if (text && text.length > 50) {
-      return(
+      return (
         <span>
-          {text.substring(0, 47)} <a tabIndex={0} data-toggle="popover" data-trigger="hover"
-            data-placement="right" title="Contribution Summary" data-content={text}>...</a>
+          {text.substring(0, 47)}{' '}
+          <a
+            tabIndex={0}
+            data-toggle="popover"
+            data-trigger="hover"
+            data-placement="right"
+            title="Contribution Summary"
+            data-content={text}
+          >
+            ...
+          </a>
         </span>
       );
     } else {
       return text;
     }
-  }
+  };
 
   render() {
-    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
 
     // Shorten alows for more flexibitly in reusing this component
-    return (
-      <Cell {...props}>
-        {this.shortner(data[rowIndex][field]) }
-      </Cell>
-    );
+    return <Cell {...props}>{this.shortner(data[rowIndex][field])}</Cell>;
   }
 }

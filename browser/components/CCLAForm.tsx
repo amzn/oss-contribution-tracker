@@ -36,8 +36,8 @@ interface State {
   cla_project_approvers_names: any[];
   alert: any;
   display: {
-    signatory: string[],
-    poc: string[],
+    signatory: string[];
+    poc: string[];
   };
 }
 
@@ -63,17 +63,25 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
     };
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const { dispatch } = this.props;
-    const projName = (e.target.elements.projectName as HTMLInputElement).value.trim();
-    const contribNames = (e.target.elements.contributorName as HTMLInputElement).value.trim();
-    const appName = (e.target.elements.appName as HTMLInputElement).value.trim();
-    const sigName = (e.target.elements.sigName as HTMLInputElement).value.trim();
-    const contactName = (e.target.elements.contactName as HTMLInputElement).value.trim();
-    const dateApproved = (e.target.elements.dateApproved as HTMLInputElement).value.toLowerCase();
-    const dateSigned = (e.target.elements.dateSigned as HTMLInputElement).value.toLowerCase();
-    const notes = (e.target.elements.description as HTMLInputElement).value.toLowerCase();
+    const projName = (e.target.elements
+      .projectName as HTMLInputElement).value.trim();
+    const contribNames = (e.target.elements
+      .contributorName as HTMLInputElement).value.trim();
+    const appName = (e.target.elements
+      .appName as HTMLInputElement).value.trim();
+    const sigName = (e.target.elements
+      .sigName as HTMLInputElement).value.trim();
+    const contactName = (e.target.elements
+      .contactName as HTMLInputElement).value.trim();
+    const dateApproved = (e.target.elements
+      .dateApproved as HTMLInputElement).value.toLowerCase();
+    const dateSigned = (e.target.elements
+      .dateSigned as HTMLInputElement).value.toLowerCase();
+    const notes = (e.target.elements
+      .description as HTMLInputElement).value.toLowerCase();
     const jsonObj = {
       project_name: projName,
       contributor_names: contribNames,
@@ -93,33 +101,33 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
         title="Success"
         onConfirm={() => this.hideAlert()}
       >
-          Entry has been added
+        Entry has been added
       </SweetAlert>
     );
 
     this.setState({
       alert: getAlert(),
     });
-  }
+  };
 
   hideAlert = () => {
     this.setState({
       alert: null,
     });
     this.props.toggleForm(false);
-  }
+  };
 
   getOptionsProjectNames = () => {
-    return(this.state.cla_project_names.map(
-      (object) => (<option key={object.project_name} value={object.project_name} />),
+    return this.state.cla_project_names.map(object => (
+      <option key={object.project_name} value={object.project_name} />
     ));
-  }
+  };
 
   getOptionsApproverNames = () => {
-    return(this.state.cla_project_approvers_names.map(
-      (alist) => (<option key={alist.approver_alias} value={alist.approver_alias} />),
+    return this.state.cla_project_approvers_names.map(alist => (
+      <option key={alist.approver_alias} value={alist.approver_alias} />
     ));
-  }
+  };
 
   async componentWillMount() {
     const projects = await reqJSON('/api/cla/projects');
@@ -138,45 +146,106 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
         <h3>New CCLA</h3>
         <form id="contributions-form" onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label>Project name</label><br/>
-            <input type="text" list="project_name" className="form-control" name="projectName"
-              defaultValue={null} required={true} />
-              <datalist id="project_name">
-                {this.getOptionsProjectNames()}
-              </datalist><br/>
-            <label>Contributor[s]</label> <br/>
-            <input type="text" className="form-control" name="contributorName" defaultValue={null}/><br/>
-            <label>Approver</label> <br/>
-            <input type="text" list="approver_names" className="form-control" name="appName"
-              defaultValue={null} required={true} />
-              <datalist id="approver_names">
-                {this.getOptionsApproverNames()}
-              </datalist><br/>
-            <label>Signatory</label> <br/>
-            <input type="text"  list="signatory_name" className="form-control" name="sigName"
-              defaultValue={null} required={true} />
+            <label>Project name</label>
+            <br />
+            <input
+              type="text"
+              list="project_name"
+              className="form-control"
+              name="projectName"
+              defaultValue={null}
+              required={true}
+            />
+            <datalist id="project_name">
+              {this.getOptionsProjectNames()}
+            </datalist>
+            <br />
+            <label>Contributor[s]</label> <br />
+            <input
+              type="text"
+              className="form-control"
+              name="contributorName"
+              defaultValue={null}
+            />
+            <br />
+            <label>Approver</label> <br />
+            <input
+              type="text"
+              list="approver_names"
+              className="form-control"
+              name="appName"
+              defaultValue={null}
+              required={true}
+            />
+            <datalist id="approver_names">
+              {this.getOptionsApproverNames()}
+            </datalist>
+            <br />
+            <label>Signatory</label> <br />
+            <input
+              type="text"
+              list="signatory_name"
+              className="form-control"
+              name="sigName"
+              defaultValue={null}
+              required={true}
+            />
             <datalist id="signatory_name">
-              {this.state.display.signatory.map((user) => {
-                return (<option key={user} value={user}/>);
+              {this.state.display.signatory.map(user => {
+                return <option key={user} value={user} />;
               })}
-             </datalist><br/>
-            <label>Point of Contact</label> <br/>
-            <input type="text"  list="contact" className="form-control" name="contactName"
-              defaultValue={null} required={true} />
+            </datalist>
+            <br />
+            <label>Point of Contact</label> <br />
+            <input
+              type="text"
+              list="contact"
+              className="form-control"
+              name="contactName"
+              defaultValue={null}
+              required={true}
+            />
             <datalist id="contact">
-              {this.state.display.poc.map((user) => {
-                return (<option key={user} value={user}/>);
+              {this.state.display.poc.map(user => {
+                return <option key={user} value={user} />;
               })}
-            </datalist><br/>
+            </datalist>
+            <br />
             <label>Date Signed</label>
-            <input type="date" className="form-control" name="dateSigned" required={true}/><br/>
+            <input
+              type="date"
+              className="form-control"
+              name="dateSigned"
+              required={true}
+            />
+            <br />
             <label>Date Approved</label>
-            <input type="date" className="form-control" name="dateApproved" required={true}/><br/>
-            <label>Additional Notes</label> <br/>
-            <textarea id="description" className="form-control" rows={3} name="description" required={true} />
+            <input
+              type="date"
+              className="form-control"
+              name="dateApproved"
+              required={true}
+            />
+            <br />
+            <label>Additional Notes</label> <br />
+            <textarea
+              id="description"
+              className="form-control"
+              rows={3}
+              name="description"
+              required={true}
+            />
           </div>
-          <button className="btn btn-secondary" type="submit" onClick={this.hideAlert}>Cancel</button>
-          <button className="btn btn-primary" type="submit">Submit</button>
+          <button
+            className="btn btn-secondary"
+            type="submit"
+            onClick={this.hideAlert}
+          >
+            Cancel
+          </button>
+          <button className="btn btn-primary" type="submit">
+            Submit
+          </button>
         </form>
         {this.state.alert}
       </div>
@@ -184,4 +253,4 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
   }
 }
 
-export default connect((state) => ({}))(CCLAForm) as any;
+export default connect(state => ({}))(CCLAForm) as any;

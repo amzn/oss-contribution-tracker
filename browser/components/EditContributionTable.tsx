@@ -32,7 +32,10 @@ interface State {
   filteredDataList: any;
 }
 
-export default class EditContributionTable extends React.Component<Props, State> {
+export default class EditContributionTable extends React.Component<
+  Props,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -77,9 +80,9 @@ export default class EditContributionTable extends React.Component<Props, State>
     this.setState({
       filteredDataList: filteredContributions,
     });
-  }
+  };
 
-  searchHeader = (colName) => {
+  searchHeader = colName => {
     let headText;
     switch (colName.columnKey) {
       case 'project_name':
@@ -103,19 +106,22 @@ export default class EditContributionTable extends React.Component<Props, State>
     return (
       <div>
         <Cell>
-          <span>{ headText }</span>
-          <br/>
-          <input type="search" className="form-control form-control-sm"
-            onChange={(e) => this.onFilterChange(e, colName.columnKey)}
-            style={{width: 90 + '%'}} />
+          <span>{headText}</span>
+          <br />
+          <input
+            type="search"
+            className="form-control form-control-sm"
+            onChange={e => this.onFilterChange(e, colName.columnKey)}
+            style={{ width: 90 + '%' }}
+          />
         </Cell>
       </div>
     );
-  }
+  };
 
   csvDownload = () => {
     utils.onClickDownload(this.state.filteredDataList);
-  }
+  };
 
   render() {
     const filtered = this.state.filteredDataList;
@@ -127,24 +133,20 @@ export default class EditContributionTable extends React.Component<Props, State>
           rowHeight={50}
           headerHeight={60}
           width={1200}
-          maxHeight={500}>
+          maxHeight={500}
+        >
           <Column
             key={'edit_link'}
-            header={
-              <Cell>Edit</Cell>
-            }
+            header={<Cell>Edit</Cell>}
             cell={
-              <TableEditCheckboxCell
-                data={filtered}
-                field="contribution_id"
-              />
+              <TableEditCheckboxCell data={filtered} field="contribution_id" />
             }
             width={50}
           />
           <Column
             key={'contribution_edit_project_name'}
             columnKey="project_name"
-            header={ this.searchHeader.bind('project_name') }
+            header={this.searchHeader.bind('project_name')}
             cell={
               <TableTextCell
                 data={filtered}
@@ -157,7 +159,7 @@ export default class EditContributionTable extends React.Component<Props, State>
           <Column
             key={'contribution_edit_description'}
             columnKey="contribution_description"
-            header={ this.searchHeader.bind('contribution_description') }
+            header={this.searchHeader.bind('contribution_description')}
             cell={
               <TableSummaryCell
                 data={filtered}
@@ -170,9 +172,7 @@ export default class EditContributionTable extends React.Component<Props, State>
           <Column
             key={'contribution_edit_url'}
             columnKey="contrib_url"
-            header={
-              <Cell>Contrib URL</Cell>
-            }
+            header={<Cell>Contrib URL</Cell>}
             cell={
               <TableLinkCell
                 data={filtered}
@@ -185,7 +185,7 @@ export default class EditContributionTable extends React.Component<Props, State>
           <Column
             key={'contribution_edit_submission_date'}
             columnKey="submission_date"
-            header={ this.searchHeader.bind('submission_date') }
+            header={this.searchHeader.bind('submission_date')}
             cell={
               <TableDateCell
                 data={filtered}
@@ -198,9 +198,7 @@ export default class EditContributionTable extends React.Component<Props, State>
           <Column
             key={'contribution_edit_approval_status'}
             columnKey="approval_status"
-            header={
-              <Cell>Approval Status</Cell>
-            }
+            header={<Cell>Approval Status</Cell>}
             cell={
               <TableApprovalStatusCell
                 data={filtered}
@@ -213,9 +211,7 @@ export default class EditContributionTable extends React.Component<Props, State>
           <Column
             key={'contribution_edit_github_status'}
             columnKey="github_status"
-            header={
-                <Cell>GitHub Status</Cell>
-            }
+            header={<Cell>GitHub Status</Cell>}
             cell={
               <TableGitHubStatusCell
                 data={filtered}
@@ -228,7 +224,7 @@ export default class EditContributionTable extends React.Component<Props, State>
           <Column
             key={'contribution_edit_contributor_alias'}
             columnKey="contributor_alias"
-            header={ this.searchHeader.bind('contributor_alias') }
+            header={this.searchHeader.bind('contributor_alias')}
             cell={
               <TableTextCell
                 data={filtered}
@@ -239,7 +235,7 @@ export default class EditContributionTable extends React.Component<Props, State>
             width={125}
           />
         </Table>
-        <br/>
+        <br />
         <button onClick={this.csvDownload} className="btn btn-secondary">
           <i className="fa fa-download" /> Download CSV
         </button>

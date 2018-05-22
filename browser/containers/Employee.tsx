@@ -39,17 +39,17 @@ class Employee extends React.Component<Props, State> {
     };
   }
 
-  storeSearch = (e) => {
+  storeSearch = e => {
     const currentsearch = e.currentTarget.value;
     if (this.state.aliasList.indexOf(currentsearch) !== -1) {
       this.setState({
         currentAlias: currentsearch,
       });
     }
-  }
+  };
 
   componentWillMount() {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch(EmployeeActions.fetchCurrentUser());
     dispatch(EmployeeActions.fetchDataListAlias());
   }
@@ -61,20 +61,24 @@ class Employee extends React.Component<Props, State> {
     }
   }
 
-  filterAliasNames = (alias) => {
-    const newArray = Object.keys(alias.contributionList.undefined)
-      .map((key) => alias.contributionList.undefined[key].alias);
+  filterAliasNames = alias => {
+    const newArray = Object.keys(alias.contributionList.undefined).map(
+      key => alias.contributionList.undefined[key].alias
+    );
     const aliasSet = new Set(newArray.sort());
     const aliasArray = Array.from(aliasSet);
     this.setState({
       aliasList: aliasArray,
     });
     return aliasArray;
-  }
+  };
 
   render() {
     const employeeData = this.props.employeeData;
-    const currentAlias = this.state.currentAlias === '' ? employeeData.user : this.state.currentAlias;
+    const currentAlias =
+      this.state.currentAlias === ''
+        ? employeeData.user
+        : this.state.currentAlias;
     return (
       <div>
         <div className="col-md-3">
@@ -84,10 +88,18 @@ class Employee extends React.Component<Props, State> {
             </Link>
           </h4>
         </div>
-        <input type="text" list="browsers" id="projectLISearch" onInput={this.storeSearch}
-          placeholder="Contributor Alias" className="form-control" />
+        <input
+          type="text"
+          list="browsers"
+          id="projectLISearch"
+          onInput={this.storeSearch}
+          placeholder="Contributor Alias"
+          className="form-control"
+        />
         <datalist id="browsers">
-          {this.state.aliasList.map((alias) => (<option key={alias} value={alias}/>))}
+          {this.state.aliasList.map(alias => (
+            <option key={alias} value={alias} />
+          ))}
         </datalist>
         <div id="contributionsListMine" className="mt-3">
           <AllEmployeeTable alias={currentAlias} />
@@ -96,7 +108,7 @@ class Employee extends React.Component<Props, State> {
     );
   }
 }
-export default connect((state) => {
+export default connect(state => {
   return {
     employeeData: state.employee,
   };

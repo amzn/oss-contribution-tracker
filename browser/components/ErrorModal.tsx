@@ -33,11 +33,16 @@ export default class ErrorModal extends Component<Props, {}> {
               <h4>{title}</h4>
             </div>
             <div className="modal-body">
-              <p>There was a problem:<br/><strong>{message}</strong></p>
+              <p>
+                There was a problem:<br />
+                <strong>{message}</strong>
+              </p>
               <p>{explain}</p>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-primary" onClick={onDismiss}>Close</button>
+              <button className="btn btn-primary" onClick={onDismiss}>
+                Close
+              </button>
             </div>
           </div>
         </div>

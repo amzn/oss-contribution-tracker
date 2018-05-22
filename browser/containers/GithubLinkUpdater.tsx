@@ -46,26 +46,29 @@ class GithubLinkUpdater extends React.Component<Props, State> {
     });
     const clist = await reqJSON(`/api/contributions/${user.user}`);
     this.sortList(clist.contributionList);
-  }
+  };
 
-  sortList = (cL) => {
+  sortList = cL => {
     const list = {};
     for (const key of Object.keys(cL)) {
       const value = cL[key];
-      value.map((entry) => {
+      value.map(entry => {
         list[entry.contribution_id] = entry;
       });
     }
     this.setState({
       contributionList: list,
     });
-  }
+  };
 
   render() {
     return (
-      <GithubLink contributionList={this.state.contributionList} user={this.state.user} />
+      <GithubLink
+        contributionList={this.state.contributionList}
+        user={this.state.user}
+      />
     );
   }
 }
 
-export default connect((state) => ({}))(GithubLinkUpdater);
+export default connect(state => ({}))(GithubLinkUpdater);

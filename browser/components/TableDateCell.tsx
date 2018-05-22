@@ -11,7 +11,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import {Cell} from 'fixed-data-table';
+import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
 
 export default class TableDateCell extends React.Component<Partial<Props>, {}> {
   render() {
-    const {rowIndex, field, data, col, columnKey, ...props} = this.props;
+    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
     const time = new Date(data[rowIndex][field]);
     return (
       <Cell {...props}>

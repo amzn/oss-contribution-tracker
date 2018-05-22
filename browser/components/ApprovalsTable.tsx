@@ -13,7 +13,7 @@
  */
 import { Column, Table } from 'fixed-data-table';
 import * as React from 'react';
-import {CSVLink} from 'react-csv';
+import { CSVLink } from 'react-csv';
 import * as Underscore from 'underscore';
 
 import TableApprovalCell from '../components/TableApprovalCell';
@@ -46,12 +46,12 @@ export default class ApprovalsTable extends React.Component<Props, State> {
     };
   }
   componentWillMount() {
-      this.setState({
-        approvalList: this.props.approvalList,
-      });
+    this.setState({
+      approvalList: this.props.approvalList,
+    });
   }
 
-  onSortChange = (key) => {
+  onSortChange = key => {
     const sorted = Underscore.sortBy(this.props.approvalList, key);
     if (this.state.sortDirection === SortTypes.ASC) {
       this.setState({
@@ -64,7 +64,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
         approvalList: sorted,
       });
     }
-  }
+  };
 
   getTable = () => {
     return (
@@ -74,12 +74,16 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           rowHeight={50}
           headerHeight={50}
           width={1200}
-          maxHeight={500}>
+          maxHeight={500}
+        >
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('project_name'); }}
-                sortDir="project_name">
+                onSortChange={() => {
+                  this.onSortChange('project_name');
+                }}
+                sortDir="project_name"
+              >
                 Project
               </TableSortHeaderCell>
             }
@@ -94,8 +98,11 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('contribution_description'); }}
-                sortDir="contribution_description">
+                onSortChange={() => {
+                  this.onSortChange('contribution_description');
+                }}
+                sortDir="contribution_description"
+              >
                 Contribution Description
               </TableSortHeaderCell>
             }
@@ -111,8 +118,11 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('contribution_url'); }}
-                sortDir="contribution_url">
+                onSortChange={() => {
+                  this.onSortChange('contribution_url');
+                }}
+                sortDir="contribution_url"
+              >
                 Contribution URL
               </TableSortHeaderCell>
             }
@@ -128,8 +138,11 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('contribution_submission_date'); }}
-                sortDir="contribution_submission_date">
+                onSortChange={() => {
+                  this.onSortChange('contribution_submission_date');
+                }}
+                sortDir="contribution_submission_date"
+              >
                 Submission Date
               </TableSortHeaderCell>
             }
@@ -145,8 +158,11 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('contributor_alias'); }}
-                sortDir="contributor_alias">
+                onSortChange={() => {
+                  this.onSortChange('contributor_alias');
+                }}
+                sortDir="contributor_alias"
+              >
                 Contributor Alias
               </TableSortHeaderCell>
             }
@@ -162,8 +178,11 @@ export default class ApprovalsTable extends React.Component<Props, State> {
           <Column
             header={
               <TableSortHeaderCell
-                onSortChange={() => {this.onSortChange('project_id'); }}
-                sortDir="project_id">
+                onSortChange={() => {
+                  this.onSortChange('project_id');
+                }}
+                sortDir="project_id"
+              >
                 Approve / Deny
               </TableSortHeaderCell>
             }
@@ -177,19 +196,20 @@ export default class ApprovalsTable extends React.Component<Props, State> {
             width={150}
           />
         </Table>
-        <br/>
-        <CSVLink data={this.state.approvalList} filename="Current-active-contribution.csv">
-          <button className="btn btn-secondary"><i className="fa fa-download" /> Download CSV</button>
+        <br />
+        <CSVLink
+          data={this.state.approvalList}
+          filename="Current-active-contribution.csv"
+        >
+          <button className="btn btn-secondary">
+            <i className="fa fa-download" /> Download CSV
+          </button>
         </CSVLink>
       </div>
     );
-  }
+  };
 
   render() {
-    return (
-      <div>
-        {this.getTable()}
-      </div>
-    );
+    return <div>{this.getTable()}</div>;
   }
 }
