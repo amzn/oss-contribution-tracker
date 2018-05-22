@@ -67,7 +67,7 @@ export async function approveContribution(req, body) {
   await dbContribution.approveContribution(
     body.contributionId,
     body.approvalNotes,
-    body.approvalStatus,
+    body.approvalStatus
   );
   return { contributionId: body.contributionId };
 }
@@ -89,7 +89,7 @@ export async function addNewContribution(req, body) {
     body.approver,
     body.contributor.trim(),
     body.needsProjectReview,
-    body.githubLink,
+    body.githubLink
   );
   return { contributionID };
 }
@@ -97,7 +97,9 @@ export async function addNewContribution(req, body) {
 export async function addNewAutoApprovedContribution(req, body, user) {
   const projects = await dbProjects.searchProjectById(body.projectId);
   if (projects.length !== 1 || !projects[0].project_auto_approvable) {
-    throw new RequestError('Project not marked for auto-approvable contributions');
+    throw new RequestError(
+      'Project not marked for auto-approvable contributions'
+    );
   }
   const autoApprover = await dbApprovers.getApproverByName('auto-approver');
   const contributionID = await dbContribution.addNewContribution(
@@ -109,7 +111,7 @@ export async function addNewAutoApprovedContribution(req, body, user) {
     false,
     null,
     dbContribution.ContributionStatus.APPROVED_PENDING_LINK,
-    body.meta,
+    body.meta
   );
   return { contributionID };
 }
@@ -117,7 +119,9 @@ export async function addNewAutoApprovedContribution(req, body, user) {
 export async function diffCheck(req, body) {
   const size = getDiffSize(body.diff);
   if (size === 0) {
-    throw new RequestError('Submitted text is not a unified diff, or it had no changes');
+    throw new RequestError(
+      'Submitted text is not a unified diff, or it had no changes'
+    );
   }
   return {
     ok: size < config.contributions.autoApprove.diffLimit,
@@ -129,7 +133,12 @@ export async function updateContribution(req, body) {
   if (body.project_new) {
     // This is claimed to be a new project so let's find out and create if necessary
     // TODO: toggle back to false once multiple people are submitting contributions
-    const resp = await dbProjects.addProject(body.project_name, null, null, true); // false);
+    const resp = await dbProjects.addProject(
+      body.project_name,
+      null,
+      null,
+      true
+    ); // false);
     body.project_id = resp.project_id;
   }
   const contributionID = await dbContribution.updateContribution(
@@ -144,7 +153,7 @@ export async function updateContribution(req, body) {
     body.approval_notes,
     body.approval_date,
     body.contribution_submission_date,
-    body.contribution_closed_date,
+    body.contribution_closed_date
   );
   return { contributionID };
 }
@@ -152,6 +161,6 @@ export async function updateContribution(req, body) {
 export async function updateContributionLink(req, body) {
   return await dbContribution.updateContributionLink(
     body.contrib_id,
-    body.link,
+    body.link
   );
 }

@@ -62,7 +62,6 @@ function load() {
   return Promise.resolve(config);
 }
 
-
 module.exports = {
   default: config,
   config: config,

@@ -74,7 +74,7 @@ class ContributionsTable extends React.Component<Props, State> {
         };
         break;
       default:
-        console.error('Improper type passed to createTables.');
+        throw new Error('Improper type passed to createTables.');
     }
     for (const [key, value] of Object.entries(contributionList)) {
       newTables.set(key, ContributionsTable.renderTables(key, value, tableProps));

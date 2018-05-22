@@ -154,7 +154,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     dispatch(ContributionsActions.updateContribution(changes));
     const getAlert = () => (
       <SweetAlert
-        success
+        success={true}
         title="Success"
         onConfirm={() => this.hideAlert()}>Entry has been updated
       </SweetAlert>
@@ -229,7 +229,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   onChange={this.handleProjectChange}
                   value={this.state.project_id}
                   disabled={this.state.projectDisabled}
-                  required
+                  required={true}
                   clearable={false}
                   autosize={true}
                   menuContainerStyle={{ zIndex: 5 }}

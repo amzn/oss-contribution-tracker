@@ -21,27 +21,31 @@ describe('routes', function() {
   let config: any;
 
   beforeEach(function() {
-    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+    mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     mock = {
       LDAP: {
-        getActiveUser: jasmine.createSpy('LDAP.getActiveUser').and.callFake(function(req, res, next) {
-          if (req.type === 'admin') {
-            return 'adminTestUser';
-          } else if (req.type === 'approver') {
-            return 'approverTestUser';
-          } else {
-            return 'anonTestUser';
-          }
-        }),
-        getGroups: jasmine.createSpy('LDAP.getGroups').and.callFake(function(user) {
-          if (user === 'adminTestUser') {
-            return ['group1', 'group3'];
-          } else if (user === 'approverTestUser') {
-            return ['group2', 'group3'];
-          } else {
-            return ['group3'];
-          }
-        }),
+        getActiveUser: jasmine
+          .createSpy('LDAP.getActiveUser')
+          .and.callFake(function(req, res, next) {
+            if (req.type === 'admin') {
+              return 'adminTestUser';
+            } else if (req.type === 'approver') {
+              return 'approverTestUser';
+            } else {
+              return 'anonTestUser';
+            }
+          }),
+        getGroups: jasmine
+          .createSpy('LDAP.getGroups')
+          .and.callFake(function(user) {
+            if (user === 'adminTestUser') {
+              return ['group1', 'group3'];
+            } else if (user === 'approverTestUser') {
+              return ['group2', 'group3'];
+            } else {
+              return ['group3'];
+            }
+          }),
       },
     };
     mockery.registerMock('../auth/ldap', {
@@ -53,8 +57,9 @@ describe('routes', function() {
       },
       approver: {
         posixGroup: ['group2'],
-      }};
-    mockery.registerMock('../config', {default: config});
+      },
+    };
+    mockery.registerMock('../config', { default: config });
     mockery.registerAllowable('./routes');
     auth = require('./routes');
   });

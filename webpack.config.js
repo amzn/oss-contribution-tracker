@@ -30,14 +30,15 @@ let plugins = [
     jQuery: 'jquery',
     Popper: ['popper.js', 'default'],
   }),
-  new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'vendor.bundle.js',
+  }),
   new ExtractTextPlugin('[name].css'),
 ];
 
 if (prod) {
-  plugins = plugins.concat([
-    new UglifyJsPlugin(),
-  ]);
+  plugins = plugins.concat([new UglifyJsPlugin()]);
 }
 
 module.exports = {
@@ -72,12 +73,27 @@ module.exports = {
   },
 
   node: {
-    fs: 'empty'
+    fs: 'empty',
   },
 
   entry: {
     app: ['./browser/app.tsx'],
-    vendor: ['core-js/shim', 'bootstrap', 'history', 'jquery', 'moment', 'popper.js', 'react', 'react-dom', 'react-redux', 'react-router-dom', 'react-select', 'redux', 'redux-thunk', 'whatwg-fetch'],
+    vendor: [
+      'core-js/shim',
+      'bootstrap',
+      'history',
+      'jquery',
+      'moment',
+      'popper.js',
+      'react',
+      'react-dom',
+      'react-redux',
+      'react-router-dom',
+      'react-select',
+      'redux',
+      'redux-thunk',
+      'whatwg-fetch',
+    ],
     style: ['./styles/style.scss'],
   },
 
@@ -99,5 +115,4 @@ module.exports = {
     },
     stats: 'minimal',
   },
-
 };

@@ -20,10 +20,9 @@ const initial = {};
 export default function reducer(state = initial, action: any = {}) {
   switch (action.type) {
     case RECEIVE_CONTRIBUTIONS_OF_SELECTED_USER:
-      return(Object.assign({}, state, {
+      return Object.assign({}, state, {
         filteredDataList: action.userContributions,
-      })
-    );
+      });
     default:
       return state;
   }
@@ -31,7 +30,7 @@ export default function reducer(state = initial, action: any = {}) {
 
 // receiver functions
 export function receiveUserContributions(currUserContributions) {
-  return{
+  return {
     type: RECEIVE_CONTRIBUTIONS_OF_SELECTED_USER,
     userContributions: filterContributionList(currUserContributions),
   };
@@ -39,18 +38,22 @@ export function receiveUserContributions(currUserContributions) {
 
 // Action creators
 export function fetchUserContribution(userName) {
-  return (dispatch) => {
-    return reqJSON(RECEIVE_CONTRIBUTIONS_OF_SELECTED_USER + userName).then((userContribution) => {
-      dispatch(receiveUserContributions(userContribution));
-    });
+  return dispatch => {
+    return reqJSON(RECEIVE_CONTRIBUTIONS_OF_SELECTED_USER + userName).then(
+      userContribution => {
+        dispatch(receiveUserContributions(userContribution));
+      }
+    );
   };
 }
 
 // Helper functions
 function filterContributionList(clist) {
-    const list = new Array();
-    Object.values<any>(clist.contributionList).map((array) => {
-      array.map((object) => { list.push(object); } );
+  const list = new Array();
+  Object.values<any>(clist.contributionList).map(array => {
+    array.map(object => {
+      list.push(object);
     });
-    return list;
-  }
+  });
+  return list;
+}

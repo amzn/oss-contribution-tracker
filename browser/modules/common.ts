@@ -60,8 +60,8 @@ export function receiveUserData(user) {
 }
 
 export function fetchUserData(query?: any) {
-  return (dispatch) => {
-    return reqJSON('/api/user').then((user) => {
+  return dispatch => {
+    return reqJSON('/api/user').then(user => {
       dispatch(receiveUserData(user));
     });
   };

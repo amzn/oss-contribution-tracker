@@ -15,36 +15,47 @@ import * as db from '../../db/cla';
 
 export async function listCLA(req) {
   const claTable = await db.getClaTable();
-  return {claTable};
+  return { claTable };
 }
 
 export async function listCLAProjectNames(req) {
   const projectNames = await db.getClaProjectNames();
-  return{projectNames};
+  return { projectNames };
 }
 
 export async function addNewCLA(req, body) {
   const contributionID = await db.pushNewCla(
-    body.project_name, body.signatory_name, body.approver_name, body.contact_name,
-    body.date_signed, body.date_approved, body.ticket_link, body.contributor_names,
-    body.additional_notes,
+    body.project_name,
+    body.signatory_name,
+    body.approver_name,
+    body.contact_name,
+    body.date_signed,
+    body.date_approved,
+    body.ticket_link,
+    body.contributor_names,
+    body.additional_notes
   );
   return { contributionID };
 }
 
 export async function updateCLA(req, body) {
   const updatedCla = await db.updateSingleCla(
-    body.project_name, body.signatory_name, body.approver_name, body.contact_name,
-    body.date_signed, body.date_approved, body.ticket_link, body.contributor_names,
-    body.additional_notes, body.project_id,
+    body.project_name,
+    body.signatory_name,
+    body.approver_name,
+    body.contact_name,
+    body.date_signed,
+    body.date_approved,
+    body.ticket_link,
+    body.contributor_names,
+    body.additional_notes,
+    body.project_id
   );
   return { updatedCla };
 }
 
 export async function deleteCLA(req, body) {
-  const deleteCla = await db.deleteSingleCla(
-    body.project_id,
-  );
+  const deleteCla = await db.deleteSingleCla(body.project_id);
   return { deleteCla };
 }
 

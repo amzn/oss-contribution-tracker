@@ -14,18 +14,18 @@
 import { By, until } from 'selenium-webdriver';
 import build, { CustomDriver } from './driver';
 
-describe('admin', function () {
+describe('admin', function() {
   let driver: CustomDriver;
-  beforeAll(async function (done) {
+  beforeAll(async function(done) {
     driver = await build();
     done();
   });
-  afterAll(async function (done) {
+  afterAll(async function(done) {
     await driver.quit();
     done();
   });
 
-  it('initial load', async function (done) {
+  it('initial load', async function(done) {
     driver.getRelative('/admin');
     const title = await driver.getTitle();
     expect(title).toContain('OSS Contribution Tracker');
@@ -33,29 +33,33 @@ describe('admin', function () {
     done();
   });
 
-  it('approve contribution table', async function (done) {
+  it('approve contribution table', async function(done) {
     driver.getRelative('/admin');
     driver.findElement(By.id('approve_contributions_admin_link')).click();
     driver.findElement(By.id('contributions_table_admin'));
-    await driver.wait(until.elementLocated(By.id('approve_contributions_admin_link')));
+    await driver.wait(
+      until.elementLocated(By.id('approve_contributions_admin_link'))
+    );
     done();
   });
 
-  it('edit contribution table', async function (done) {
+  it('edit contribution table', async function(done) {
     driver.getRelative('/admin');
     driver.findElement(By.id('edit_contributions_admin_link')).click();
-    await driver.wait(until.elementLocated(By.id('edit_contributions_admin_link')));
+    await driver.wait(
+      until.elementLocated(By.id('edit_contributions_admin_link'))
+    );
     done();
   });
 
-  it('edit contribution table navigation', async function (done) {
+  it('edit contribution table navigation', async function(done) {
     driver.getRelative('/contribution/000');
     driver.findElement(By.id('edit-contributions-form'));
     await driver.wait(until.elementLocated(By.id('edit-contributions-form')));
     done();
   });
 
-  it('view ccla table', async function (done) {
+  it('view ccla table', async function(done) {
     driver.getRelative('/admin');
     driver.findElement(By.id('ccla_link_admin')).click();
     driver.sleep(1000);
@@ -64,7 +68,7 @@ describe('admin', function () {
     done();
   });
 
-  it('new ccla table', async function (done) {
+  it('new ccla table', async function(done) {
     driver.getRelative('/admin');
     driver.findElement(By.id('ccla_link_admin')).click();
     driver.sleep(1000);
@@ -72,5 +76,4 @@ describe('admin', function () {
     await driver.wait(until.elementLocated(By.id('contributions-form')));
     done();
   });
-
 });

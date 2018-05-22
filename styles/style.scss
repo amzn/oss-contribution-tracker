@@ -6,7 +6,8 @@
 @import '~react-bootstrap-sweetalert/lib/css/animations.css';
 @import '~fixed-data-table/dist/fixed-data-table.min.css';
 
-input:invalid, textarea:invalid {
+input:invalid,
+textarea:invalid {
   box-shadow: none;
 }
 

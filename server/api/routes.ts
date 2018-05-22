@@ -27,10 +27,12 @@ import * as projectsAPI from './projects';
 
 export let router = express.Router();
 
-router.use(bodyParser.json({limit: '1000kb'}));
-router.use(bodyParser.urlencoded({
-  extended: true,
-}));
+router.use(bodyParser.json({ limit: '1000kb' }));
+router.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 /**
  * Forces all requests to grab the requesting users access privileges so
@@ -127,7 +129,10 @@ router.get('/approvers', (req, res, next) => {
 
 router.post('/approvers/new', async (req, res, next) => {
   const access = (req as any).UserAccess;
-  if (access.includes(AccessTypes.admin) || access.includes(AccessTypes.approve)) {
+  if (
+    access.includes(AccessTypes.admin) ||
+    access.includes(AccessTypes.approve)
+  ) {
     pack(approversAPI.listApprovers(req), res, next);
   } else {
     const user = await getUser(req);
@@ -162,13 +167,19 @@ router.post('/contributions/approve', async (req, res, next) => {
     pack(contributionsAPI.approveContribution(req, req.body), res, next);
   } else {
     const user = await getUser(req);
-    winston.warn(`${user} did not have permissions to access /contributions/approve`);
+    winston.warn(
+      `${user} did not have permissions to access /contributions/approve`
+    );
     return next(new AccessError('no access to contribution approval'));
   }
 });
 
 router.get('/contributions/:username', (req, res, next) => {
-  pack(contributionsAPI.listUserContributions(req, req.params.username), res, next);
+  pack(
+    contributionsAPI.listUserContributions(req, req.params.username),
+    res,
+    next
+  );
 });
 
 router.get('/contributions/single/:id', (req, res, next) => {
@@ -185,7 +196,11 @@ router.post('/contributions/new/auto', async (req, res, next) => {
   if (!roles.has('auto-approve')) {
     return next(new AccessError('no access to auto-approve'));
   }
-  pack(contributionsAPI.addNewAutoApprovedContribution(req, req.body, user), res, next);
+  pack(
+    contributionsAPI.addNewAutoApprovedContribution(req, req.body, user),
+    res,
+    next
+  );
 });
 
 router.post('/contributions/diffcheck', async (req, res, next) => {
@@ -203,7 +218,9 @@ router.post('/contributions/update', async (req, res, next) => {
     pack(contributionsAPI.updateContribution(req, req.body), res, next);
   } else {
     const user = await getUser(req);
-    winston.warn(`${user} did not have permissions to access /contributions/update`);
+    winston.warn(
+      `${user} did not have permissions to access /contributions/update`
+    );
     return next(new AccessError('no access to contribution updates'));
   }
 });
@@ -211,8 +228,12 @@ router.post('/contributions/update', async (req, res, next) => {
 router.post('/contributions/update/link', async (req, res, next) => {
   const user = await getUser(req);
   if (user === req.body.user) {
-    const confirm = await contributionsAPI.updateContributionLink(req, req.body);
-    if (!confirm) { // success returns null
+    const confirm = await contributionsAPI.updateContributionLink(
+      req,
+      req.body
+    );
+    if (!confirm) {
+      // success returns null
       res.status(200);
       res.send({
         msg: 'Successfully updated entry.',
@@ -233,7 +254,7 @@ router.post('/contributions/update/link', async (req, res, next) => {
  * API call for all the CLA related data.
  */
 
- // Gets current list of CLA
+// Gets current list of CLA
 router.get('/cla', (req, res, next) => {
   pack(claAPI.listCLA(req), res, next);
 });
@@ -286,24 +307,28 @@ router.post('/cla/submit', async (req, res, next) => {
 
 // error handling for all of the above
 router.use(function(err: any, req: any, res: any, next: any) {
-  if (err.name === 'UnauthorizedError'
-      || err.name === 'AccessError'
-      || err.name === 'RequestError') {
-    res.status(err.status).send({error: err.message});
+  if (
+    err.name === 'UnauthorizedError' ||
+    err.name === 'AccessError' ||
+    err.name === 'RequestError'
+  ) {
+    res.status(err.status).send({ error: err.message });
     return;
   }
 
   winston.error(err.stack ? err.stack : err);
-  res.status(500).send({error: 'Internal error.'});
+  res.status(500).send({ error: 'Internal error.' });
 });
 
 /**
  * Send API call results, calling error middleware on failure.
  */
 function pack(promise, res, next) {
-  if (!res || !next) { throw new Error('Missing response or next middleware parameters'); }
+  if (!res || !next) {
+    throw new Error('Missing response or next middleware parameters');
+  }
   return promise
-    .then((x) => {
+    .then(x => {
       if (x === null) {
         res.status(404).send('Object not found');
       } else {

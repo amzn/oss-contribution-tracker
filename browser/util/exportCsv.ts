@@ -24,7 +24,9 @@ function convertToCSV(objArray) {
 
 // function on triggering of the download button
 export function onClickDownload(filteredDataList) {
-  const csvData = new Blob([convertToCSV(filteredDataList)], {type: 'text/csv;charset=utf-8;'});
+  const csvData = new Blob([convertToCSV(filteredDataList)], {
+    type: 'text/csv;charset=utf-8;',
+  });
   const csvURL = window.URL.createObjectURL(csvData);
   const tempLink = document.createElement('a');
   tempLink.style.display = 'none';

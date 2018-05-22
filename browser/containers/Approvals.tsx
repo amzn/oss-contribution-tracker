@@ -85,7 +85,7 @@ class Approvals extends React.Component<Props, State> {
           </div>
           <br/>
           <label>Approval Notes</label> <br/>
-          <textarea className="form-control" rows={3} name="approvalNotes" required /> <br/>
+          <textarea className="form-control" rows={3} name="approvalNotes" required={true} /> <br/>
         </div>
         <div className="col-md-10">
           <div className="pullRight">

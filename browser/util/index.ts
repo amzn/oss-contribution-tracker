@@ -18,13 +18,17 @@ import 'whatwg-fetch';
  *
  * Write more that will cover use cases
  */
-export async function reqJSON(url: string, obj?: any, method = 'GET'): Promise<any> {
+export async function reqJSON(
+  url: string,
+  obj?: any,
+  method = 'GET'
+): Promise<any> {
   const body = obj !== undefined ? JSON.stringify(obj) : undefined;
   const res = await fetch(url, {
     method,
     credentials: 'same-origin',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body,
@@ -36,7 +40,7 @@ export async function reqJSON(url: string, obj?: any, method = 'GET'): Promise<a
   }
 
   // error handling
-  let error: Error & {code?: number; response?: any};
+  let error: Error & { code?: number; response?: any };
   try {
     // assume it's json first; try to get the message out of it
     const json = await res.json();

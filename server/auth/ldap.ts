@@ -17,23 +17,31 @@ import * as winston from 'winston';
 import config from '../config';
 
 export class LDAPAuth {
-
   getActiveUser(request): string {
-    const remoteUser = request.get('X-FORWARDED-USER') || `${config.fallbackUser}@`;
+    const remoteUser =
+      request.get('X-FORWARDED-USER') || `${config.fallbackUser}@`;
     return remoteUser.substring(0, remoteUser.indexOf('@'));
   }
 
   async getGroups(user) {
-    const ldapGroups = await this._ldapsearch(`ou=groups,o=${config.ldap.o}`, {
-      scope: 'sub',
-      filter: 'memberuid=' + encodeURIComponent(user),
-      attributes: ['cn'],
-    }, (obj) => `ldap:${obj.cn}`);
-    const posixGroups = await this._ldapsearch(`ou=posix groups,ou=infrastructure,o=${config.ldap.o}`, {
-      scope: 'sub',
-      filter: 'memberuid=' + encodeURIComponent(user),
-      attributes: ['cn'],
-    }, (obj) => `posix:${obj.cn}`);
+    const ldapGroups = await this._ldapsearch(
+      `ou=groups,o=${config.ldap.o}`,
+      {
+        scope: 'sub',
+        filter: 'memberuid=' + encodeURIComponent(user),
+        attributes: ['cn'],
+      },
+      obj => `ldap:${obj.cn}`
+    );
+    const posixGroups = await this._ldapsearch(
+      `ou=posix groups,ou=infrastructure,o=${config.ldap.o}`,
+      {
+        scope: 'sub',
+        filter: 'memberuid=' + encodeURIComponent(user),
+        attributes: ['cn'],
+      },
+      obj => `posix:${obj.cn}`
+    );
     return [].concat(ldapGroups, posixGroups);
   }
 
@@ -41,34 +49,42 @@ export class LDAPAuth {
    * Fetch a CN for a user.
    */
   getUser(user) {
-    return this._ldapsearch(`o=${config.ldap.o}`, {
-      scope: 'sub',
-      filter: 'uid=' + encodeURIComponent(user),
-      attributes: 'gecos',
-    }, (obj) => obj.gecos)
-      .then((results) => {
-        if (results.length === 0) {
-          return null;
-        }
-        if (results.length > 1) {
-          return Promise.reject(new Error(`ldap returned more than one result for user ${user}`));
-        }
-        return results[0];
-      });
+    return this._ldapsearch(
+      `o=${config.ldap.o}`,
+      {
+        scope: 'sub',
+        filter: 'uid=' + encodeURIComponent(user),
+        attributes: 'gecos',
+      },
+      obj => obj.gecos
+    ).then(results => {
+      if (results.length === 0) {
+        return null;
+      }
+      if (results.length > 1) {
+        return Promise.reject(
+          new Error(`ldap returned more than one result for user ${user}`)
+        );
+      }
+      return results[0];
+    });
   }
 
   getAllUserInfo(user) {
-    return this._ldapsearch(`o=${config.ldap.o}`, {
-      scope: 'sub',
-      filter: 'uid=' + encodeURIComponent(user),
-      attributes: config.ldap.attributes,
-    }, (obj) => obj)
-      .then((results) => {
-        if (results.length === 0) {
-          return null;
-        }
-        return results;
-      });
+    return this._ldapsearch(
+      `o=${config.ldap.o}`,
+      {
+        scope: 'sub',
+        filter: 'uid=' + encodeURIComponent(user),
+        attributes: config.ldap.attributes,
+      },
+      obj => obj
+    ).then(results => {
+      if (results.length === 0) {
+        return null;
+      }
+      return results;
+    });
   }
 
   /**
@@ -81,7 +97,7 @@ export class LDAPAuth {
     const client = ldap.createClient({
       url: config.ldap.url,
     });
-    client.on('error', (err) => {
+    client.on('error', err => {
       // connection errors will hard-crash node, so catch them here
       winston.warn('Unexpected ldap connection error', err);
     });
@@ -96,10 +112,10 @@ export class LDAPAuth {
         const results = [];
 
         // build a list, resolving when complete
-        res.on('searchEntry', (entry) => {
+        res.on('searchEntry', entry => {
           results.push(pick(entry.object));
         });
-        res.on('error', (err) => {
+        res.on('error', err => {
           client.unbind();
           reject(new Error(err));
         });
@@ -110,7 +126,6 @@ export class LDAPAuth {
       });
     });
   }
-
 }
 
 export default new LDAPAuth();

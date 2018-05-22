@@ -149,18 +149,18 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
                     </span>
                   </div>
                   <input id="new-project-text" type="text" className="form-control"
-                    name="newProjectName" disabled={!this.state.projectDisabled} required />
+                    name="newProjectName" disabled={!this.state.projectDisabled} required={true} />
                 </div>
               </div>
 
               <div className="form-group">
                 <label>Description of fix</label>
-                <textarea id="fixDescription" className="form-control" rows={3} name="fixDescription" required />
+                <textarea id="fixDescription" className="form-control" rows={3} name="fixDescription" required={true} />
               </div>
 
               <div className="form-group">
                 <label>Contribution date</label>
-                <input type="date" className="form-control" name="dateSelected" required/>
+                <input type="date" className="form-control" name="dateSelected" required={true}/>
               </div>
 
               <div className="form-group">
@@ -171,7 +171,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
                   options={approverOptions}
                   onChange={this.handleApproverChange}
                   value={this.state.approver}
-                  required
+                  required={true}
                   menuContainerStyle={{ zIndex: 4 }}
                   openOnFocus={true}
                 />
@@ -179,7 +179,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
 
               <div className="form-group">
                 <label>Contributor alias</label>
-                <input type="text" className="form-control" name="contributorName" required />
+                <input type="text" className="form-control" name="contributorName" required={true} />
               </div>
 
               <div className="form-group">

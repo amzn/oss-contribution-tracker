@@ -12,27 +12,24 @@
  * permissions and limitations under the License.
  */
 
- // static configuration
- let config = {
-};
+// static configuration
+let config = {};
 
 config.domain = process.env.DOMAIN;
 
-config.server = {
+(config.server = {
   hostname: '0.0.0.0',
   port: 8000,
-},
-
-config.database = {
-  host: 'database',
-  port: 5432,
-  database: 'postgres',
-  user: 'postgres',
-  password: () => null,
-  ssl: null,
-},
-
-config.fallbackUser = 'nobody';
+}),
+  (config.database = {
+    host: 'database',
+    port: 5432,
+    database: 'postgres',
+    user: 'postgres',
+    password: () => null,
+    ssl: null,
+  }),
+  (config.fallbackUser = 'nobody');
 
 config.ldap = {
   o: '', // objectClass
@@ -49,7 +46,7 @@ config.approver = {
 
 config.roles = {
   // 'role-name': ['group-1', 'group-2'],
-}
+};
 
 // Users defined for dropdowns
 config.display = {
@@ -63,7 +60,7 @@ config.display = {
 
 // load once asked for
 function load() {
-    return Promise.resolve(config);
+  return Promise.resolve(config);
 }
 
 module.exports = {

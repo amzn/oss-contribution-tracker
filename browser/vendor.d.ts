@@ -12,4 +12,4 @@
  * permissions and limitations under the License.
  */
 declare function fetch(...args: any[]): any;
-declare var $: any
+declare var $: any;

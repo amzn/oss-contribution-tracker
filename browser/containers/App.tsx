@@ -97,7 +97,7 @@ export class App extends React.Component<Props, State> {
   buildSecureRoutes = () => {
     const routes = [];
     if (this.state.user.access.includes(AccessTypes.admin)) {
-      routes.push(<Route exact path="/admin" component={Admin} key="adminRoute"/>);
+      routes.push(<Route exact={true} path="/admin" component={Admin} key="adminRoute"/>);
       routes.push(<Route path="/cla/:project_id" component={EditCLA} key="editCLARoute"/>);
       routes.push(<Route path="/approvals/:contrib_id" component={Approvals} key="approvalRoute"/>);
       routes.push(<Route path="/contribution/:contrib_id" component={EditContribution} key="editContributionRoute"/>);
@@ -157,11 +157,11 @@ export class App extends React.Component<Props, State> {
           <div className="row">
             <div className="mx-auto col-lg-10">
               <Switch>
-                <Route exact path="/" component={Metrics} />
-                <Route exact path="/employee" component={Employee} />
-                <Route exact path="/list" component={List} />
-                <Route exact path="/contribute" component={Contributions} />
-                <Route exact path="/contribute/link" component={GithubLinkUpdater} />
+                <Route exact={true} path="/" component={Metrics} />
+                <Route exact={true} path="/employee" component={Employee} />
+                <Route exact={true} path="/list" component={List} />
+                <Route exact={true} path="/contribute" component={Contributions} />
+                <Route exact={true} path="/contribute/link" component={GithubLinkUpdater} />
                 {securedRoutes}
                 <ExtensionPoint ext="routes-additional"/>
               </Switch>

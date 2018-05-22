@@ -89,7 +89,7 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
 
     const getAlert = () => (
       <SweetAlert
-        success
+        success={true}
         title="Success"
         onConfirm={() => this.hideAlert()}
       >
@@ -111,13 +111,13 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
 
   getOptionsProjectNames = () => {
     return(this.state.cla_project_names.map(
-      (object) => (<option key={object.project_name} value={object.project_name}></option>),
+      (object) => (<option key={object.project_name} value={object.project_name} />),
     ));
   }
 
   getOptionsApproverNames = () => {
     return(this.state.cla_project_approvers_names.map(
-      (alist) => (<option key={alist.approver_alias} value={alist.approver_alias}></option>),
+      (alist) => (<option key={alist.approver_alias} value={alist.approver_alias} />),
     ));
   }
 
@@ -140,7 +140,7 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
           <div className="form-group">
             <label>Project name</label><br/>
             <input type="text" list="project_name" className="form-control" name="projectName"
-              defaultValue={null} required />
+              defaultValue={null} required={true} />
               <datalist id="project_name">
                 {this.getOptionsProjectNames()}
               </datalist><br/>
@@ -148,13 +148,13 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
             <input type="text" className="form-control" name="contributorName" defaultValue={null}/><br/>
             <label>Approver</label> <br/>
             <input type="text" list="approver_names" className="form-control" name="appName"
-              defaultValue={null} required />
+              defaultValue={null} required={true} />
               <datalist id="approver_names">
                 {this.getOptionsApproverNames()}
               </datalist><br/>
             <label>Signatory</label> <br/>
             <input type="text"  list="signatory_name" className="form-control" name="sigName"
-              defaultValue={null} required />
+              defaultValue={null} required={true} />
             <datalist id="signatory_name">
               {this.state.display.signatory.map((user) => {
                 return (<option key={user} value={user}/>);
@@ -162,18 +162,18 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
              </datalist><br/>
             <label>Point of Contact</label> <br/>
             <input type="text"  list="contact" className="form-control" name="contactName"
-              defaultValue={null} required />
+              defaultValue={null} required={true} />
             <datalist id="contact">
               {this.state.display.poc.map((user) => {
                 return (<option key={user} value={user}/>);
               })}
             </datalist><br/>
             <label>Date Signed</label>
-            <input type="date" className="form-control" name="dateSigned" required/><br/>
+            <input type="date" className="form-control" name="dateSigned" required={true}/><br/>
             <label>Date Approved</label>
-            <input type="date" className="form-control" name="dateApproved" required/><br/>
+            <input type="date" className="form-control" name="dateApproved" required={true}/><br/>
             <label>Additional Notes</label> <br/>
-            <textarea id="description" className="form-control" rows={3} name="description" required></textarea>
+            <textarea id="description" className="form-control" rows={3} name="description" required={true} />
           </div>
           <button className="btn btn-secondary" type="submit" onClick={this.hideAlert}>Cancel</button>
           <button className="btn btn-primary" type="submit">Submit</button>

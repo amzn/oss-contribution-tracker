@@ -19,21 +19,25 @@ import { postJSON } from '../util/index';
 
 // New Cla
 export function postNewCla(cla) {
-  return (dispatch) => {
-    return postJSON('/api/cla/submit', cla).catch((error) => console.error(error));
+  return dispatch => {
+    return postJSON('/api/cla/submit', cla).catch(error =>
+      console.error(error)
+    );
   };
 }
 
 // update function for edit cla
 export function updateCla(claUpdated) {
-  return (dispatch) => {
-    return postJSON('/api/cla/update', claUpdated).catch((error) => console.error(error));
+  return dispatch => {
+    return postJSON('/api/cla/update', claUpdated).catch(error =>
+      console.error(error)
+    );
   };
 }
 
 // delete entries from cla
 export function deleteClaEntry(id) {
-  return (dispatch) => {
-    return postJSON('/api/cla/delete', id).catch((error) => console.error(error));
+  return dispatch => {
+    return postJSON('/api/cla/delete', id).catch(error => console.error(error));
   };
 }

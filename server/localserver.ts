@@ -28,14 +28,21 @@ const config = require('./config').default;
 const app = require('./app');
 
 app.disableCSP();
-app.start(config.server.port, config.server.hostname).then(() => {
-  // we have to set configuration after startup has completed;
-  // some is deferred and won't resolve immediately
+app
+  .start(config.server.port, config.server.hostname)
+  .then(() => {
+    // we have to set configuration after startup has completed;
+    // some is deferred and won't resolve immediately
 
-  // since sentry isn't used here, simulate a user
-  // do *not* use in prod
-  config.fallbackUser = process.env.DEBUG_USER || process.env.USER;
-  winston.info(`Sessions will launch as "${config.fallbackUser}"`);
+    // since sentry isn't used here, simulate a user
+    // do *not* use in prod
+    config.fallbackUser = process.env.DEBUG_USER || process.env.USER;
+    winston.info(`Sessions will launch as "${config.fallbackUser}"`);
 
-  winston.info(`Server running [${process.env.NODE_ENV}/${process.env.DOMAIN}]: http://0.0.0.0:${config.server.port}/`);
-}).catch((err) => winston.error(err));
+    winston.info(
+      `Server running [${process.env.NODE_ENV}/${
+        process.env.DOMAIN
+      }]: http://0.0.0.0:${config.server.port}/`
+    );
+  })
+  .catch(err => winston.error(err));

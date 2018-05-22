@@ -37,7 +37,9 @@ function getDiffChunks(diff: string): Array<[Chunk, string[]]> {
     } else if (state === ParseState.ChunkDel) {
       chunkType = Chunk.Del;
     } else {
-      throw new Error('parse logic error: cannot commit outside of active chunk');
+      throw new Error(
+        'parse logic error: cannot commit outside of active chunk'
+      );
     }
 
     chunks.push([chunkType, currentChunk]);
@@ -45,7 +47,6 @@ function getDiffChunks(diff: string): Array<[Chunk, string[]]> {
   };
 
   for (const line of lines) {
-
     if (state === ParseState.Irrelevant) {
       // don't start looking for chunks until we see a chunk marker
       if (line.startsWith('@@')) {
@@ -123,7 +124,7 @@ export function getDiffSize(diff: string): number {
     if (chunk[0] === Chunk.Add && prevChunk[0] === Chunk.Del) {
       // see if any deleted lines match added lines, signifying no code change
       // beyond whitespace for relevant lines
-      const filtered = chunk[1].filter((addLine) => {
+      const filtered = chunk[1].filter(addLine => {
         // filter out this line if it was removed in the previous chunk.
         // whitespace has already been trimmed when building chunks, so
         // a simple inclusion check works here
@@ -138,6 +139,6 @@ export function getDiffSize(diff: string): number {
 
   // get the number of lines in add chunks
   return chunks
-    .filter((chunk) => chunk[0] === Chunk.Add)
+    .filter(chunk => chunk[0] === Chunk.Add)
     .reduce((acc, curr) => acc + curr[1].length, 0);
 }

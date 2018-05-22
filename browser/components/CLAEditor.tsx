@@ -70,8 +70,8 @@ export default class CLAEditor extends React.Component<Props, State> {
     e.preventDefault();
     const getAlertDelete = () => (
     <SweetAlert
-      warning
-      showCancel
+      warning={true}
+      showCancel={true}
       confirmBtnText="Yes, delete it!"
       confirmBtnBsStyle="danger"
       cancelBtnBsStyle="default"
@@ -93,7 +93,7 @@ export default class CLAEditor extends React.Component<Props, State> {
     dispatch(claLogger.deleteClaEntry(jsonObj));
     const getAlertConfirmDelete = () => (
       <SweetAlert
-        success
+        success={true}
         title="Success"
         onConfirm={() => this.hideAlert()}
       >
@@ -132,7 +132,7 @@ export default class CLAEditor extends React.Component<Props, State> {
 
     const getAlert = () => (
       <SweetAlert
-        success
+        success={true}
         title="Success"
         onConfirm={() => this.hideAlert()}
       >
@@ -163,7 +163,7 @@ export default class CLAEditor extends React.Component<Props, State> {
   getOptionsProjectNames = () => {
     return(this.state.data.cla_project_names.map(
       (object: any) => {
-        return (<option key={object.project_name} value={object.project_name}></option>);
+        return (<option key={object.project_name} value={object.project_name} />);
       },
     ));
   }
@@ -171,7 +171,7 @@ export default class CLAEditor extends React.Component<Props, State> {
   getOptionsApproverNames = () => {
     return(this.state.data.cla_project_approvers_names.map(
       (alist: any) => {
-        return (<option key={alist.approver_alias} value={alist.approver_alias}></option>);
+        return (<option key={alist.approver_alias} value={alist.approver_alias} />);
       },
     ));
   }
@@ -233,16 +233,16 @@ export default class CLAEditor extends React.Component<Props, State> {
             <br/>
             <label>Date Signed</label>
             <input type="date" className="form-control" name="dateSigned" id="dateSigned"
-              onChange={this.handleDateChangeForSigned} required />
+              onChange={this.handleDateChangeForSigned} required={true} />
             <br/>
             <label>Date Approved</label>
             <input type="date" className="form-control" name="dateApproved" id="dateApproved"
-              onChange={this.handleDateChangeForApproval} required />
+              onChange={this.handleDateChangeForApproval} required={true} />
             <br/>
             <label>Additional Notes</label>
             <br/>
             <textarea id="description" className="form-control" rows={3}
-              placeholder={this.state.data.additional_notes} name="description" required />
+              placeholder={this.state.data.additional_notes} name="description" required={true} />
           </div>
           <div className="col-md-10">
             <div className="pullRight">

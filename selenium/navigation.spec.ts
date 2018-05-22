@@ -14,49 +14,49 @@
 import { By } from 'selenium-webdriver';
 import build, { CustomDriver } from './driver';
 
-describe('page navigation', function () {
+describe('page navigation', function() {
   let driver: CustomDriver;
-  beforeAll(async function (done) {
+  beforeAll(async function(done) {
     driver = await build();
     done();
   });
-  afterAll(async function (done) {
+  afterAll(async function(done) {
     await driver.quit();
     done();
   });
 
-  it('initial load', async function (done) {
+  it('initial load', async function(done) {
     driver.getRelative('/');
     const title = await driver.getTitle();
     expect(title).toContain('OSS Contribution Tracker');
     done();
   });
 
-  it('can load my works', async function (done) {
+  it('can load my works', async function(done) {
     driver.findElement(By.css('a[href="/employee"]')).click();
     await driver.findElement(By.id('projectLISearch'));
     done();
   });
 
-  it('can load the contribution list', async function (done) {
+  it('can load the contribution list', async function(done) {
     driver.findElement(By.css('a[href="/list"]')).click();
     await driver.findElement(By.id('contributionsListAll'));
     done();
   });
 
-  it('can reach the new contribution', async function (done) {
+  it('can reach the new contribution', async function(done) {
     driver.findElement(By.css('a[href="/contribute"]')).click();
     await driver.findElement(By.id('contributions-form'));
     done();
   });
 
-  it('can load the admin', async function (done) {
+  it('can load the admin', async function(done) {
     driver.findElement(By.css('a[href="/admin"]')).click();
     await driver.findElement(By.id('admin_container'));
     done();
   });
 
-  it('can return to the landing page', async function (done) {
+  it('can return to the landing page', async function(done) {
     driver.findElement(By.css('a[href="/"]')).click();
     const url = await driver.getCurrentUrl();
     expect(url).toMatch(/:8000\/$/);

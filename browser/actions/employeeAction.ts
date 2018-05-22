@@ -20,31 +20,29 @@ const initial = {};
 
 export default function reducer(state = initial, action: any = {}) {
   switch (action.type) {
-    case  RECEIVE_CURRENT_USER:
-      return(Object.assign({}, state, {
+    case RECEIVE_CURRENT_USER:
+      return Object.assign({}, state, {
         user: action.currUser,
-      })
-    );
+      });
     case RECEIVE_ALIAS_NAMES:
-      return(Object.assign({}, state, {
+      return Object.assign({}, state, {
         aliasNames: action.aliasNames,
-      })
-    );
+      });
     default:
       return state;
-    }
+  }
 }
 
 // Receiver functions
 export function receiveActiveUser(user) {
-  return{
+  return {
     type: RECEIVE_CURRENT_USER,
     currUser: user.user,
   };
 }
 
 export function receiveAliasNames(alias) {
-  return{
+  return {
     type: RECEIVE_ALIAS_NAMES,
     aliasNames: alias,
   };
@@ -52,8 +50,8 @@ export function receiveAliasNames(alias) {
 
 // Action creators
 export function fetchDataListAlias() {
-  return (dispatch) => {
-    return reqJSON(RECEIVE_ALIAS_NAMES).then((alias) => {
+  return dispatch => {
+    return reqJSON(RECEIVE_ALIAS_NAMES).then(alias => {
       dispatch(receiveAliasNames(alias));
     });
   };
@@ -61,8 +59,8 @@ export function fetchDataListAlias() {
 
 // Actions function fro getting the current user
 export function fetchCurrentUser() {
-  return (dispatch) => {
-    return reqJSON(RECEIVE_CURRENT_USER).then((user) => {
+  return dispatch => {
+    return reqJSON(RECEIVE_CURRENT_USER).then(user => {
       dispatch(receiveActiveUser(user));
     });
   };

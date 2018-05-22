@@ -16,9 +16,7 @@ import thunk from 'redux-thunk';
 
 import app from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware(
-  thunk,
-)(createStore);
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 const store = createStoreWithMiddleware(app);
 
