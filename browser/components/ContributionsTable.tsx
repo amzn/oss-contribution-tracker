@@ -14,6 +14,7 @@
 import { Cell, Column, Table } from 'fixed-data-table';
 import * as React from 'react';
 import { connect } from 'react-redux';
+import Select from 'react-select';
 
 import TableApprovalStatusCell from '../components/TableApprovalStatusCell';
 import TableDateCell from '../components/TableDateCell';
@@ -35,7 +36,6 @@ interface State {
   tables: any;
   projectNames: any;
   selectedProject: string;
-  search: string;
 }
 
 class ContributionsTable extends React.Component<Props, State> {
@@ -45,7 +45,6 @@ class ContributionsTable extends React.Component<Props, State> {
       tables: new Map(),
       projectNames: new Array(),
       selectedProject: null,
-      search: '',
     };
   }
 
@@ -92,17 +91,9 @@ class ContributionsTable extends React.Component<Props, State> {
     });
   };
 
-  updateSelectedProject = item => e => {
-    e.preventDefault();
-    this.setState({
-      selectedProject: item,
-    });
-  };
-
   storeSearch = e => {
     this.setState({
-      search: e.currentTarget.value.toLowerCase(),
-      selectedProject: null,
+      selectedProject: e.value,
     });
   };
 
@@ -189,49 +180,32 @@ class ContributionsTable extends React.Component<Props, State> {
     );
   };
 
-  getTable = arrayList => {
-    if (arrayList.length === 0) {
-      return <h4>No contributions found</h4>;
-    } else {
-      return this.state.tables.get(this.state.selectedProject);
-    }
-  };
+  getProcessedList(projectList) {
+    return projectList.map(value => {
+        return {
+          label: value,
+          value: value
+        };
+      });
+  }
 
   render() {
-    const newList = this.state.projectNames.filter(name => {
-      return name.toLowerCase().indexOf(this.state.search) > -1;
-    });
     return (
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-3">
-            <input
-              type="text"
-              id="projectLISearch"
-              className="form-control"
-              onInput={this.storeSearch}
-              placeholder="Search projects"
-            />
-            <div id="projectSearchResults" className="list-group mt-1">
-              {newList.map((name, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="list-group-item list-group-item-action"
-                  onClick={this.updateSelectedProject(name)}
-                >
-                  {name}
-                </a>
-              ))}
-            </div>
-          </div>
-          <div className="col-sm-9">
-            {this.state.selectedProject ? (
-              this.getTable(newList)
-            ) : (
-              <p>Search for and select a project to see contributions.</p>
-            )}
-          </div>
+        <Select
+          id="projectLISearch"
+          placeholder="Search projects"
+          options={this.getProcessedList(this.state.projectNames)}
+          onChange={this.storeSearch}
+          menuContainerStyle={{ zIndex: 4 }}
+          openOnFocus={true}
+        />
+        <div>
+          {this.state.selectedProject ? (
+            this.state.tables.get(this.state.selectedProject)
+          ) : (
+            <p>Search for and select a project to see contributions.</p>
+          )}
         </div>
       </div>
     );

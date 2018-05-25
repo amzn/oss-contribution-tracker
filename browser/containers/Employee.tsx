@@ -12,8 +12,10 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
+import Select from 'react-select';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 
 import * as EmployeeActions from '../actions/employeeAction';
 import AllEmployeeTable from '../components/AllEmployeeTable';
@@ -25,7 +27,6 @@ interface Props extends React.Props<any> {
 
 interface State {
   currentAlias: string;
-  search: string;
   aliasList: any[];
 }
 
@@ -35,25 +36,31 @@ class Employee extends React.Component<Props, State> {
     this.state = {
       currentAlias: '',
       aliasList: new Array(),
-      search: '',
     };
   }
 
-  storeSearch = e => {
-    const currentsearch = e.currentTarget.value;
-    if (this.state.aliasList.indexOf(currentsearch) !== -1) {
-      this.setState({
-        currentAlias: currentsearch,
+  getProcessedList(contributors) {
+    return contributors.map(value => {
+        return {
+          label: value,
+          value: value
+        };
       });
-    }
-  };
+  }
+
+  storeSearch = e => {
+    const currentsearch = e.value;
+    this.setState({
+      currentAlias: currentsearch,
+    });
+  }
 
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(EmployeeActions.fetchCurrentUser());
     dispatch(EmployeeActions.fetchDataListAlias());
   }
-
+ 
   componentWillReceiveProps() {
     const { employeeData } = this.props;
     if (employeeData.aliasNames) {
@@ -81,26 +88,20 @@ class Employee extends React.Component<Props, State> {
         : this.state.currentAlias;
     return (
       <div>
-        <div className="col-md-3">
-          <h4>
-            <Link to="/contribute/link">
-              View Your Contributions Requiring Links
-            </Link>
-          </h4>
-        </div>
-        <input
-          type="text"
-          list="browsers"
+        <h4>
+          <Link to="/contribute/link">
+            View Your Contributions Requiring Links
+          </Link>
+         </h4>
+        <Select
           id="projectLISearch"
-          onInput={this.storeSearch}
-          placeholder="Contributor Alias"
-          className="form-control"
+          placeholder="Select Contributor"
+          options={this.getProcessedList(this.state.aliasList)}
+          onChange={this.storeSearch}
+          required={true}
+          menuContainerStyle={{ zIndex: 4 }}
+          openOnFocus={true}
         />
-        <datalist id="browsers">
-          {this.state.aliasList.map(alias => (
-            <option key={alias} value={alias} />
-          ))}
-        </datalist>
         <div id="contributionsListMine" className="mt-3">
           <AllEmployeeTable alias={currentAlias} />
         </div>
