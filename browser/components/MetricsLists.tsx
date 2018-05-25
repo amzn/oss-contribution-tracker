@@ -71,11 +71,9 @@ export default class MetricsLists extends React.Component<Props, {}> {
     return list ? (
       list.map(item => {
         return (
-          <div className ="pointer">
-            <li key={'topContributors_' + item.alias}>
-              {item.alias} | {item.count}
-            </li>
-          </div>
+          <li key={'topContributors_' + item.alias}>
+            {item.alias} | {item.count}
+          </li>
         );
       })
     ) : (

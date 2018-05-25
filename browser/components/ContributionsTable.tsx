@@ -182,11 +182,11 @@ class ContributionsTable extends React.Component<Props, State> {
 
   getProcessedList(projectList) {
     return projectList.map(value => {
-        return {
-          label: value,
-          value: value
-        };
-      });
+      return {
+        label: value,
+        value,
+      };
+    });
   }
 
   render() {

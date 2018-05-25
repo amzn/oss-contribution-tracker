@@ -12,10 +12,9 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
-import Select from 'react-select';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import Select from 'react-select';
 
 import * as EmployeeActions from '../actions/employeeAction';
 import AllEmployeeTable from '../components/AllEmployeeTable';
@@ -41,11 +40,11 @@ class Employee extends React.Component<Props, State> {
 
   getProcessedList(contributors) {
     return contributors.map(value => {
-        return {
-          label: value,
-          value: value
-        };
-      });
+      return {
+        label: value,
+        value,
+      };
+    });
   }
 
   storeSearch = e => {
@@ -53,14 +52,13 @@ class Employee extends React.Component<Props, State> {
     this.setState({
       currentAlias: currentsearch,
     });
-  }
+  };
 
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(EmployeeActions.fetchCurrentUser());
     dispatch(EmployeeActions.fetchDataListAlias());
   }
- 
   componentWillReceiveProps() {
     const { employeeData } = this.props;
     if (employeeData.aliasNames) {
@@ -92,7 +90,7 @@ class Employee extends React.Component<Props, State> {
           <Link to="/contribute/link">
             View Your Contributions Requiring Links
           </Link>
-         </h4>
+        </h4>
         <Select
           id="projectLISearch"
           placeholder="Select Contributor"
