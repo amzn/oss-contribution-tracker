@@ -83,10 +83,8 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
       const approvers = this.props.approvers;
       return approvers.map(listValue => {
         return {
-          label: listValue.approver_name
-            ? listValue.approver_name
-            : listValue.approver_alias,
-          value: listValue.approver_id,
+          label: listValue,
+          value: listValue
         };
       });
     }
@@ -118,6 +116,7 @@ class ContributionsForm extends React.Component<Partial<Props>, State> {
 
   render() {
     const approverOptions = this.approverList();
+    console.log(approverOptions);
     const projectOptions = this.projectList();
     return (
       <div className="container">

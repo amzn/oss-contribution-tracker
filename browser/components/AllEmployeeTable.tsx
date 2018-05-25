@@ -114,7 +114,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
     ) {
       return (
         <div key="contribution_edit_div">
-          <h2>Contributions by {this.state.currAlias}</h2>
+          <h4>Contributions by {this.state.currAlias}</h4>
           <ExtensionPoint ext="ldap-info" alias={this.state.currAlias} />
           <Table
             rowsCount={filteredDataList ? filteredDataList.length : 0}
