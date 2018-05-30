@@ -235,6 +235,15 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     });
   };
 
+  handleApprovalNotes = e => {
+    this.setState({
+      contrib: {
+        ...this.state.contrib,
+        approval_notes: e.target.value,
+      },
+    });
+  };
+
   render() {
     const values = [
       { label: 'approved', value: 'approved' },
@@ -372,7 +381,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   className="form-control"
                   rows={2}
                   id="approvalNotesInput"
-                  defaultValue={approval_notes}
+                  value={approval_notes}
+                  onChange={this.handleApprovalNotes}
                 />
               </div>
               <div className="form-group">
