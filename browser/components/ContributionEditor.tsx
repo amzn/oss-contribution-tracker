@@ -208,10 +208,31 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     });
   };
 
-  toggleProjectSelect = e => {
-    this.setState({ projectDisabled: e.target.checked });
-    const elm = document.getElementById('new-project-text') as HTMLInputElement;
-    elm.disabled = this.state.projectDisabled;
+  handleContributor = e => {
+    this.setState({
+      contrib: {
+        ...this.state.contrib,
+        contributor_alias: e.target.value,
+      },
+    });
+  };
+
+  handleDescription = e => {
+    this.setState({
+      contrib: {
+        ...this.state.contrib,
+        contribution_description: e.target.value,
+      },
+    });
+  };
+
+  handleUrl = e => {
+    this.setState({
+      contrib: {
+        ...this.state.contrib,
+        contribution_url: e.target.value,
+      },
+    });
   };
 
   render() {
@@ -252,7 +273,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   type="text"
                   className="form-control"
                   id="contributorAliasInput"
-                  placeholder={this.state.contrib.contributor_alias}
+                  value={this.state.contrib.contributor_alias}
+                  onChange={this.handleContributor}
                 />
               </div>
               <div className="form-group">
@@ -315,7 +337,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   type="text"
                   className="form-control"
                   id="contributionUrlInput"
-                  placeholder={this.state.contrib.contribution_url}
+                  value={this.state.contrib.contribution_url}
+                  onChange={this.handleUrl}
                 />
               </div>
               <div className="form-group">
@@ -324,14 +347,14 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   className="form-control"
                   rows={2}
                   id="contributionDescInput"
-                  placeholder={this.state.contrib.contribution_description}
+                  value={this.state.contrib.contribution_description}
+                  onChange={this.handleDescription}
                 />
               </div>
               <div className="form-group">
                 <label>Internal Approval Status</label>
                 <Select
                   name="approvalStatusInput"
-                  placeholder={this.state.approval_status}
                   options={values}
                   onChange={change =>
                     this.handleSelectChange(change, 'approval_status')
@@ -349,7 +372,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   className="form-control"
                   rows={2}
                   id="approvalNotesInput"
-                  placeholder={approval_notes}
+                  defaultValue={approval_notes}
                 />
               </div>
               <div className="form-group">

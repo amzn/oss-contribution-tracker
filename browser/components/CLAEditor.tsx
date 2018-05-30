@@ -62,8 +62,19 @@ export default class CLAEditor extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      data: nextProps.data as State['data'],
+      data: {
+        ...(nextProps.data as State['data']),
+        signed_date: this.handleDate(this.props.data.signed_date),
+        approved_date: this.handleDate(this.props.data.approved_date),
+      },
     });
+  }
+
+  handleDate(d) {
+    if (typeof d === 'string') {
+      return d.slice(0, 10);
+    }
+    return d;
   }
 
   handleDelete = e => {
@@ -168,7 +179,7 @@ export default class CLAEditor extends React.Component<Props, State> {
     this.setState({
       data: {
         ...this.state.data,
-        approved_date: e,
+        approved_date: e.target.value,
       },
     });
   };
@@ -189,7 +200,61 @@ export default class CLAEditor extends React.Component<Props, State> {
     this.setState({
       data: {
         ...this.state.data,
-        signed_date: e,
+        signed_date: e.target.value,
+      },
+    });
+  };
+
+  handleProjectName = e => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        project_name: e.target.value,
+      },
+    });
+  };
+
+  handleContributors = e => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        contributor_names: e.target.value,
+      },
+    });
+  };
+
+  handleApprover = e => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        approver_name: e.target.value,
+      },
+    });
+  };
+
+  handleSignatory = e => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        signatory_name: e.target.value,
+      },
+    });
+  };
+
+  handlePoc = e => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        contact_name: e.target.value,
+      },
+    });
+  };
+
+  handleNotes = e => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        additional_notes: e.target.value,
       },
     });
   };
@@ -210,7 +275,8 @@ export default class CLAEditor extends React.Component<Props, State> {
               id="projectName"
               className="form-control"
               name="projectName"
-              placeholder={this.state.data.project_name}
+              value={this.state.data.project_name}
+              onChange={this.handleProjectName}
             />
             <datalist id="project_name">
               {this.getOptionsProjectNames()}
@@ -223,7 +289,8 @@ export default class CLAEditor extends React.Component<Props, State> {
               className="form-control"
               id="contributorName"
               name="contributorName"
-              placeholder={this.state.data.contributor_names}
+              value={this.state.data.contributor_names}
+              onChange={this.handleContributors}
             />
             <br />
             <label>Approver</label>
@@ -234,7 +301,8 @@ export default class CLAEditor extends React.Component<Props, State> {
               className="form-control"
               name="appName"
               id="appName"
-              placeholder={this.state.data.approver_name}
+              value={this.state.data.approver_name}
+              onChange={this.handleApprover}
             />
             <datalist id="approver_names">
               {this.getOptionsApproverNames()}
@@ -248,7 +316,8 @@ export default class CLAEditor extends React.Component<Props, State> {
               className="form-control"
               name="sigName"
               id="sigName"
-              placeholder={this.state.data.signatory_name}
+              value={this.state.data.signatory_name}
+              onChange={this.handleSignatory}
             />
             <datalist id="signatory_name">
               {this.state.data.display.signatory.map(user => {
@@ -264,7 +333,8 @@ export default class CLAEditor extends React.Component<Props, State> {
               className="form-control"
               id="contactName"
               name="contactName"
-              placeholder={this.state.data.contact_name}
+              value={this.state.data.contact_name}
+              onChange={this.handlePoc}
             />
             <datalist id="contact">
               {this.state.data.display.poc.map(user => {
@@ -278,6 +348,7 @@ export default class CLAEditor extends React.Component<Props, State> {
               className="form-control"
               name="dateSigned"
               id="dateSigned"
+              value={this.state.data.signed_date}
               onChange={this.handleDateChangeForSigned}
               required={true}
             />
@@ -288,6 +359,7 @@ export default class CLAEditor extends React.Component<Props, State> {
               className="form-control"
               name="dateApproved"
               id="dateApproved"
+              value={this.state.data.approved_date}
               onChange={this.handleDateChangeForApproval}
               required={true}
             />
@@ -298,7 +370,8 @@ export default class CLAEditor extends React.Component<Props, State> {
               id="description"
               className="form-control"
               rows={3}
-              placeholder={this.state.data.additional_notes}
+              value={this.state.data.additional_notes}
+              onChange={this.handleNotes}
               name="description"
               required={true}
             />
