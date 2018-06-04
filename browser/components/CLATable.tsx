@@ -11,17 +11,13 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Column, Table } from 'fixed-data-table';
-import * as React from 'react';
-import ReactTooltip = require('react-tooltip');
-import * as Underscore from 'underscore';
 
-import TableDateCell from '../components/TableDateCell';
-import TableEditCellForCla from '../components/TableEditCellForCla';
+import * as React from 'react';
+import ReactTable from 'react-table';
+import ReactTooltip = require('react-tooltip');
+
+import TableEditCell from '../components/TableEditCell';
 import TableLinkCell from '../components/TableLinkCell';
-import TableSortHeaderCell from '../components/TableSortHeaderCell';
-import TableSummaryCell from '../components/TableSummaryCell';
-import TableTextCell from '../components/TableTextCell';
 import TooltipCell from '../components/TableTooltipCell';
 
 interface Props {
@@ -30,20 +26,13 @@ interface Props {
 
 interface State {
   cla: object[];
-  sortDirection: string;
 }
-
-const SortTypes = {
-  ASC: 'ASC',
-  DESC: 'DESC',
-};
 
 export default class ClaTable extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       cla: [],
-      sortDirection: SortTypes.ASC,
     };
   }
 
@@ -53,199 +42,71 @@ export default class ClaTable extends React.Component<Props, State> {
     });
   }
 
-  componentDidCatch(error, info) {
-    // tslint:disable-next-line:no-console
-    console.error(error);
+  sliceDate(date) {
+    return date.slice(0, 10);
   }
-
-  onSortChange = key => {
-    const sorted = Underscore.sortBy(this.state.cla, key);
-    if (this.state.sortDirection === SortTypes.ASC) {
-      this.setState({
-        sortDirection: SortTypes.DESC,
-        cla: sorted.reverse(),
-      });
-    } else {
-      this.setState({
-        sortDirection: SortTypes.ASC,
-        cla: sorted,
-      });
-    }
-  };
 
   getTable = () => {
     return (
       <div key="cla_div" id="view_cla_table">
-        <Table
-          rowsCount={this.state.cla.length}
-          rowHeight={50}
-          headerHeight={50}
-          width={1250}
-          maxHeight={500}
+        <ReactTable
+          data={this.state.cla}
           onScrollEnd={() => {
             ReactTooltip.rebuild();
           }}
-        >
-          <Column
-            key={'edit_link'}
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('project_id');
-                }}
-                sortDir="project_id"
-              >
-                Edit
-              </TableSortHeaderCell>
-            }
-            cell={
-              <TableEditCellForCla data={this.state.cla} field="project_id" />
-            }
-            width={50}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('project_name');
-                }}
-                sortDir="project_name"
-              >
-                Project
-              </TableSortHeaderCell>
-            }
-            cell={<TableTextCell data={this.state.cla} field="project_name" />}
-            width={100}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('contributor_name');
-                }}
-                sortDir="contributor_name"
-              >
-                Contributor[s]
-              </TableSortHeaderCell>
-            }
-            cell={
-              <TableTextCell data={this.state.cla} field="contributor_name" />
-            }
-            flexGrow={2}
-            width={225}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('signatory_name');
-                }}
-                sortDir="signatory_name"
-              >
-                Signatory Name
-              </TableSortHeaderCell>
-            }
-            cell={
-              <TableSummaryCell data={this.state.cla} field="signatory_name" />
-            }
-            flexGrow={2}
-            width={125}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('approver_name');
-                }}
-                sortDir="approver_name"
-              >
-                Approver Name
-              </TableSortHeaderCell>
-            }
-            cell={
-              <TableSummaryCell data={this.state.cla} field="approver_name" />
-            }
-            flexGrow={2}
-            width={100}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('contact_name');
-                }}
-                sortDir="contact_name"
-              >
-                Point of Contact
-              </TableSortHeaderCell>
-            }
-            cell={<TableTextCell data={this.state.cla} field="contact_name" />}
-            flexGrow={2}
-            width={75}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('ticket_link');
-                }}
-                sortDir="ticket_link"
-              >
-                Ticket URL
-              </TableSortHeaderCell>
-            }
-            cell={<TableLinkCell data={this.state.cla} field="ticket_link" />}
-            flexGrow={2}
-            width={75}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('date_approved');
-                }}
-                sortDir="date_approved"
-              >
-                Date Approved
-              </TableSortHeaderCell>
-            }
-            cell={<TableDateCell data={this.state.cla} field="date_approved" />}
-            flexGrow={2}
-            width={100}
-          />
-          <Column
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('date_signed');
-                }}
-                sortDir="date_signed"
-              >
-                Date Signed
-              </TableSortHeaderCell>
-            }
-            cell={<TableDateCell data={this.state.cla} field="date_signed" />}
-            flexGrow={2}
-            width={100}
-          />
-          <Column
-            key={'notes_link'}
-            header={
-              <TableSortHeaderCell
-                onSortChange={() => {
-                  this.onSortChange('additional_notes');
-                }}
-                sortDir="additional_notes"
-              >
-                Notes
-              </TableSortHeaderCell>
-            }
-            cell={
-              <TooltipCell data={this.state.cla} field="additional_notes" />
-            }
-            width={65}
-          />
-        </Table>
+          columns={[
+            {
+              Header: <strong>Edit</strong>,
+              accessor: 'project_id',
+              width: 50,
+              Cell: row => <TableEditCell type="cla" project_id={row.value} />,
+            },
+            {
+              Header: <strong>Project</strong>,
+              accessor: 'project_name',
+            },
+            {
+              Header: <strong>Contributor[s]</strong>,
+              accessor: 'contributor_name',
+            },
+            {
+              Header: <strong>Signatory Name</strong>,
+              accessor: 'signatory_name',
+            },
+            {
+              Header: <strong>Approver Name</strong>,
+              accessor: 'approver_name',
+            },
+            {
+              Header: <strong>Point of Contact</strong>,
+              accessor: 'contact_name',
+            },
+            {
+              Header: <strong>Ticket URL</strong>,
+              accessor: 'ticket_link',
+              Cell: row => <TableLinkCell link={row.value} />,
+            },
+            {
+              Header: <strong>Date Approved</strong>,
+              id: 'date_approved',
+              accessor: d => this.sliceDate(d.date_approved),
+            },
+            {
+              Header: <strong>Date Signed</strong>,
+              id: 'date_signed',
+              accessor: d => this.sliceDate(d.date_signed),
+            },
+            {
+              Header: <strong>Notes</strong>,
+              accessor: 'additional_notes',
+              width: 50,
+              Cell: row => <TooltipCell notes={row.value} />,
+            },
+          ]}
+          defaultPageSize={10}
+          className="-striped -highlight"
+          filterable={true}
+        />
         <ReactTooltip place="top" type="dark" effect="float" />
       </div>
     );

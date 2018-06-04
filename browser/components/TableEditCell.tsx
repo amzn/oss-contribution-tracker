@@ -11,33 +11,26 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 interface Props {
-  rowIndex: number;
-  field: any;
-  data: any;
-  col: any;
-  columnKey: string;
+  project_id: string;
+  type: string;
 }
 
-export default class TableEditCheckboxCell extends React.Component<
+export default class TableEditCellForCla extends React.Component<
   Partial<Props>,
   {}
 > {
   render() {
-    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
-    const path = `/contribution/${data[rowIndex][field]}`;
+    const path = `/${this.props.type}/${this.props.project_id}`;
     return (
-      <Cell {...props}>
-        <div>
-          <Link to={path}>
-            <i className="fa fa-pencil-square" />
-          </Link>
-        </div>
-      </Cell>
+      <div className="center">
+        <Link to={path}>
+          <i className="fa fa-pencil-square" />
+        </Link>
+      </div>
     );
   }
 }

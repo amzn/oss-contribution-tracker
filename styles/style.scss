@@ -4,7 +4,14 @@
 @import '~font-awesome/css/font-awesome.css';
 @import '~react-select/scss/default.scss';
 @import '~react-bootstrap-sweetalert/lib/css/animations.css';
-@import '~fixed-data-table/dist/fixed-data-table.min.css';
+@import '~react-table/react-table.css';
+
+body {
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue',
+    Helvetica, Arial, 'Lucida Grande', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+}
 
 input:invalid,
 textarea:invalid {
@@ -14,4 +21,9 @@ textarea:invalid {
 #projectSearchResults {
   max-height: 600px;
   overflow-y: auto;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
 }

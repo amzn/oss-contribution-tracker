@@ -11,15 +11,10 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 
 interface Props {
-  rowIndex: number;
-  field: string;
-  data: any;
-  col: any;
-  columnKey: string;
+  approval_status: string;
 }
 
 export default class TableApprovalStatusCell extends React.Component<
@@ -33,18 +28,23 @@ export default class TableApprovalStatusCell extends React.Component<
       badge = 'badge badge-danger';
     } else if (status === 'approved') {
       badge = 'badge badge-success';
+    } else if (status === 'failure') {
+      badge = 'badge badge-warning';
     } else {
       badge = 'badge badge-primary';
     }
     return (
-      <div>
+      <div className="center">
         <span className={badge}>{status}</span>
       </div>
     );
   }
   render() {
-    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
-    const status = data[rowIndex][field];
-    return <Cell {...props}>{this.renderApprovalStatus(status)}</Cell>;
+    const result = this.props.approval_status ? (
+      this.renderApprovalStatus(this.props.approval_status)
+    ) : (
+      <div />
+    );
+    return result;
   }
 }
