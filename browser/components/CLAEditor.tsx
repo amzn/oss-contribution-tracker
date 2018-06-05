@@ -69,7 +69,7 @@ export default class CLAEditor extends React.Component<Props, State> {
       },
     });
   }
-
+  // removing the timestamp from the date.
   handleDate(d) {
     if (typeof d === 'string') {
       return d.slice(0, 10);
