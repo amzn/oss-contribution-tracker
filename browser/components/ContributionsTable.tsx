@@ -94,9 +94,8 @@ class ContributionsTable extends React.Component<Props, State> {
   };
 
   static renderTables = (name, item, tableProps) => {
-    let count = 0;
     return (
-      <div key={count++}>
+      <div key={name}>
         <h4>Project {name}</h4>
         <ReactTable
           data={item}

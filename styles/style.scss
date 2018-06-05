@@ -6,13 +6,6 @@
 @import '~react-bootstrap-sweetalert/lib/css/animations.css';
 @import '~react-table/react-table.css';
 
-body {
-  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue',
-    Helvetica, Arial, 'Lucida Grande', sans-serif;
-  font-weight: 300;
-  font-size: 14px;
-}
-
 input:invalid,
 textarea:invalid {
   box-shadow: none;
