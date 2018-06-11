@@ -70,7 +70,7 @@ export default class ApprovalsTable extends React.Component<Props, State> {
             },
             {
               Header: <strong>Approval Status</strong>,
-              accessor: 'project_id',
+              accessor: 'contribution_id',
               Cell: row => <TableApprovalCell id={row.value} />,
             },
           ]}
