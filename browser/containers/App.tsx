@@ -132,7 +132,9 @@ export class App extends React.Component<Props, State> {
     const securedRoutes = this.buildSecureRoutes();
 
     return (
-      <div>
+      <>
+        <ExtensionPoint ext="page-start" />
+
         <nav className="navbar navbar-expand-sm navbar-light bg-light">
           <ExtensionPoint ext="navbar-logo">
             <Link to="/" className="navbar-brand">
@@ -217,7 +219,9 @@ export class App extends React.Component<Props, State> {
             </div>
           </div>
         </div>
-      </div>
+
+        <ExtensionPoint ext="page-end" />
+      </>
     );
   }
 }
