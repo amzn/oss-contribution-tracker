@@ -110,8 +110,13 @@ function getDiffChunks(diff: string): Array<[Chunk, string[]]> {
   return chunks;
 }
 
-export function getDiffSize(diff: string): number {
+export function getDiffSize(diff: string): { chunks: number; lines: number } {
   const chunks = getDiffChunks(diff);
+
+  // get the total number of chunks for basic validation
+  const numChunks = chunks.filter(
+    chunk => chunk[0] === Chunk.Add || chunk[0] === Chunk.Del
+  ).length;
 
   chunks.forEach((chunk, i) => {
     if (i === 0) {
@@ -138,7 +143,12 @@ export function getDiffSize(diff: string): number {
   });
 
   // get the number of lines in add chunks
-  return chunks
+  const numLines = chunks
     .filter(chunk => chunk[0] === Chunk.Add)
     .reduce((acc, curr) => acc + curr[1].length, 0);
+
+  return {
+    chunks: numChunks,
+    lines: numLines,
+  };
 }
