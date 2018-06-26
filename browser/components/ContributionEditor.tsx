@@ -181,7 +181,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     document.getElementById('to-admin').click();
   };
 
-  handleSelectChange = (change, loc) => {
+  handleSelectChange = (change, loc: any) => {
     if (this.state[loc] !== change.value) {
       this.setState({
         [loc]: change.value,
@@ -386,12 +386,14 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                 />
               </div>
               <div className="form-group">
-                <Link className="btn btn-secondary" id="to-admin" to="/admin">
-                  Cancel
-                </Link>
-                <button className="btn btn-primary" type="submit">
-                  Submit
-                </button>
+                <div className="btn-group">
+                  <Link className="btn btn-secondary" id="to-admin" to="/admin">
+                    Cancel
+                  </Link>
+                  <button className="btn btn-primary" type="submit">
+                    Submit
+                  </button>
+                </div>
               </div>
             </form>
             {this.state.alert}

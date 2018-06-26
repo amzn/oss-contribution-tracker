@@ -18,11 +18,13 @@ import { register } from '../ext';
 
 register('footer', props => {
   return (
-    <div>
-      <a href="https://github.com/amzn/oss-contribution-tracker">Github</a> |{' '}
+    <>
+      <hr />
+      <a href="https://github.com/amzn/oss-contribution-tracker">GitHub</a>
+      {' | '}
       <a href="https://github.com/amzn/oss-contribution-tracker/blob/master/LICENSE">
         License Information
       </a>
-    </div>
+    </>
   );
 });
