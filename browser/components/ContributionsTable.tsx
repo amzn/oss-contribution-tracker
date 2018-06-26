@@ -161,11 +161,13 @@ class ContributionsTable extends React.Component<Props, State> {
           menuContainerStyle={{ zIndex: 4 }}
           openOnFocus={true}
         />
-        <div>
+        <div className="mt-2">
           {this.state.selectedProject ? (
             this.state.tables.get(this.state.selectedProject)
           ) : (
-            <p>Search for and select a project to see contributions.</p>
+            <p className="text-muted">
+              Search for and select a project to see contributions.
+            </p>
           )}
         </div>
       </div>

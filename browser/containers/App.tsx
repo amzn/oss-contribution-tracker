@@ -204,8 +204,7 @@ export class App extends React.Component<Props, State> {
           </div>
 
           <div className="row mt-4">
-            <div className="mx-auto col-lg-11">
-              <hr />
+            <div className="mx-auto col-lg-10">
               <ExtensionPoint ext="footer" />
             </div>
           </div>
