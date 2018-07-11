@@ -200,24 +200,26 @@ describe('index', () => {
       expect(
         mock.dbcontributions.listStrategicContributionsByProject
       ).toHaveBeenCalled();
-      expect(contribs).toEqual({ list: [
-        {
-          contribution_id: 1,
-          project_id: 1,
-          contribution_description: 'test contrib 1',
-          contirbution_date: '2018-06-11',
-          contributor_alias: 'alpha',
-          contribution_url: 'A.com/contrib1',
-        },
-        {
-          contribution_id: 2,
-          project_id: 1,
-          contribution_description: 'test contrib 2',
-          contirbution_date: '2018-06-22',
-          contributor_alias: 'beta',
-          contribution_url: 'A.com/contrib2',
-        },
-      ]});
+      expect(contribs).toEqual({
+        list: [
+          {
+            contribution_id: 1,
+            project_id: 1,
+            contribution_description: 'test contrib 1',
+            contirbution_date: '2018-06-11',
+            contributor_alias: 'alpha',
+            contribution_url: 'A.com/contrib1',
+          },
+          {
+            contribution_id: 2,
+            project_id: 1,
+            contribution_description: 'test contrib 2',
+            contirbution_date: '2018-06-22',
+            contributor_alias: 'beta',
+            contribution_url: 'A.com/contrib2',
+          },
+        ],
+      });
       done();
     });
   });
