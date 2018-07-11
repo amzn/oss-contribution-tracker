@@ -76,7 +76,7 @@ export default class UserTable extends React.Component<Props, State> {
         />
       </div>
     );
-  }
+  };
 
   render() {
     return <div>{this.getTable()}</div>;

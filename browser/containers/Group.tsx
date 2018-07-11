@@ -24,9 +24,9 @@ interface Props {
 
 interface State {
   projectList: any;
-  userList: any,
-  group: any,
-  contributionList: any,
+  userList: any;
+  group: any;
+  contributionList: any;
 }
 
 export default class Group extends React.Component<Props, State> {
@@ -43,28 +43,38 @@ export default class Group extends React.Component<Props, State> {
   async componentDidMount() {
     const groupId = (this.props as any).match.params.group_id;
     const group = await reqJSON('/api/strategicgroups/' + groupId.toString());
-    const contributions = await reqJSON('/api/strategiccontributions/group/' + groupId.toString());
-    this.setState({ projectList: group.projects, userList: group.users, group: group.group, contributionList: contributions });
+    const contributions = await reqJSON(
+      '/api/strategiccontributions/group/' + groupId.toString()
+    );
+    this.setState({
+      projectList: group.projects,
+      userList: group.users,
+      group: group.group,
+      contributionList: contributions,
+    });
   }
 
   render() {
     return (
       <div>
         <h2> {this.state.group.group_name} Group Details </h2>
-        <hr/>
+        <hr />
         <h4> Projects </h4>
         <div id="contributionsListAll">
-          <ProjectTable projectList={this.state.projectList} type='group' />
+          <ProjectTable projectList={this.state.projectList} type="group" />
         </div>
-        <br/>
+        <br />
         <h4> Whitelisted Users </h4>
         <div id="contributionsListAll">
           <UserTable userList={this.state.userList} />
         </div>
-        <br/>
+        <br />
         <h4> Contributions </h4>
         <div id="contributionsListAll">
-          <StrategicTable contributionList={this.state.contributionList} type='group' />
+          <StrategicTable
+            contributionList={this.state.contributionList}
+            type="group"
+          />
         </div>
       </div>
     );

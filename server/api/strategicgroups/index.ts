@@ -19,13 +19,24 @@ import * as dbusers from '../../db/users';
 export async function listGroups(req) {
   const groupList = await dbgroups.listGroups();
   for (const group of groupList) {
-    const users = (await dbusers.getUsernamesByGroup([group.group_id.toString()])).names;
-    const contribWeek = await dbcontributions.getLastWeekCount(group.projects, users);
+    const users = (await dbusers.getUsernamesByGroup([
+      group.group_id.toString(),
+    ])).names;
+    const contribWeek = await dbcontributions.getLastWeekCount(
+      group.projects,
+      users
+    );
     const contribMTD = await dbcontributions.getMTDCount(group.projects, users);
-    const contribMonth = await dbcontributions.getLastMonthCount(group.projects, users);
-    const contribYear = await dbcontributions.getYTDCount(group.projects, users);
+    const contribMonth = await dbcontributions.getLastMonthCount(
+      group.projects,
+      users
+    );
+    const contribYear = await dbcontributions.getYTDCount(
+      group.projects,
+      users
+    );
 
-    group.numUsers =  users ? users.length : 0;
+    group.numUsers = users ? users.length : 0;
     group.numProjects = group.projects.length;
     group.contribWeek = parseInt(contribWeek.numcontribs, 10);
     group.contribMTD = parseInt(contribMTD.numcontribs, 10);
@@ -35,17 +46,29 @@ export async function listGroups(req) {
   return { groupList };
 }
 
-
-
 export async function listStrategicProjects(req) {
   const projectList = await dbprojects.getAllStrategicProjects();
   for (const project of projectList) {
-    const groups = (await dbgroups.searchGroupIdsByProjectId(project.project_id)).groups;
+    const groups = (await dbgroups.searchGroupIdsByProjectId(
+      project.project_id
+    )).groups;
     const users = (await dbusers.getUsernamesByGroup(groups)).names;
-    const contribWeek = await dbcontributions.getLastWeekCount([project.project_id], users);
-    const contribMTD = await dbcontributions.getMTDCount([project.project_id], users);
-    const contribMonth = await dbcontributions.getLastMonthCount([project.project_id], users);
-    const contribYear = await dbcontributions.getYTDCount([project.project_id], users);
+    const contribWeek = await dbcontributions.getLastWeekCount(
+      [project.project_id],
+      users
+    );
+    const contribMTD = await dbcontributions.getMTDCount(
+      [project.project_id],
+      users
+    );
+    const contribMonth = await dbcontributions.getLastMonthCount(
+      [project.project_id],
+      users
+    );
+    const contribYear = await dbcontributions.getYTDCount(
+      [project.project_id],
+      users
+    );
 
     project.numGroups = groups.length;
     project.numUsers = users ? users.length : 0;
@@ -57,7 +80,6 @@ export async function listStrategicProjects(req) {
   return { projectList };
 }
 
-
 export async function getGroup(req, id) {
   const group = await dbgroups.getGroupById(id);
   const projects = await dbprojects.getProjectsByGroup(id);
@@ -66,9 +88,15 @@ export async function getGroup(req, id) {
 
   for (const project of projects) {
     const projId = [project.project_id];
-    const contribWeek = await dbcontributions.getLastWeekCount(projId, usernames);
+    const contribWeek = await dbcontributions.getLastWeekCount(
+      projId,
+      usernames
+    );
     const contribMTD = await dbcontributions.getMTDCount(projId, usernames);
-    const contribMonth = await dbcontributions.getLastMonthCount(projId, usernames);
+    const contribMonth = await dbcontributions.getLastMonthCount(
+      projId,
+      usernames
+    );
     const contribYear = await dbcontributions.getYTDCount(projId, usernames);
 
     project.contribWeek = parseInt(contribWeek.numcontribs, 10);
@@ -83,7 +111,10 @@ export async function getGroup(req, id) {
 
     const contribWeek = await dbcontributions.getLastWeekCount(pList, username);
     const contribMTD = await dbcontributions.getMTDCount(pList, username);
-    const contribMonth = await dbcontributions.getLastMonthCount(pList, username);
+    const contribMonth = await dbcontributions.getLastMonthCount(
+      pList,
+      username
+    );
     const contribYear = await dbcontributions.getYTDCount(pList, username);
 
     user.contribWeek = parseInt(contribWeek.numcontribs, 10);
@@ -95,7 +126,6 @@ export async function getGroup(req, id) {
   return { group, projects, users };
 }
 
-
 export async function getStrategicProject(req, id) {
   const project = (await dbprojects.searchProjectById(id))[0]; // returns one project as a list
   const groups = await dbgroups.getGroupsByProjectId([id]);
@@ -105,10 +135,18 @@ export async function getStrategicProject(req, id) {
   const userList = [];
 
   for (const group of groups) {
-    const usernames = (await dbusers.getUsernamesByGroup([group.group_id.toString()])).names;
-    const contribWeek = await dbcontributions.getLastWeekCount(projId, usernames);
+    const usernames = (await dbusers.getUsernamesByGroup([
+      group.group_id.toString(),
+    ])).names;
+    const contribWeek = await dbcontributions.getLastWeekCount(
+      projId,
+      usernames
+    );
     const contribMTD = await dbcontributions.getMTDCount(projId, usernames);
-    const contribMonth = await dbcontributions.getLastMonthCount(projId, usernames);
+    const contribMonth = await dbcontributions.getLastMonthCount(
+      projId,
+      usernames
+    );
     const contribYear = await dbcontributions.getYTDCount(projId, usernames);
 
     group.contribWeek = parseInt(contribWeek.numcontribs, 10);
@@ -120,7 +158,9 @@ export async function getStrategicProject(req, id) {
   for (const user of users) {
     const contribWeek = await dbcontributions.getLastWeekCount(projId, [user]);
     const contribMTD = await dbcontributions.getMTDCount(projId, [user]);
-    const contribMonth = await dbcontributions.getLastMonthCount(projId, [user]);
+    const contribMonth = await dbcontributions.getLastMonthCount(projId, [
+      user,
+    ]);
     const contribYear = await dbcontributions.getYTDCount(projId, [user]);
 
     const data = {
@@ -128,16 +168,15 @@ export async function getStrategicProject(req, id) {
       contribWeek: parseInt(contribWeek.numcontribs, 10),
       contribMTD: parseInt(contribMTD.numcontribs, 10),
       contribMonth: parseInt(contribMonth.numcontribs, 10),
-      contribYear: parseInt(contribYear.numcontribs, 10)
-    }
+      contribYear: parseInt(contribYear.numcontribs, 10),
+    };
     userList.push(data);
   }
   return { project, groups, users: userList };
 }
 
-
 export async function listProjects(req) {
-  return { projectList: await dbprojects.getProjectsByGroup(req.body.id) }
+  return { projectList: await dbprojects.getProjectsByGroup(req.body.id) };
 }
 
 export async function listUsers(req) {
@@ -145,10 +184,15 @@ export async function listUsers(req) {
 }
 
 export async function addNewGroup(req, body) {
-  const groupId = await dbgroups.addNewGroup(body.groupName, body.sponsorName, body.goals, body.projects);
+  const groupId = await dbgroups.addNewGroup(
+    body.groupName,
+    body.sponsorName,
+    body.goals,
+    body.projects
+  );
   for (const user of body.users) {
     const id = groupId.group_id;
-    const date = new Date().toISOString().substring(0,10);
+    const date = new Date().toISOString().substring(0, 10);
     const group = `{"${id}":"${date}"}`;
 
     await dbusers.addGroupsToUser(user, group);
@@ -159,32 +203,48 @@ export async function addNewGroup(req, body) {
 export async function addNewUser(req, body) {
   let groups = '{';
   if (body.groups.length) {
-    const date = new Date().toISOString().substring(0,10);
+    const date = new Date().toISOString().substring(0, 10);
     for (const group of body.groups) {
       groups += `"${group}":"${date}",`;
     }
-    groups = groups.substring(0, groups.length-1);
+    groups = groups.substring(0, groups.length - 1);
   }
-  groups += '}'
+  groups += '}';
 
-  return { result: await dbusers.addNewUser(body.amazon_alias, body.github_alias, groups) };
+  return {
+    result: await dbusers.addNewUser(
+      body.amazon_alias,
+      body.github_alias,
+      groups
+    ),
+  };
 }
 
 export async function updateGroup(req, body) {
-  const oldUsers = (await dbusers.getUsernamesByGroup([body.groupId.toString()])).names;
-  const updatedGroup = await dbgroups.updateGroup(body.groupId, body.groupName, body.sponsorName, body.goals, body.projects);
-  const updatedUsers = []
+  const oldUsers = (await dbusers.getUsernamesByGroup([
+    body.groupId.toString(),
+  ])).names;
+  const updatedGroup = await dbgroups.updateGroup(
+    body.groupId,
+    body.groupName,
+    body.sponsorName,
+    body.goals,
+    body.projects
+  );
+  const updatedUsers = [];
   for (const user of body.users) {
     updatedUsers.push(user);
     if (!oldUsers || !oldUsers.includes(user)) {
       const id = body.groupId;
-      const date = new Date().toISOString().substring(0,10);
+      const date = new Date().toISOString().substring(0, 10);
       const group = `{"${id}":"${date}"}`;
 
       await dbusers.addGroupsToUser(user, group);
     }
   }
-  const deletedUsers = oldUsers ? oldUsers.filter((user) => updatedUsers.indexOf(user) < 0) : [];
+  const deletedUsers = oldUsers
+    ? oldUsers.filter(user => updatedUsers.indexOf(user) < 0)
+    : [];
   for (const user of deletedUsers) {
     await dbusers.removeGroupFromUser(user, body.groupId);
   }

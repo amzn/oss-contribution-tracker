@@ -24,9 +24,9 @@ interface Props {
 
 interface State {
   groupList: any;
-  userList: any,
-  project: any,
-  contributionList: any,
+  userList: any;
+  project: any;
+  contributionList: any;
 }
 
 export default class Project extends React.Component<Props, State> {
@@ -42,29 +42,41 @@ export default class Project extends React.Component<Props, State> {
 
   async componentDidMount() {
     const projectId = (this.props as any).match.params.project_id;
-    const project = await reqJSON('/api/strategicprojects/' + projectId.toString());
-    const contributions = await reqJSON('/api/strategiccontributions/project/' + projectId.toString());
-    this.setState({ groupList: project.groups, userList: project.users, project: project.project, contributionList: contributions });
+    const project = await reqJSON(
+      '/api/strategicprojects/' + projectId.toString()
+    );
+    const contributions = await reqJSON(
+      '/api/strategiccontributions/project/' + projectId.toString()
+    );
+    this.setState({
+      groupList: project.groups,
+      userList: project.users,
+      project: project.project,
+      contributionList: contributions,
+    });
   }
 
   render() {
     return (
       <div>
         <h2> {this.state.project.project_name} Details </h2>
-        <hr/>
+        <hr />
         <h4> Groups </h4>
         <div id="contributionsListAll">
-          <GroupsTable groups={this.state.groupList} type='project' />
+          <GroupsTable groups={this.state.groupList} type="project" />
         </div>
-        <br/>
+        <br />
         <h4> Whitelisted Users </h4>
         <div id="contributionsListAll">
           <UserTable userList={this.state.userList} />
         </div>
-        <br/>
+        <br />
         <h4> Contributions </h4>
         <div id="contributionsListAll">
-          <StrategicTable contributionList={this.state.contributionList} type='project' />
+          <StrategicTable
+            contributionList={this.state.contributionList}
+            type="project"
+          />
         </div>
       </div>
     );

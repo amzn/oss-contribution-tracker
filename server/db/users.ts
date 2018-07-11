@@ -19,10 +19,7 @@ export function listAllUsers() {
 }
 
 export function searchUserByGithub(alias) {
-  return pg().oneOrNone(
-    'select * from users where github_alias = $1',
-    [alias]
-  );
+  return pg().oneOrNone('select * from users where github_alias = $1', [alias]);
 }
 
 export function listGroupsByGithub(alias) {
@@ -33,51 +30,49 @@ export function listGroupsByGithub(alias) {
 }
 
 export function getUsersByGroup(groupId) {
-  return pg().query(
-    'select * from users WHERE groups->>$1 IS NOT NULL',
-    [groupId]
-  );
+  return pg().query('select * from users WHERE groups->>$1 IS NOT NULL', [
+    groupId,
+  ]);
 }
 
 export function getUsernamesByGroup(groups) {
   return pg().oneOrNone(
     'select array_agg(c) as names ' +
-    'from (' +
-    	'select amazon_alias from users where groups ?| $1' +
-    ') as dt(c)',
+      'from (' +
+      'select amazon_alias from users where groups ?| $1' +
+      ') as dt(c)',
     [groups]
   );
 }
 
 // Add a new user to the DB
-export async function addNewUser(amazon_alias, github_alias, groups) {
+export async function addNewUser(amazonAlias, githubAlias, groups) {
   const check = await pg().oneOrNone(
     'select amazon_alias from users where amazon_alias = $1',
-    [amazon_alias]
+    [amazonAlias]
   );
-  console.log(check);
   if (!check) {
     return await pg().none(
       'insert into users (amazon_alias, github_alias, groups) ' +
-      'values ($1, $2, $3)',
-      [amazon_alias, github_alias, groups]
+        'values ($1, $2, $3)',
+      [amazonAlias, githubAlias, groups]
     );
   }
   return 'exists';
 }
 
 // Add groups to a user
-export async function addGroupsToUser(amazon_alias, groups) {
+export async function addGroupsToUser(amazonAlias, groups) {
   return await pg().none(
-    "update users set groups = groups || $1 where amazon_alias = $2",
-    [groups, amazon_alias]
+    'update users set groups = groups || $1 where amazon_alias = $2',
+    [groups, amazonAlias]
   );
 }
 
 // Remove groups from a user
-export async function removeGroupFromUser(amazon_alias, group) {
+export async function removeGroupFromUser(amazonAlias, group) {
   return await pg().none(
     "update users set groups = groups - '$1' where amazon_alias = $2",
-    [group, amazon_alias]
+    [group, amazonAlias]
   );
 }

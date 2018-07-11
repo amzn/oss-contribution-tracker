@@ -55,7 +55,7 @@ class GroupForm extends React.Component<Props, State> {
     this.props.fetchUsers();
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const fields = e.target.elements;
     const projects = [];
@@ -75,13 +75,12 @@ class GroupForm extends React.Component<Props, State> {
       users.push(fields.userList.value);
     }
 
-
     const jsonObj = {
       groupName: fields.groupName.value,
       sponsorName: fields.sponsorName.value,
       goals: fields.groupGoals.value,
       projects,
-      users
+      users,
     };
 
     this.props.addNewGroup(jsonObj, this.alert);
@@ -91,7 +90,7 @@ class GroupForm extends React.Component<Props, State> {
     if (this.props.users.length) {
       const users = this.props.users;
       return users.map(listValue => {
-        return {label: listValue.amazon_alias, value: listValue.amazon_alias};
+        return { label: listValue.amazon_alias, value: listValue.amazon_alias };
       });
     }
   };
@@ -105,23 +104,21 @@ class GroupForm extends React.Component<Props, State> {
     }
   };
 
-  handleUserChange = (value) => {
-    this.setState({users: value});
+  handleUserChange = value => {
+    this.setState({ users: value });
   };
 
-  handleProjectChange = (value) => {
-    this.setState({projects: value});
+  handleProjectChange = value => {
+    this.setState({ projects: value });
   };
 
   alert = () => {
     this.setState({
-      alert: (<SweetAlert
-        success={true}
-        title="Success!"
-        onConfirm={this.hideAlert}
-      >
-        New group has been added
-      </SweetAlert>)
+      alert: (
+        <SweetAlert success={true} title="Success!" onConfirm={this.hideAlert}>
+          New group has been added
+        </SweetAlert>
+      ),
     });
   };
 
@@ -144,7 +141,7 @@ class GroupForm extends React.Component<Props, State> {
           <div className="col-lg-9">
             <form id="contributions-form" onSubmit={this.handleSubmit}>
               <h3>New Group</h3>
-              <br/>
+              <br />
               <div className="form-group">
                 <label>Group name</label>
                 <input
@@ -217,11 +214,9 @@ class GroupForm extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    projects: state.projects.all,
-    users: state.users.all,
-  }
-);
+const mapStateToProps = state => ({
+  projects: state.projects.all,
+  users: state.users.all,
+});
 
 export default connect(mapStateToProps, actions)(GroupForm);

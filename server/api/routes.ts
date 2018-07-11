@@ -114,7 +114,7 @@ router.post('/projects/new', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
+  }
 });
 
 router.get('/projects/name/:projectName', (req, res, next) => {
@@ -307,7 +307,6 @@ router.post('/cla/submit', async (req, res, next) => {
   }
 });
 
-
 /*
  * All API calls related to strategic groups
  */
@@ -323,12 +322,20 @@ router.get('/strategicgroups/:id', async (req, res, next) => {
 
 // get all strategic contributions by group id
 router.get('/strategiccontributions/group/:id', async (req, res, next) => {
-  pack(contributionsAPI.listStrategicContributionsByGroup(req, req.params.id), res, next);
+  pack(
+    contributionsAPI.listStrategicContributionsByGroup(req, req.params.id),
+    res,
+    next
+  );
 });
 
 // get all strategic contributions by project id
 router.get('/strategiccontributions/project/:id', async (req, res, next) => {
-  pack(contributionsAPI.listStrategicContributionsByProject(req, req.params.id), res, next);
+  pack(
+    contributionsAPI.listStrategicContributionsByProject(req, req.params.id),
+    res,
+    next
+  );
 });
 
 // get all strategic projects
@@ -393,7 +400,6 @@ router.post('/strategicgroups/delete', async (req, res, next) => {
     return next(new AccessError('no access to Strategic Group management'));
   }
 });
-
 
 // error handling for all of the above
 router.use(function(err: any, req: any, res: any, next: any) {

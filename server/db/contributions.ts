@@ -82,7 +82,7 @@ export function getSingleContribution(id) {
 export function listStrategicContributions() {
   return pg().query(
     'select * from contributions where approval_status = "approved-strategic"'
-  )
+  );
 }
 
 // Add strategic contribution
@@ -180,48 +180,48 @@ export async function updateContributionLink(contrib_id, link) {
 export async function getLastWeekCount(ids, users) {
   return await pg().oneOrNone(
     'select count(*) as numContribs from contributions ' +
-    'WHERE contribution_date BETWEEN ' +
-    'NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-7 ' +
-    'AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3)',
+      'WHERE contribution_date BETWEEN ' +
+      'NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-7 ' +
+      'AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3)',
     [ids, 'approved-strategic', users]
-  )
+  );
 }
 
 export async function getMTDCount(ids, users) {
   return await pg().oneOrNone(
     'select count(*) as numContribs from contributions ' +
-    'WHERE (contribution_date BETWEEN ' +
-    '(NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER + 1)::DATE ' +
-    'AND NOW()::DATE) AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3)',
+      'WHERE (contribution_date BETWEEN ' +
+      '(NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER + 1)::DATE ' +
+      'AND NOW()::DATE) AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3)',
     [ids, 'approved-strategic', users]
-  )
+  );
 }
 
 export async function getLastMonthCount(ids, users) {
   return await pg().oneOrNone(
     'select count(*) as numContribs from contributions ' +
-    'WHERE (contribution_date BETWEEN ' +
-    '(NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER + 1 - INTERVAL $1)::DATE ' +
-    'AND (NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER)::DATE) AND project_id=ANY($2) AND approval_status=$3 AND contributor_alias=ANY($4)',
+      'WHERE (contribution_date BETWEEN ' +
+      '(NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER + 1 - INTERVAL $1)::DATE ' +
+      'AND (NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER)::DATE) AND project_id=ANY($2) AND approval_status=$3 AND contributor_alias=ANY($4)',
     ['1 MONTH', ids, 'approved-strategic', users]
-  )
+  );
 }
 
 export async function getYTDCount(ids, users) {
   return await pg().oneOrNone(
     'select count(*) as numContribs from contributions ' +
-    'WHERE (contribution_date BETWEEN ' +
-    "DATE_TRUNC('year', now()) AND now() " +
-    'AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3))',
+      'WHERE (contribution_date BETWEEN ' +
+      "DATE_TRUNC('year', now()) AND now() " +
+      'AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3))',
     [ids, 'approved-strategic', users]
-  )
+  );
 }
 
 export async function listStrategicContributionsByGroup(projects, users) {
   return await pg().query(
     'select * from contributions where project_id=ANY($1) ' +
-    "and contributor_alias=ANY($2) and approval_status='approved-strategic' " +
-    'order by contribution_date desc',
+      "and contributor_alias=ANY($2) and approval_status='approved-strategic' " +
+      'order by contribution_date desc',
     [projects, users]
   );
 }
@@ -229,8 +229,8 @@ export async function listStrategicContributionsByGroup(projects, users) {
 export async function listStrategicContributionsByProject(id) {
   return await pg().query(
     'select * from contributions where project_id=$1 ' +
-    "and approval_status='approved-strategic' " +
-    'order by contribution_date desc',
+      "and approval_status='approved-strategic' " +
+      'order by contribution_date desc',
     [id]
   );
 }

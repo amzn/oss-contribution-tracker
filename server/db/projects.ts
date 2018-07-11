@@ -40,7 +40,6 @@ export async function searchProjectByName(name) {
   );
 }
 
-
 // List projects in a group
 export async function getProjectsByGroup(id) {
   return await pg().query(
@@ -53,11 +52,11 @@ export async function getProjectsByGroup(id) {
 export function getAllStrategicProjects() {
   return pg().query(
     'select * from projects ' +
-    'where project_id = ANY(ARRAY(' +
+      'where project_id = ANY(ARRAY(' +
       'select array_agg(c) from (' +
-    	  'select distinct project as id from groups, unnest(projects) project' +
+      'select distinct project as id from groups, unnest(projects) project' +
       ') as dt(c)' +
-    '))'
+      '))'
   );
 }
 

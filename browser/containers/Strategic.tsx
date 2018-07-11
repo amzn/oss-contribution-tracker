@@ -36,7 +36,7 @@ export default class Strategic extends React.Component<{}, State> {
     const projectList = await reqJSON('/api/strategicprojects');
     this.setState({
       groupList,
-      projectList: projectList.projectList
+      projectList: projectList.projectList,
     });
   }
 
@@ -44,10 +44,10 @@ export default class Strategic extends React.Component<{}, State> {
     return (
       <div>
         <h4>Strategic Groups</h4>
-        <GroupsTable groups={this.state.groupList} type='all'/>
-        <br/>
+        <GroupsTable groups={this.state.groupList} type="all" />
+        <br />
         <h4>Strategic Projects</h4>
-        <ProjectTable projectList={this.state.projectList} type='all'/>
+        <ProjectTable projectList={this.state.projectList} type="all" />
       </div>
     );
   }

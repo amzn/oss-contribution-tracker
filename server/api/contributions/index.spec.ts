@@ -21,105 +21,119 @@ describe('index', () => {
     mockery.enable({ useCleanCache: true, warnOnUnregistered: false });
     mock = {
       dbgroups: {
-        getGroupById: jasmine.createSpy('dbgroups').and.callFake((groupId) => {
+        getGroupById: jasmine.createSpy('dbgroups').and.callFake(groupId => {
           if (groupId === 1) {
             return {
               group_id: 1,
               group_name: 'Test 1',
-              projects: [1,2],
-            }
+              projects: [1, 2],
+            };
           } else if (groupId === 2) {
             return {
               group_id: 2,
               group_name: 'Test 2',
-              projects: [1,3]
-            }
+              projects: [1, 3],
+            };
           } else {
-            return {}
+            return {};
           }
         }),
       },
       dbusers: {
-        getUsernamesByGroup: jasmine.createSpy('dbusers').and.callFake((groupId) => {
-          if (groupId.toString() === '1') {
-            return {names: ['alpha', 'beta']}
-          } else if (groupId.toString() === '2') {
-            return {names: ['alpha', 'charlie']}
-          } else {
-            return {names: ['alpha', 'beta', 'charlie']}
-          }
-        }),
+        getUsernamesByGroup: jasmine
+          .createSpy('dbusers')
+          .and.callFake(groupId => {
+            if (groupId.toString() === '1') {
+              return { names: ['alpha', 'beta'] };
+            } else if (groupId.toString() === '2') {
+              return { names: ['alpha', 'charlie'] };
+            } else {
+              return { names: ['alpha', 'beta', 'charlie'] };
+            }
+          }),
       },
       dbcontributions: {
-        listStrategicContributionsByGroup: jasmine.createSpy('dbcontributions').and.returnValue([
-          {
-            contribution_id: 1,
-            project_id: 1,
-            contribution_description: 'test contrib 1',
-            contirbution_date: '2018-06-11',
-            contributor_alias: 'alpha',
-            contribution_url: 'A.com/contrib1'
-          },
-          {
-            contribution_id: 2,
-            project_id: 2,
-            contribution_description: 'test contrib 2',
-            contirbution_date: '2018-06-08',
-            contributor_alias: 'beta',
-            contribution_url: 'B.com/contrib2'
-          }
-        ]),
-        listStrategicContributionsByProject: jasmine.createSpy('dbcontributions').and.returnValue([
-          {
-            contribution_id: 1,
-            project_id: 1,
-            contribution_description: 'test contrib 1',
-            contirbution_date: '2018-06-11',
-            contributor_alias: 'alpha',
-            contribution_url: 'A.com/contrib1'
-          },
-          {
-            contribution_id: 2,
-            project_id: 1,
-            contribution_description: 'test contrib 2',
-            contirbution_date: '2018-06-22',
-            contributor_alias: 'beta',
-            contribution_url: 'A.com/contrib2'
-          }
-        ])
+        listStrategicContributionsByGroup: jasmine
+          .createSpy('dbcontributions')
+          .and.returnValue([
+            {
+              contribution_id: 1,
+              project_id: 1,
+              contribution_description: 'test contrib 1',
+              contirbution_date: '2018-06-11',
+              contributor_alias: 'alpha',
+              contribution_url: 'A.com/contrib1',
+            },
+            {
+              contribution_id: 2,
+              project_id: 2,
+              contribution_description: 'test contrib 2',
+              contirbution_date: '2018-06-08',
+              contributor_alias: 'beta',
+              contribution_url: 'B.com/contrib2',
+            },
+          ]),
+        listStrategicContributionsByProject: jasmine
+          .createSpy('dbcontributions')
+          .and.returnValue([
+            {
+              contribution_id: 1,
+              project_id: 1,
+              contribution_description: 'test contrib 1',
+              contirbution_date: '2018-06-11',
+              contributor_alias: 'alpha',
+              contribution_url: 'A.com/contrib1',
+            },
+            {
+              contribution_id: 2,
+              project_id: 1,
+              contribution_description: 'test contrib 2',
+              contirbution_date: '2018-06-22',
+              contributor_alias: 'beta',
+              contribution_url: 'A.com/contrib2',
+            },
+          ]),
       },
       dbprojects: {
-        searchProjectById: jasmine.createSpy('dbprojects').and.callFake((projectId) => {
-          if (projectId === 1) {
-            return [{
-              project_id: 1,
-              project_name: 'A',
-              project_url: 'A.com',
-              project_verified: true,
-              project_auto_approval: true,
-            }]
-          } else if (projectId === 2) {
-            return [{
-              project_id: 2,
-              project_name: 'B',
-              project_url: 'B.com',
-              project_verified: true,
-              project_auto_approval: true,
-            }]
-          } else if (projectId === 3) {
-            return [{
-              project_id: 3,
-              project_name: 'C',
-              project_url: 'C.com',
-              project_verified: true,
-              project_auto_approval: true,
-            }]
-          } else {
-            return []
-          }
-        })
-      }
-    }
+        searchProjectById: jasmine
+          .createSpy('dbprojects')
+          .and.callFake(projectId => {
+            if (projectId === 1) {
+              return [
+                {
+                  project_id: 1,
+                  project_name: 'A',
+                  project_url: 'A.com',
+                  project_verified: true,
+                  project_auto_approval: true,
+                },
+              ];
+            } else if (projectId === 2) {
+              return [
+                {
+                  project_id: 2,
+                  project_name: 'B',
+                  project_url: 'B.com',
+                  project_verified: true,
+                  project_auto_approval: true,
+                },
+              ];
+            } else if (projectId === 3) {
+              return [
+                {
+                  project_id: 3,
+                  project_name: 'C',
+                  project_url: 'C.com',
+                  project_verified: true,
+                  project_auto_approval: true,
+                },
+              ];
+            } else {
+              return [];
+            }
+          }),
+      },
+    };
     mockery.registerMock('../../db/groups', {
       getGroupById: mock.dbgroups.getGroupById,
     });
@@ -130,8 +144,10 @@ describe('index', () => {
       getUsernamesByGroup: mock.dbusers.getUsernamesByGroup,
     });
     mockery.registerMock('../../db/contributions', {
-      listStrategicContributionsByGroup: mock.dbcontributions.listStrategicContributionsByGroup,
-      listStrategicContributionsByProject: mock.dbcontributions.listStrategicContributionsByProject,
+      listStrategicContributionsByGroup:
+        mock.dbcontributions.listStrategicContributionsByGroup,
+      listStrategicContributionsByProject:
+        mock.dbcontributions.listStrategicContributionsByProject,
     });
     mockery.registerAllowable('./index');
     contributions = require('./index');
@@ -143,46 +159,64 @@ describe('index', () => {
   });
 
   describe('contributions', () => {
-    it('should list all contributions by group', async (done) => {
-      const contribs = await contributions.listStrategicContributionsByGroup({}, 1);
+    it('should list all contributions by group', async done => {
+      const contribs = await contributions.listStrategicContributionsByGroup(
+        {},
+        1
+      );
       expect(mock.dbgroups.getGroupById).toHaveBeenCalled();
       expect(mock.dbusers.getUsernamesByGroup).toHaveBeenCalled();
-      expect(mock.dbcontributions.listStrategicContributionsByGroup).toHaveBeenCalled();
+      expect(
+        mock.dbcontributions.listStrategicContributionsByGroup
+      ).toHaveBeenCalled();
       expect(mock.dbprojects.searchProjectById).toHaveBeenCalled();
       expect(contribs).toEqual([
-        { contribution_id: 1,
+        {
+          contribution_id: 1,
           project_id: 1,
           contribution_description: 'test contrib 1',
           contirbution_date: '2018-06-11',
           contributor_alias: 'alpha',
           contribution_url: 'A.com/contrib1',
-          project_name: 'A' },
-        { contribution_id: 2,
+          project_name: 'A',
+        },
+        {
+          contribution_id: 2,
           project_id: 2,
           contribution_description: 'test contrib 2',
           contirbution_date: '2018-06-08',
           contributor_alias: 'beta',
           contribution_url: 'B.com/contrib2',
-          project_name: 'B' }
+          project_name: 'B',
+        },
       ]);
       done();
     });
-    it('should list all contributions by group', async (done) => {
-      const contribs = await contributions.listStrategicContributionsByProject({}, 1);
-      expect(mock.dbcontributions.listStrategicContributionsByProject).toHaveBeenCalled();
+    it('should list all contributions by group', async done => {
+      const contribs = await contributions.listStrategicContributionsByProject(
+        {},
+        1
+      );
+      expect(
+        mock.dbcontributions.listStrategicContributionsByProject
+      ).toHaveBeenCalled();
       expect(contribs).toEqual([
-        { contribution_id: 1,
+        {
+          contribution_id: 1,
           project_id: 1,
           contribution_description: 'test contrib 1',
           contirbution_date: '2018-06-11',
           contributor_alias: 'alpha',
-          contribution_url: 'A.com/contrib1' },
-        { contribution_id: 2,
+          contribution_url: 'A.com/contrib1',
+        },
+        {
+          contribution_id: 2,
           project_id: 1,
           contribution_description: 'test contrib 2',
           contirbution_date: '2018-06-22',
           contributor_alias: 'beta',
-          contribution_url: 'A.com/contrib2' }
+          contribution_url: 'A.com/contrib2',
+        },
       ]);
       done();
     });

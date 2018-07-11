@@ -52,7 +52,7 @@ class EditGroup extends React.Component<Props, State> {
       projects: [],
       users: [],
       alert: null,
-    }
+    };
   }
 
   componentDidMount() {
@@ -72,16 +72,20 @@ class EditGroup extends React.Component<Props, State> {
         users.push(user.amazon_alias);
       }
       this.setState({
-        name: this.props.group.group.group_name ? this.props.group.group.group_name : '',
+        name: this.props.group.group.group_name
+          ? this.props.group.group.group_name
+          : '',
         goal: this.props.group.group.goal ? this.props.group.group.goal : '',
-        sponsor: this.props.group.group.sponsor ? this.props.group.group.sponsor : '',
+        sponsor: this.props.group.group.sponsor
+          ? this.props.group.group.sponsor
+          : '',
         projects: projects.join(','),
-        users: users.join(',')
+        users: users.join(','),
       });
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const fields = e.target.elements;
     const projects = [];
@@ -101,14 +105,13 @@ class EditGroup extends React.Component<Props, State> {
       users.push(fields.userList.value);
     }
 
-
     const jsonObj = {
       groupId: this.props.group.group.group_id,
       groupName: fields.groupName.value,
       sponsorName: fields.sponsorName.value,
       goals: fields.groupGoals.value,
       projects,
-      users
+      users,
     };
 
     this.props.updateGroup(jsonObj, this.alert);
@@ -118,7 +121,7 @@ class EditGroup extends React.Component<Props, State> {
     if (this.props.users.length) {
       const users = this.props.users;
       return users.map(listValue => {
-        return {label: listValue.amazon_alias, value: listValue.amazon_alias};
+        return { label: listValue.amazon_alias, value: listValue.amazon_alias };
       });
     }
   };
@@ -132,27 +135,27 @@ class EditGroup extends React.Component<Props, State> {
     }
   };
 
-  handleNameChange = (e) => {
-    this.setState({name: e.target.value});
+  handleNameChange = e => {
+    this.setState({ name: e.target.value });
   };
 
-  handleGoalChange = (e) => {
-    this.setState({goal: e.target.value});
+  handleGoalChange = e => {
+    this.setState({ goal: e.target.value });
   };
 
-  handleSponsorChange = (e) => {
-    this.setState({sponsor: e.target.value});
+  handleSponsorChange = e => {
+    this.setState({ sponsor: e.target.value });
   };
 
-  handleUserChange = (value) => {
-    this.setState({users: value});
+  handleUserChange = value => {
+    this.setState({ users: value });
   };
 
-  handleProjectChange = (value) => {
-    this.setState({projects: value});
+  handleProjectChange = value => {
+    this.setState({ projects: value });
   };
 
-  handleDelete = (e) => {
+  handleDelete = e => {
     e.preventDefault();
     const getDeleteAlert = () => (
       <SweetAlert
@@ -174,18 +177,16 @@ class EditGroup extends React.Component<Props, State> {
   };
 
   deleteGroup = () => {
-    this.props.deleteGroup({id: this.props.group.group.group_id}, this.alert);
+    this.props.deleteGroup({ id: this.props.group.group.group_id }, this.alert);
   };
 
-  alert = (message) => {
+  alert = message => {
     this.setState({
-      alert: (<SweetAlert
-        success={true}
-        title="Success!"
-        onConfirm={this.hideAlert}
-      >
-        Group has been {message}
-      </SweetAlert>)
+      alert: (
+        <SweetAlert success={true} title="Success!" onConfirm={this.hideAlert}>
+          Group has been {message}
+        </SweetAlert>
+      ),
     });
   };
 
@@ -193,12 +194,12 @@ class EditGroup extends React.Component<Props, State> {
     this.setState({ alert: null });
     this.props.fetchGroups();
     this.props.updateAdminNav('viewGroup');
-  }
+  };
 
   handleCancel = () => {
     this.props.fetchGroups();
     this.props.updateAdminNav('viewGroup');
-  }
+  };
 
   render() {
     const userOptions = this.userList();
@@ -209,7 +210,7 @@ class EditGroup extends React.Component<Props, State> {
           <div className="col-lg-9">
             <form id="contributions-form" onSubmit={this.handleSubmit}>
               <h3>Edit Group</h3>
-              <br/>
+              <br />
               <div className="form-group">
                 <label>Group name</label>
                 <input
@@ -291,13 +292,11 @@ class EditGroup extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    group: state.groups.group,
-    projects: state.projects.all,
-    users: state.users.all,
-    groupId: state.admin.group,
-  }
-);
+const mapStateToProps = state => ({
+  group: state.groups.group,
+  projects: state.projects.all,
+  users: state.users.all,
+  groupId: state.admin.group,
+});
 
 export default connect(mapStateToProps, actions)(EditGroup);

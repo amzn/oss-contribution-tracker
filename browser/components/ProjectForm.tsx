@@ -43,7 +43,7 @@ class ProjectForm extends React.Component<Props, State> {
     };
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const fields = e.target.elements;
 
@@ -57,30 +57,34 @@ class ProjectForm extends React.Component<Props, State> {
     this.props.addNewProject(jsonObj, this.alert);
   };
 
-  handleVerifiedChange = (value) => {
-    this.setState({verified: value});
+  handleVerifiedChange = value => {
+    this.setState({ verified: value });
   };
 
-  alert = (result) => {
+  alert = result => {
     if (result === 'exists') {
       this.setState({
-        alert: (<SweetAlert
-          warning={true}
-          title="Already exists"
-          onConfirm={this.hideAlert}
-        >
-          This project already exists
-        </SweetAlert>)
+        alert: (
+          <SweetAlert
+            warning={true}
+            title="Already exists"
+            onConfirm={this.hideAlert}
+          >
+            This project already exists
+          </SweetAlert>
+        ),
       });
     } else {
       this.setState({
-        alert: (<SweetAlert
-          success={true}
-          title="Success!"
-          onConfirm={this.hideAlert}
-        >
-          New project has been added
-        </SweetAlert>)
+        alert: (
+          <SweetAlert
+            success={true}
+            title="Success!"
+            onConfirm={this.hideAlert}
+          >
+            New project has been added
+          </SweetAlert>
+        ),
       });
     }
   };
@@ -101,7 +105,7 @@ class ProjectForm extends React.Component<Props, State> {
           <div className="col-lg-9">
             <form id="contributions-form" onSubmit={this.handleSubmit}>
               <h3>New Project</h3>
-              <br/>
+              <br />
               <div className="form-group">
                 <label>Project name</label>
                 <input
@@ -135,7 +139,7 @@ class ProjectForm extends React.Component<Props, State> {
                   name="verified"
                   options={[
                     { label: 'True', value: true },
-                    { label: 'False', value: false }
+                    { label: 'False', value: false },
                   ]}
                   onChange={this.handleVerifiedChange}
                   required={true}
@@ -157,6 +161,5 @@ class ProjectForm extends React.Component<Props, State> {
     );
   }
 }
-
 
 export default connect(null, actions)(ProjectForm);

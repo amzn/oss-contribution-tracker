@@ -35,7 +35,7 @@ class GroupsTable extends React.Component<Props> {
     };
   }
 
-  handleEdit = (e) => {
+  handleEdit = e => {
     const groupId = e.target.id;
     this.props.updateAdminGroup(groupId);
     this.props.updateAdminNav('editGroup');
@@ -50,7 +50,7 @@ class GroupsTable extends React.Component<Props> {
             {
               Header: <strong>Group</strong>,
               accessor: 'group_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type='group'/>
+              Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
             },
             {
               Header: <strong># Projects</strong>,
@@ -95,12 +95,19 @@ class GroupsTable extends React.Component<Props> {
               Header: <strong>Edit</strong>,
               accessor: 'group_id',
               width: 50,
-              Cell: row => <div className="center"> <Link to='/admin' onClick={this.handleEdit}><i id={row.value} className="fa fa-pencil-square" /></Link> </div>,
+              Cell: row => (
+                <div className="center">
+                  {' '}
+                  <Link to="/admin" onClick={this.handleEdit}>
+                    <i id={row.value} className="fa fa-pencil-square" />
+                  </Link>{' '}
+                </div>
+              ),
             },
             {
               Header: <strong>Group</strong>,
               accessor: 'group_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type='group'/>
+              Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
             },
             {
               Header: <strong># Projects</strong>,
@@ -144,7 +151,7 @@ class GroupsTable extends React.Component<Props> {
             {
               Header: <strong>Group</strong>,
               accessor: 'group_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type='group'/>
+              Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
             },
             {
               Header: <strong># Contribs Last Week</strong>,
@@ -180,15 +187,13 @@ class GroupsTable extends React.Component<Props> {
     } else if (type === 'edit') {
       return <div>{this.getEditTable()}</div>;
     }
-    return <div/>;
+    return <div />;
   }
 }
 
-const mapStateToProps = (state, props) => (
-  {
-    groups: props.groups,
-    type: props.type,
-  }
-);
+const mapStateToProps = (state, props) => ({
+  groups: props.groups,
+  type: props.type,
+});
 
 export default connect(mapStateToProps, actions)(GroupsTable);

@@ -202,9 +202,21 @@ export class App extends React.Component<Props, State> {
                 <Route exact={true} path="/" component={Metrics} />
                 <Route exact={true} path="/employee" component={Employee} />
                 <Route exact={true} path="/list" component={List} />
-                <Route exact={true} path="/strategicprojects" component={Strategic} />
-                <Route exact={true} path="/strategicprojects/group/:group_id" component={Group} />
-                <Route exact={true} path="/strategicprojects/project/:project_id" component={Project} />
+                <Route
+                  exact={true}
+                  path="/strategicprojects"
+                  component={Strategic}
+                />
+                <Route
+                  exact={true}
+                  path="/strategicprojects/group/:group_id"
+                  component={Group}
+                />
+                <Route
+                  exact={true}
+                  path="/strategicprojects/project/:project_id"
+                  component={Project}
+                />
                 <Route
                   exact={true}
                   path="/contribute"

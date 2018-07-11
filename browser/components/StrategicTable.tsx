@@ -47,7 +47,7 @@ export default class StrategicTable extends React.Component<Props, State> {
     });
   }
 
-  sliceDate = (date) => {
+  sliceDate = date => {
     return date.slice(0, 10);
   };
 
@@ -69,7 +69,7 @@ export default class StrategicTable extends React.Component<Props, State> {
               {
                 Header: <strong>Commit URL</strong>,
                 accessor: 'contribution_url',
-                Cell: d => <a href={d.value}>link</a>
+                Cell: d => <a href={d.value}>link</a>,
               },
               {
                 Header: <strong>Submission Date</strong>,
@@ -88,7 +88,7 @@ export default class StrategicTable extends React.Component<Props, State> {
         </div>
       );
     } else {
-      return <div />
+      return <div />;
     }
   };
 
@@ -106,7 +106,7 @@ export default class StrategicTable extends React.Component<Props, State> {
               {
                 Header: <strong>Commit URL</strong>,
                 accessor: 'contribution_url',
-                Cell: d => <a href={d.value}>link</a>
+                Cell: d => <a href={d.value}>link</a>,
               },
               {
                 Header: <strong>Submission Date</strong>,
@@ -125,7 +125,7 @@ export default class StrategicTable extends React.Component<Props, State> {
         </div>
       );
     } else {
-      return <div />
+      return <div />;
     }
   };
 
@@ -135,6 +135,6 @@ export default class StrategicTable extends React.Component<Props, State> {
     } else if (this.state.type === 'project') {
       return <div>{this.getProjectTable()}</div>;
     }
-    return <div/>
+    return <div />;
   }
 }

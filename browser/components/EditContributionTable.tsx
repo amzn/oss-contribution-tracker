@@ -65,9 +65,7 @@ export default class EditContributionTable extends React.Component<
               Header: <strong>Edit</strong>,
               accessor: 'contribution_id',
               width: 50,
-              Cell: row => (
-                <TableEditCell type="contribution" id={row.value} />
-              ),
+              Cell: row => <TableEditCell type="contribution" id={row.value} />,
             },
             {
               Header: <strong>Project</strong>,

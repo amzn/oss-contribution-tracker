@@ -52,17 +52,23 @@ export async function listApprovalContributions(req) {
 export async function listStrategicContributionsByGroup(req, groupId) {
   const projects = (await dbGroups.getGroupById(groupId)).projects;
   const users = (await dbUsers.getUsernamesByGroup([groupId.toString()])).names;
-  const list = await dbContribution.listStrategicContributionsByGroup(projects, users);
+  const list = await dbContribution.listStrategicContributionsByGroup(
+    projects,
+    users
+  );
   // add project name
   for (const c of list) {
-    c.project_name = (await dbProjects.searchProjectById(c.project_id))[0].project_name; // returns one project as a list
+    c.project_name = (await dbProjects.searchProjectById(
+      c.project_id
+    ))[0].project_name; // returns one project as a list
   }
   return list;
 }
 
 export async function listStrategicContributionsByProject(req, projId) {
-  return { list: await dbContribution.listStrategicContributionsByProject(projId) };
-
+  return {
+    list: await dbContribution.listStrategicContributionsByProject(projId),
+  };
 }
 
 export async function getAllContributorAlias(req) {

@@ -75,7 +75,7 @@ config.cron = {
   type: 'onbox', // runs cron-like js scheduler
   cronTime: '* * * * *', // configure cron schedule
   timeZone: 'America/Los_Angeles', // configure timezone
-}
+};
 
 // load once asked for
 function load() {

@@ -12,23 +12,23 @@
  * permissions and limitations under the License.
  */
 
- import {ActionTypes} from '../actions/strategicActions';
+import { ActionTypes } from '../actions/strategicActions';
 
- const initialState = {
-   all: [],
- }
+const initialState = {
+  all: [],
+};
 
- const ProjectsReducer = (state = initialState, action) => {
-   switch (action.type) {
-     case ActionTypes.FETCH_PROJECTS: {
-       const newState = {
-         all: action.payload,
-       }
-       return newState;
-     }
-     default:
-     return state;
-   }
- };
+const ProjectsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.FETCH_PROJECTS: {
+      const newState = {
+        all: action.payload,
+      };
+      return newState;
+    }
+    default:
+      return state;
+  }
+};
 
- export default ProjectsReducer;
+export default ProjectsReducer;

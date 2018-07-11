@@ -25,7 +25,10 @@ interface State {
   type: string;
 }
 
-export default class StrategicTableLinkCell extends React.Component<Props, State> {
+export default class StrategicTableLinkCell extends React.Component<
+  Props,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,24 +44,35 @@ export default class StrategicTableLinkCell extends React.Component<Props, State
       const group = await reqJSON('/api/strategicgroups/' + this.props.id);
       this.setState({ group: group.group });
     } else if (type === 'project') {
-      const project = await reqJSON('/api/projects/' + (this.props.id).toString());
+      const project = await reqJSON(
+        '/api/projects/' + this.props.id.toString()
+      );
       this.setState({ project: project.projectID[0] });
     }
   }
 
   renderProjectLink = () => {
     if (this.state.project) {
-      return <a href={'/strategicprojects/project/' + this.props.id}> {this.state.project.project_name} </a>;
+      return (
+        <a href={'/strategicprojects/project/' + this.props.id}>
+          {' '}
+          {this.state.project.project_name}{' '}
+        </a>
+      );
     } else {
-      return <div/>;
+      return <div />;
     }
   };
 
   renderGroupLink = () => {
     if (this.state.group) {
-      return <a href={'/strategicprojects/group/' + this.props.id}>{this.state.group.group_name} </a>;
+      return (
+        <a href={'/strategicprojects/group/' + this.props.id}>
+          {this.state.group.group_name}{' '}
+        </a>
+      );
     } else {
-      return <div/>;
+      return <div />;
     }
   };
 
@@ -69,6 +83,6 @@ export default class StrategicTableLinkCell extends React.Component<Props, State
     } else if (type === 'project') {
       return this.renderProjectLink();
     }
-    return <div />
+    return <div />;
   }
 }

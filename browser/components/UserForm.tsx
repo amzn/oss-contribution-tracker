@@ -47,7 +47,7 @@ class UserForm extends React.Component<Props, State> {
     this.props.fetchGroups();
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = async e => {
     e.preventDefault();
     const fields = e.target.elements;
     const groups = [];
@@ -79,42 +79,46 @@ class UserForm extends React.Component<Props, State> {
     }
   };
 
-  handleGroupChange = (value) => {
-    this.setState({groups: value});
+  handleGroupChange = value => {
+    this.setState({ groups: value });
   };
 
-  alert = (result) => {
+  alert = result => {
     if (result === 'exists') {
       this.setState({
-        alert: (<SweetAlert
-          warning={true}
-          title="Already exists"
-          onConfirm={this.hideAlert}
-        >
-          This user already exists
-        </SweetAlert>)
+        alert: (
+          <SweetAlert
+            warning={true}
+            title="Already exists"
+            onConfirm={this.hideAlert}
+          >
+            This user already exists
+          </SweetAlert>
+        ),
       });
     } else {
       this.setState({
-        alert: (<SweetAlert
-          success={true}
-          title="Success!"
-          onConfirm={this.hideAlert}
-        >
-          New user has been added
-        </SweetAlert>)
+        alert: (
+          <SweetAlert
+            success={true}
+            title="Success!"
+            onConfirm={this.hideAlert}
+          >
+            New user has been added
+          </SweetAlert>
+        ),
       });
     }
-  }
+  };
 
   hideAlert = () => {
     this.setState({ alert: null });
     this.props.updateAdminNav(null);
-  }
+  };
 
   handleCancel = () => {
     this.props.updateAdminNav('viewGroup');
-  }
+  };
 
   render() {
     const groupOptions = this.groupList();
@@ -124,7 +128,7 @@ class UserForm extends React.Component<Props, State> {
           <div className="col-lg-9">
             <form id="contributions-form" onSubmit={this.handleSubmit}>
               <h3>New User</h3>
-              <br/>
+              <br />
               <div className="form-group">
                 <label>Amazon alias</label>
                 <input
@@ -173,10 +177,8 @@ class UserForm extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    groups: state.groups.all,
-  }
-);
+const mapStateToProps = state => ({
+  groups: state.groups.all,
+});
 
 export default connect(mapStateToProps, actions)(UserForm);

@@ -12,32 +12,32 @@
  * permissions and limitations under the License.
  */
 
- import {ActionTypes} from '../actions/strategicActions';
+import { ActionTypes } from '../actions/strategicActions';
 
- const initialState = {
-   nav: '',
-   group: 0,
- }
+const initialState = {
+  nav: '',
+  group: 0,
+};
 
- const AdminReducer = (state = initialState, action) => {
-   switch (action.type) {
-     case ActionTypes.UPDATE_ADMIN_NAV: {
-       const newState = {
-         nav: action.payload,
-         group: state.group
-       }
-       return newState;
-     }
-     case ActionTypes.UPDATE_ADMIN_GROUP: {
-       const newState = {
-         nav: state.nav,
-         group: action.payload
-       }
-       return newState;
-     }
-     default:
-     return state;
-   }
- };
+const AdminReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.UPDATE_ADMIN_NAV: {
+      const newState = {
+        nav: action.payload,
+        group: state.group,
+      };
+      return newState;
+    }
+    case ActionTypes.UPDATE_ADMIN_GROUP: {
+      const newState = {
+        nav: state.nav,
+        group: action.payload,
+      };
+      return newState;
+    }
+    default:
+      return state;
+  }
+};
 
- export default AdminReducer;
+export default AdminReducer;

@@ -81,7 +81,7 @@ class Admin extends Component<Props, State> {
     });
   };
 
-  changeNav = (nav) => {
+  changeNav = nav => {
     this.props.updateAdminNav(nav);
   };
 
@@ -119,27 +119,31 @@ class Admin extends Component<Props, State> {
   displaySelected = () => {
     switch (this.props.nav) {
       case 'approveContrib':
-        return <ApprovalsTable approvalList={this.state.approvalList} />
+        return <ApprovalsTable approvalList={this.state.approvalList} />;
       case 'editContrib':
-        return <EditContributionTable contributionList={this.state.contributionList} />
+        return (
+          <EditContributionTable
+            contributionList={this.state.contributionList}
+          />
+        );
       case 'viewCCLA':
-        return <CLATable cla={this.state.claTable} />
+        return <CLATable cla={this.state.claTable} />;
       case 'newCCLA':
-        return <CCLAForm toggleForm={this.toggleCLAForm} />
+        return <CCLAForm toggleForm={this.toggleCLAForm} />;
       case 'viewGroup':
-        return <GroupsTable groups={this.props.groups} type='edit' />
+        return <GroupsTable groups={this.props.groups} type="edit" />;
       case 'editGroup':
-        return <EditGroup />
+        return <EditGroup />;
       case 'newGroup':
-        return <GroupForm />
+        return <GroupForm />;
       case 'newProject':
-        return <ProjectForm />
+        return <ProjectForm />;
       case 'newUser':
-        return <UserForm />
+        return <UserForm />;
       default:
-        return <p>Select an option from the left.</p>
+        return <p>Select an option from the left.</p>;
     }
-  }
+  };
 
   // ftn passed to child to update the view once a form is submitted
   toggleCLAForm = async status => {
@@ -188,7 +192,7 @@ class Admin extends Component<Props, State> {
                 New CCLA
               </a>
             </div>
-            <br/>
+            <br />
             <h4>Strategic Groups</h4>
             <div className="list-group">
               <a
@@ -238,12 +242,10 @@ class Admin extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    nav: state.admin.nav,
-    group: state.admin.group,
-    groups: state.groups.all,
-  }
-);
+const mapStateToProps = state => ({
+  nav: state.admin.nav,
+  group: state.admin.group,
+  groups: state.groups.all,
+});
 
 export default connect(mapStateToProps, actions)(Admin);

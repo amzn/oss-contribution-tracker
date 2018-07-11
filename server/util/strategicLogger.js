@@ -5,14 +5,15 @@ const octokit = require('@octokit/rest')();
 
 /* database functions */
 function contributionExists(pg, contribId) {
-  return pg.query(
-    'select * from contributions where github_id=$1',
-    [contribId]
-  );
+  return pg.query('select * from contributions where github_id=$1', [
+    contribId,
+  ]);
 }
 
 function getAllStrategicProjects(pg) {
-  return pg.query('select distinct project as id from groups, unnest(projects) project');
+  return pg.query(
+    'select distinct project as id from groups, unnest(projects) project'
+  );
 }
 
 function searchProjectById(pg, id) {
@@ -34,22 +35,22 @@ function listGroupsByGithub(pg, alias) {
 }
 
 function getAmazonAliasByGithub(pg, alias) {
-  return pg.oneOrNone(
-    'select amazon_alias from users where github_alias=$1',
-    [alias]
-  );
+  return pg.oneOrNone('select amazon_alias from users where github_alias=$1', [
+    alias,
+  ]);
 }
 
 async function addWhitelistedContrib(pg, contrib, projId) {
   const desc = contrib.title;
   const date = contrib.created_at;
-  const alias = (await getAmazonAliasByGithub(pg, contrib.user.login)).amazon_alias;
+  const alias = (await getAmazonAliasByGithub(pg, contrib.user.login))
+    .amazon_alias;
   const githubStat = contrib.state;
   const contribUrl = contrib.html_url;
   const githubId = contrib.id;
 
   const approver = 1; // get approverId
-  const approvalStat = "approved-strategic";
+  const approvalStat = 'approved-strategic';
   return await pg.none(
     'insert into contributions (project_id, contribution_description, contribution_date, ' +
       'contributor_alias, contribution_github_status, contribution_url, github_id, approver_id, ' +
@@ -76,36 +77,36 @@ async function addWhitelistedContrib(pg, contrib, projId) {
   );
 }
 
-
 async function whitelistedContrib(pg, contrib, groups) {
   const username = contrib.user.login;
   const user = await listGroupsByGithub(pg, username);
   if (user && user.groups.length !== 0) {
-    return (groups.some(r => user.groups.includes(r)));
+    return groups.some(r => user.groups.includes(r));
   }
-  return false
+  return false;
 }
-
 
 async function fetchNewContribs(pg, owner, repo) {
   let response = await octokit.pullRequests.getAll({
     owner: owner.toString(),
     repo: repo.toString(),
-    state: 'all'
+    state: 'all',
   });
-  let {data} = response;
+  let { data } = response;
 
-  let lastContribId = data[data.length-1].id;
+  let lastContribId = data[data.length - 1].id;
 
-  while (octokit.hasNextPage(response) && ((await contributionExists(pg, lastContribId)).length === 0)) {
+  while (
+    octokit.hasNextPage(response) &&
+    (await contributionExists(pg, lastContribId)).length === 0
+  ) {
     response = await octokit.getNextPage(response);
     data = data.concat(response.data);
-    lastContribId = data[data.length-1].id;
+    lastContribId = data[data.length - 1].id;
   }
 
   return await data;
 }
-
 
 async function updateStrategicContribs(pg) {
   const projects = await getAllStrategicProjects(pg);
@@ -113,9 +114,9 @@ async function updateStrategicContribs(pg) {
     const project = await searchProjectById(pg, parseInt(proj.id, 10));
     const url = project[0].project_url;
     const urlTokens = url.split('/');
-    const last = urlTokens.length-1;
+    const last = urlTokens.length - 1;
     const repo = urlTokens[last];
-    const owner = urlTokens[last-1];
+    const owner = urlTokens[last - 1];
 
     // groups this project belongs to
     const groups = (await searchGroupsByProjectId(pg, proj.id)).groups;
@@ -124,7 +125,9 @@ async function updateStrategicContribs(pg) {
     const contribs = await fetchNewContribs(pg, owner, repo);
 
     for (const contrib of contribs) {
-      if ((await contributionExists(pg, contrib.id)).length !== 0) { break; }
+      if ((await contributionExists(pg, contrib.id)).length !== 0) {
+        break;
+      }
       if (await whitelistedContrib(pg, contrib, groups)) {
         // insert to database
         await addWhitelistedContrib(pg, contrib, proj.id);
@@ -146,13 +149,13 @@ function run() {
     database: 'postgres',
     user: 'postgres',
     password: null,
-    ssl: null
+    ssl: null,
   });
 
   // set up octokit authentication with github token
   octokit.authenticate({
     type: 'oauth',
-    token: ''
+    token: '',
   });
 
   updateStrategicContribs(pg);
@@ -167,7 +170,6 @@ export function onboxRun(config, pg) {
 
   updateStrategicContribs(pg);
 }
-
 
 if (require.main === module) {
   run();

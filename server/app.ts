@@ -91,16 +91,35 @@ export let start = async function(port, hostname) {
 
   if (config.cron.type === 'onbox') {
     // run cron-like scheduler
-    const strategicUpdater = new CronJob(config.cron.cronTime, () => { runStrategic(config, pg()) }, false, config.cron.timeZone);
+    const strategicUpdater = new CronJob(
+      config.cron.cronTime,
+      () => {
+        runStrategic(config, pg());
+      },
+      false,
+      config.cron.timeZone
+    );
     strategicUpdater.start();
   } else {
     // output crontab execution file
-    fs.writeFile('strategicScheduler', config.cron.cronTime + ' /server/util/strategicLogger.js', (err) => {
-      if (err) { throw err; }
-      console.log('*******************************************************************************************');
-      console.log('Cron script, strategicScheduler, has been created in the root directory for standalone use!');
-      console.log('*******************************************************************************************');
-    });
+    fs.writeFile(
+      'strategicScheduler',
+      config.cron.cronTime + ' /server/util/strategicLogger.js',
+      err => {
+        if (err) {
+          throw err;
+        }
+        winston.log(
+          '*******************************************************************************************'
+        );
+        winston.log(
+          'Cron script, strategicScheduler, has been created in the root directory for standalone use!'
+        );
+        winston.log(
+          '*******************************************************************************************'
+        );
+      }
+    );
   }
 
   // go!

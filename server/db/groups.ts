@@ -28,27 +28,24 @@ export function searchGroupIdsByProjectId(id) {
 export function getGroupsByProjectId(id) {
   return pg().query(
     'select * from groups ' +
-    'where group_id = ANY(ARRAY(' +
-    	'select array_agg(c) as groups ' +
+      'where group_id = ANY(ARRAY(' +
+      'select array_agg(c) as groups ' +
       'from (select group_id from groups where projects @> $1::int[]) ' +
       'as dt(c)' +
-    '))',
+      '))',
     [id]
   );
 }
 
 export function getGroupById(id) {
-  return pg().oneOrNone(
-    'select * from groups where group_id=$1',
-    [id]
-  );
+  return pg().oneOrNone('select * from groups where group_id=$1', [id]);
 }
 
 // Add a new group to the DB
 export async function addNewGroup(name, sponsor, goals, projects) {
   return await pg().oneOrNone(
     'insert into groups (group_name, sponsor, goal, projects) ' +
-    'values ($1, $2, $3, $4) returning group_id',
+      'values ($1, $2, $3, $4) returning group_id',
     [name, sponsor, goals, projects]
   );
 }
@@ -57,7 +54,7 @@ export async function addNewGroup(name, sponsor, goals, projects) {
 export async function addProjectToGroup(id, groupName, projects) {
   return await pg().none(
     'update groups set group_name=$1, projects = projects || $2 ' +
-    'where group_id=$3',
+      'where group_id=$3',
     [groupName, projects, id]
   );
 }
@@ -66,15 +63,12 @@ export async function addProjectToGroup(id, groupName, projects) {
 export async function updateGroup(id, name, sponsor, goal, projects) {
   return await pg().none(
     'update groups set group_name=$1, sponsor=$2, goal=$3, projects=$4 ' +
-    'where group_id=$5',
+      'where group_id=$5',
     [name, sponsor, goal, projects, id]
   );
 }
 
 // Delete group by id
 export async function deleteGroup(id) {
-  return await pg().none(
-    'delete from groups where group_id=$1',
-    [id]
-  );
+  return await pg().none('delete from groups where group_id=$1', [id]);
 }

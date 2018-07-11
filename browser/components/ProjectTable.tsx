@@ -57,12 +57,12 @@ export default class ProjectTable extends React.Component<Props, State> {
             {
               Header: <strong>Project</strong>,
               accessor: 'project_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type='project'/>
+              Cell: d => <StrategicTableLinkCell id={d.value} type="project" />,
             },
             {
               Header: <strong>Project URL</strong>,
               accessor: 'project_url',
-              Cell: d => <a href={d.value}>link</a>
+              Cell: d => <a href={d.value}>link</a>,
             },
             {
               Header: <strong># Groups</strong>,
@@ -106,12 +106,12 @@ export default class ProjectTable extends React.Component<Props, State> {
             {
               Header: <strong>Project</strong>,
               accessor: 'project_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type='project'/>
+              Cell: d => <StrategicTableLinkCell id={d.value} type="project" />,
             },
             {
               Header: <strong>Project URL</strong>,
               accessor: 'project_url',
-              Cell: d => <a href={d.value}>link</a>
+              Cell: d => <a href={d.value}>link</a>,
             },
             {
               Header: <strong># Contribs Last Week</strong>,
@@ -145,6 +145,6 @@ export default class ProjectTable extends React.Component<Props, State> {
     } else if (type === 'all') {
       return <div>{this.getAllTable()}</div>;
     }
-    return <div />
+    return <div />;
   }
 }

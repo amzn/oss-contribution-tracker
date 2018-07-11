@@ -11,6 +11,8 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// tslint:disable:no-console
+
 import { postJSON, reqJSON } from '../util/index';
 
 export const ActionTypes = {
@@ -27,123 +29,132 @@ export const ActionTypes = {
 };
 
 export function fetchGroups() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const groups = await reqJSON('/api/strategicgroups');
-      return dispatch({type: ActionTypes.FETCH_GROUPS, payload: groups.groupList});
+      return dispatch({
+        type: ActionTypes.FETCH_GROUPS,
+        payload: groups.groupList,
+      });
     } catch (error) {
       console.error(error);
-    };
-  }
+    }
+  };
 }
 
 export function fetchGroup(id) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const group = await reqJSON(`/api/strategicgroups/${id}`);
-      return dispatch({type: ActionTypes.FETCH_GROUP, payload: group});
-    } catch(error) {
+      return dispatch({ type: ActionTypes.FETCH_GROUP, payload: group });
+    } catch (error) {
       console.error(error);
-    };
-  }
+    }
+  };
 }
 
 export function fetchGroupContribs(id) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const contribs = await reqJSON(`/api/strategiccontributions/group/${id}`);
-      return dispatch({type: ActionTypes.FETCH_GROUP_CONTRIBS, payload: contribs});
+      return dispatch({
+        type: ActionTypes.FETCH_GROUP_CONTRIBS,
+        payload: contribs,
+      });
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function fetchProjects() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const projects = await reqJSON(`/api/projects`);
-      return dispatch({type: ActionTypes.FETCH_PROJECTS, payload: projects.projectList});
+      return dispatch({
+        type: ActionTypes.FETCH_PROJECTS,
+        payload: projects.projectList,
+      });
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function fetchUsers() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const users = await reqJSON(`/api/strategicusers`);
-      return dispatch({type: ActionTypes.FETCH_USERS, payload: users.users});
+      return dispatch({ type: ActionTypes.FETCH_USERS, payload: users.users });
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function updateGroup(group, callback) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       await postJSON('/api/strategicgroups/update', group);
       return callback('modified');
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function addNewGroup(group, callback) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      await postJSON('/api/strategicgroups/new', group)
+      await postJSON('/api/strategicgroups/new', group);
       return callback();
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function addNewProject(project, callback) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const result = await postJSON('/api/projects/new', project);
       return callback(result.projectList);
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function addNewUser(user, callback) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const result = await postJSON('/api/strategicusers/new', user);
       return callback(result.result);
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function deleteGroup(id, callback) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       await postJSON('/api/strategicgroups/delete', id);
-      return callback('deleted')
+      return callback('deleted');
     } catch (error) {
       console.error(error);
-    };
+    }
   };
 }
 
 export function updateAdminNav(nav) {
-  return (dispatch) => {
-    dispatch({type: ActionTypes.UPDATE_ADMIN_NAV, payload: nav})
+  return dispatch => {
+    dispatch({ type: ActionTypes.UPDATE_ADMIN_NAV, payload: nav });
   };
 }
 
 export function updateAdminGroup(groupId) {
-  return (dispatch) => {
-    dispatch({type: ActionTypes.UPDATE_ADMIN_GROUP, payload: groupId});
+  return dispatch => {
+    dispatch({ type: ActionTypes.UPDATE_ADMIN_GROUP, payload: groupId });
   };
 }

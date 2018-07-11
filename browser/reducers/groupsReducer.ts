@@ -12,40 +12,40 @@
  * permissions and limitations under the License.
  */
 
- import {ActionTypes} from '../actions/strategicActions';
+import { ActionTypes } from '../actions/strategicActions';
 
- const initialState = {
-   all: [],
-   group: {
-     group: {},
-     projects: [],
-     users: [],
-   },
- }
+const initialState = {
+  all: [],
+  group: {
+    group: {},
+    projects: [],
+    users: [],
+  },
+};
 
- const GroupsReducer = (state = initialState, action) => {
-   switch (action.type) {
-     case ActionTypes.FETCH_GROUPS: {
-       const newState = {
-         all: action.payload,
-         group: state.group,
-       }
-       return newState;
-     }
-     case ActionTypes.FETCH_GROUP: {
-       const newState = {
-         all: state.all,
-         group: {
-           group: action.payload.group,
-           projects: action.payload.projects,
-           users: action.payload.users,
-         },
-       }
-       return newState;
-     }
-     default:
-     return state;
-   }
- };
+const GroupsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.FETCH_GROUPS: {
+      const newState = {
+        all: action.payload,
+        group: state.group,
+      };
+      return newState;
+    }
+    case ActionTypes.FETCH_GROUP: {
+      const newState = {
+        all: state.all,
+        group: {
+          group: action.payload.group,
+          projects: action.payload.projects,
+          users: action.payload.users,
+        },
+      };
+      return newState;
+    }
+    default:
+      return state;
+  }
+};
 
- export default GroupsReducer;
+export default GroupsReducer;
