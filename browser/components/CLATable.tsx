@@ -59,7 +59,7 @@ export default class ClaTable extends React.Component<Props, State> {
               Header: <strong>Edit</strong>,
               accessor: 'project_id',
               width: 50,
-              Cell: row => <TableEditCell type="cla" project_id={row.value} />,
+              Cell: row => <TableEditCell type="cla" id={row.value} />,
             },
             {
               Header: <strong>Project</strong>,

@@ -16,6 +16,7 @@
     "no-unused-variable": [true],
     "object-literal-sort-keys": [false],
     "only-arrow-functions": [false],
-    "triple-equals": [true, "allow-null-check"]
+    "triple-equals": [true, "allow-null-check"],
+    "no-var-requires": [false]
   }
 }

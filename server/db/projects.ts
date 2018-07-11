@@ -40,18 +40,40 @@ export async function searchProjectByName(name) {
   );
 }
 
+
+// List projects in a group
+export async function getProjectsByGroup(id) {
+  return await pg().query(
+    'select * from projects where project_id = ANY(select unnest(projects) from groups where group_id=$1)',
+    [id]
+  );
+}
+
+// List all strategic projects
+export function getAllStrategicProjects() {
+  return pg().query(
+    'select * from projects ' +
+    'where project_id = ANY(ARRAY(' +
+      'select array_agg(c) from (' +
+    	  'select distinct project as id from groups, unnest(projects) project' +
+      ') as dt(c)' +
+    '))'
+  );
+}
+
 // Add a new project to the DB
 export async function addProject(name, contribUrl, license, verified) {
   // Check if project already exists and add if it doesn't
-  const check = pg().oneOrNone(
+  const check = await pg().oneOrNone(
     'select project_id from projects where project_name = $1',
     [name]
   );
-  if (check) {
+  if (!check) {
     return pg().one(
       'insert into projects (project_name, project_url, project_license, ' +
         'project_verified) values ($1, $2, $3, $4) returning project_id',
       [name, contribUrl, license, verified]
     );
   }
+  return 'exists';
 }

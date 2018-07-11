@@ -13,52 +13,58 @@
  */
 import * as React from 'react';
 import { Component } from 'react';
+import { connect } from 'react-redux';
 import { reqJSON } from '../util/index';
 
 import ApprovalsTable from '../components/ApprovalsTable';
 import CCLAForm from '../components/CCLAForm';
 import CLATable from '../components/CLATable';
 import EditContributionTable from '../components/EditContributionTable';
+import EditGroup from '../components/EditGroup';
+import GroupsTable from '../components/GroupsTable';
+import ProjectForm from '../components/ProjectForm';
+import GroupForm from '../components/StrategicGroupForm';
+import UserForm from '../components/UserForm';
+
+import * as actions from '../actions/strategicActions';
 
 import ExtensionPoint from '../util/ExtensionPoint';
 
 interface Props {
   alert: any;
+  nav: string;
+  group: number;
+  updateAdminNav: any;
+  groups: any;
+  fetchGroups: any;
 }
 
 interface State {
   approvalList: any;
-  showApprovalList: boolean;
   contributionList: any;
-  showContributionEditor: boolean;
   user: any;
   key: number;
   claTable: any;
-  showClaTable: boolean;
-  showClaForm: boolean;
   claProjectNames: any[];
 }
 
-export default class Admin extends Component<Props, State> {
+class Admin extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       approvalList: new Array(),
-      showApprovalList: false,
       contributionList: new Array(),
-      showContributionEditor: false,
       user: '',
       key: 0,
       claTable: new Array(),
-      showClaTable: false,
-      showClaForm: false,
       claProjectNames: new Array(),
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.getApprovals();
     await this.getCLAs();
+    await this.props.fetchGroups();
   }
 
   getApprovals = async () => {
@@ -75,78 +81,73 @@ export default class Admin extends Component<Props, State> {
     });
   };
 
+  changeNav = (nav) => {
+    this.props.updateAdminNav(nav);
+  };
+
   setApprovalList = () => {
-    this.setState({
-      showApprovalList: true,
-      showContributionEditor: false,
-      showClaTable: false,
-      showClaForm: false,
-    });
+    this.changeNav('approveContrib');
   };
 
   setContributionList = async () => {
-    const contributionList = await reqJSON('/api/contributions/bulk');
-    this.setState({
-      contributionList,
-      showContributionEditor: true,
-      showApprovalList: false,
-      showClaTable: false,
-      showClaForm: false,
-    });
+    this.changeNav('editContrib');
   };
   setCLAList = () => {
-    this.setState({
-      showClaTable: true,
-      showApprovalList: false,
-      showContributionEditor: false,
-      showClaForm: false,
-    });
+    this.changeNav('viewCCLA');
   };
 
   setCLAFormTrue = () => {
-    this.setState({
-      showClaForm: true,
-      showClaTable: false,
-      showApprovalList: false,
-      showContributionEditor: false,
-    });
+    this.changeNav('newCCLA');
   };
 
-  setCLAFormFalse = () => {
-    this.setState({
-      showClaForm: false,
-      showClaTable: false,
-      showApprovalList: false,
-      showContributionEditor: false,
-    });
+  setGroupList = () => {
+    this.changeNav('viewGroup');
   };
+
+  setGroupForm = () => {
+    this.changeNav('newGroup');
+  };
+
+  setProjectForm = () => {
+    this.changeNav('newProject');
+  };
+
+  setUserForm = () => {
+    this.changeNav('newUser');
+  };
+
+  displaySelected = () => {
+    switch (this.props.nav) {
+      case 'approveContrib':
+        return <ApprovalsTable approvalList={this.state.approvalList} />
+      case 'editContrib':
+        return <EditContributionTable contributionList={this.state.contributionList} />
+      case 'viewCCLA':
+        return <CLATable cla={this.state.claTable} />
+      case 'newCCLA':
+        return <CCLAForm toggleForm={this.toggleCLAForm} />
+      case 'viewGroup':
+        return <GroupsTable groups={this.props.groups} type='edit' />
+      case 'editGroup':
+        return <EditGroup />
+      case 'newGroup':
+        return <GroupForm />
+      case 'newProject':
+        return <ProjectForm />
+      case 'newUser':
+        return <UserForm />
+      default:
+        return <p>Select an option from the left.</p>
+    }
+  }
 
   // ftn passed to child to update the view once a form is submitted
   toggleCLAForm = async status => {
-    if (status) {
-      this.setCLAFormTrue();
-    } else {
-      this.setCLAFormFalse();
-    }
     await this.getCLAs(); // forces a refresh for the CLA lsit
   };
 
   render() {
-    const {
-      claTable,
-      showApprovalList,
-      showClaForm,
-      showClaTable,
-      showContributionEditor,
-    } = this.state;
-
-    // whether an item is selected
-    const somethingSelected: boolean = [
-      showApprovalList,
-      showClaForm,
-      showClaTable,
-      showContributionEditor,
-    ].reduce((acc, next) => acc || next);
+    const view = this.displaySelected();
 
     return (
       <div className="container-fluid" id="admin_container">
@@ -187,24 +188,45 @@ export default class Admin extends Component<Props, State> {
                 New CCLA
               </a>
             </div>
+            <br/>
+            <h4>Strategic Groups</h4>
+            <div className="list-group">
+              <a
+                href="#"
+                onClick={this.setGroupList}
+                className="list-group-item list-group-item-action"
+              >
+                Edit Groups
+              </a>
+              <a
+                href="#"
+                onClick={this.setGroupForm}
+                className="list-group-item list-group-item-action"
+              >
+                Add New Group
+              </a>
+              <a
+                href="#"
+                onClick={this.setProjectForm}
+                className="list-group-item list-group-item-action"
+              >
+                Add New Project
+              </a>
+              <a
+                href="#"
+                onClick={this.setUserForm}
+                className="list-group-item list-group-item-action"
+              >
+                Add New User
+              </a>
+            </div>
           </div>
 
           <ExtensionPoint ext="admin-sidebar" />
 
           <div className="col-lg-10 mb-3">
             <div className="panel-body" key={this.state.key}>
-              {!somethingSelected && <p>Select an option from the left.</p>}
-
-              {showApprovalList && (
-                <ApprovalsTable approvalList={this.state.approvalList} />
-              )}
-              {showContributionEditor && (
-                <EditContributionTable
-                  contributionList={this.state.contributionList}
-                />
-              )}
-              {showClaTable && <CLATable cla={claTable} />}
-              {showClaForm && <CCLAForm toggleForm={this.toggleCLAForm} />}
+              {view}
 
               <ExtensionPoint ext="admin-content" />
             </div>
@@ -215,3 +237,13 @@ export default class Admin extends Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = state => (
+  {
+    nav: state.admin.nav,
+    group: state.admin.group,
+    groups: state.groups.all,
+  }
+);
+
+export default connect(mapStateToProps, actions)(Admin);

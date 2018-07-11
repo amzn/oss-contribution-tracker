@@ -17,10 +17,20 @@ import EmployeeActions from './actions/employeeAction';
 import EmployeeTableAction from './actions/employeeTableAction';
 import commonReducer from './modules/common';
 import contributionReducer from './modules/contributions';
+import AdminReducer from './reducers/AdminReducer';
+import ContributionsReducer from './reducers/contributionsReducer'
+import GroupsReducer from './reducers/groupsReducer';
+import ProjectsReducer from './reducers/projectsReducer';
+import UsersReducer from './reducers/usersReducer';
 
 export default combineReducers({
   common: commonReducer,
   contributions: contributionReducer,
   employee: EmployeeActions,
   employeeTable: EmployeeTableAction,
+  groups: GroupsReducer,
+  contribs: ContributionsReducer,
+  projects: ProjectsReducer,
+  users: UsersReducer,
+  admin: AdminReducer,
 });

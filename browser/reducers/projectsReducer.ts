@@ -11,26 +11,24 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import * as React from 'react';
-import { Link } from 'react-router-dom';
 
-interface Props {
-  id: string;
-  type: string;
-}
+ import {ActionTypes} from '../actions/strategicActions';
 
-export default class TableEditCellForCla extends React.Component<
-  Partial<Props>,
-  {}
-> {
-  render() {
-    const path = `/${this.props.type}/${this.props.id}`;
-    return (
-      <div className="center">
-        <Link to={path}>
-          <i className="fa fa-pencil-square" />
-        </Link>
-      </div>
-    );
-  }
-}
+ const initialState = {
+   all: [],
+ }
+
+ const ProjectsReducer = (state = initialState, action) => {
+   switch (action.type) {
+     case ActionTypes.FETCH_PROJECTS: {
+       const newState = {
+         all: action.payload,
+       }
+       return newState;
+     }
+     default:
+     return state;
+   }
+ };
+
+ export default ProjectsReducer;
