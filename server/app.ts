@@ -109,13 +109,13 @@ export let start = async function(port, hostname) {
         if (err) {
           throw err;
         }
-        winston.log(
+        winston.info(
           '*******************************************************************************************'
         );
-        winston.log(
+        winston.info(
           'Cron script, strategicScheduler, has been created in the root directory for standalone use!'
         );
-        winston.log(
+        winston.info(
           '*******************************************************************************************'
         );
       }
