@@ -192,7 +192,7 @@ describe('index', () => {
       ]);
       done();
     });
-    it('should list all contributions by group', async done => {
+    it('should list all contributions by project', async done => {
       const contribs = await contributions.listStrategicContributionsByProject(
         {},
         1
@@ -200,7 +200,7 @@ describe('index', () => {
       expect(
         mock.dbcontributions.listStrategicContributionsByProject
       ).toHaveBeenCalled();
-      expect(contribs).toEqual([
+      expect(contribs).toEqual({ list: [
         {
           contribution_id: 1,
           project_id: 1,
@@ -217,7 +217,7 @@ describe('index', () => {
           contributor_alias: 'beta',
           contribution_url: 'A.com/contrib2',
         },
-      ]);
+      ]});
       done();
     });
   });
