@@ -52,7 +52,7 @@ export default class Project extends React.Component<Props, State> {
       groupList: project.groups,
       userList: project.users,
       project: project.project,
-      contributionList: contributions,
+      contributionList: contributions.list,
     });
   }
 
