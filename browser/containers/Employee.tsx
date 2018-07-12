@@ -38,19 +38,9 @@ class Employee extends React.Component<Props, State> {
     };
   }
 
-  getProcessedList(contributors) {
-    return contributors.map(value => {
-      return {
-        label: value,
-        value,
-      };
-    });
-  }
-
   storeSearch = e => {
-    const currentsearch = e.value;
     this.setState({
-      currentAlias: currentsearch,
+      currentAlias: e.value,
     });
   };
 
@@ -59,6 +49,7 @@ class Employee extends React.Component<Props, State> {
     dispatch(EmployeeActions.fetchCurrentUser());
     dispatch(EmployeeActions.fetchDataListAlias());
   }
+
   componentWillReceiveProps() {
     const { employeeData } = this.props;
     if (employeeData.aliasNames) {
@@ -75,7 +66,6 @@ class Employee extends React.Component<Props, State> {
     this.setState({
       aliasList: aliasArray,
     });
-    return aliasArray;
   };
 
   render() {
@@ -85,16 +75,16 @@ class Employee extends React.Component<Props, State> {
         ? employeeData.user
         : this.state.currentAlias;
     return (
-      <div>
-        <h4>
-          <Link to="/contribute/link">
-            View Your Contributions Requiring Links
+      <>
+        <p>
+          <Link className="btn btn-info" to="/contribute/link">
+            View Unfinished Contributions
           </Link>
-        </h4>
+        </p>
         <Select
           id="projectLISearch"
           placeholder="Select Contributor"
-          options={this.getProcessedList(this.state.aliasList)}
+          options={this.state.aliasList.map(a => ({ label: a, value: a }))}
           onChange={this.storeSearch}
           required={true}
           menuContainerStyle={{ zIndex: 4 }}
@@ -103,12 +93,10 @@ class Employee extends React.Component<Props, State> {
         <div id="contributionsListMine" className="mt-3">
           <AllEmployeeTable alias={currentAlias} />
         </div>
-      </div>
+      </>
     );
   }
 }
-export default connect(state => {
-  return {
-    employeeData: state.employee,
-  };
-})(Employee);
+export default connect(state => ({
+  employeeData: state.employee,
+}))(Employee);

@@ -141,15 +141,15 @@ export async function addNewAutoApprovedContribution(req, body, user) {
 }
 
 export async function diffCheck(req, body) {
-  const size = getDiffSize(body.diff);
-  if (size === 0) {
+  const { lines, chunks } = getDiffSize(body.diff);
+  if (chunks === 0) {
     throw new RequestError(
       'Submitted text is not a unified diff, or it had no changes'
     );
   }
   return {
-    ok: size < config.contributions.autoApprove.diffLimit,
-    size,
+    ok: lines < config.contributions.autoApprove.diffLimit,
+    lines,
   };
 }
 
