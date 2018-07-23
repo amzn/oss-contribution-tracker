@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc -p server && webpack && npm run copy-static",
     "copy-static": "mkdir -p build/server && cp -r config build && cp -r assets build/server",
-    "dev": "if [ $npm_config_alt_config ]; then config=$npm_config_alt_config; else config=dev; fi; echo Using config $config; export NODE_ENV=development CONFIG_NAME=$config && npm run build && concurrently -k \"tsc -p server -w\" \"nodemon -d 1 -w build build/server/localserver.js\" \"webpack-dev-server\"",
+    "dev": "./scripts/dev-server",
     "test": "npm run build && jasmine 'build/server/**/*.spec.js'",
     "test-ui": "tsc -p selenium && jasmine 'build/selenium/*.spec.js'",
     "lint": "prettier --write '**/*.{ts,tsx,js,css,scss}' '!build/**/*' && tslint -p server --fix && tslint -p browser --fix",

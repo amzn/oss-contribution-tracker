@@ -25,13 +25,9 @@ export default class TableApprovalCell extends React.Component<
 > {
   render() {
     return (
-      <div className="row center">
-        <div className="col-md-6">
-          <Link className="btn-info" to={`/approvals/${this.props.id}`}>
-            Approve/Deny
-          </Link>
-        </div>
-      </div>
+      <Link className="btn btn-sm btn-info" to={`/approvals/${this.props.id}`}>
+        Approve/Deny
+      </Link>
     );
   }
 }

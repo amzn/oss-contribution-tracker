@@ -376,8 +376,8 @@ export default class CLAEditor extends React.Component<Props, State> {
               required={true}
             />
           </div>
-          <div className="col-md-10">
-            <div className="pullRight">
+          <div className="form-group">
+            <div className="btn-group">
               <Link className="btn btn-secondary" id="to-admin" to="/admin">
                 Cancel
               </Link>

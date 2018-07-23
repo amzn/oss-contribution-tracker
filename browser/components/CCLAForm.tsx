@@ -236,16 +236,21 @@ class CCLAForm extends React.Component<Partial<Props>, State> {
               required={true}
             />
           </div>
-          <button
-            className="btn btn-secondary"
-            type="submit"
-            onClick={this.hideAlert}
-          >
-            Cancel
-          </button>
-          <button className="btn btn-primary" type="submit">
-            Submit
-          </button>
+
+          <div className="form-group">
+            <div className="btn-group">
+              <button
+                className="btn btn-secondary"
+                type="submit"
+                onClick={this.hideAlert}
+              >
+                Cancel
+              </button>
+              <button className="btn btn-primary" type="submit">
+                Submit
+              </button>
+            </div>
+          </div>
         </form>
         {this.state.alert}
       </div>
