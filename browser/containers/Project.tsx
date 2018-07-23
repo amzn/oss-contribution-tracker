@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ interface Props {
 }
 
 interface State {
-  groupList: any;
-  userList: any;
+  groupList: any[];
+  userList: any[];
   project: any;
-  contributionList: any;
+  contributionList: any[];
 }
 
 export default class Project extends React.Component<Props, State> {
@@ -43,10 +43,10 @@ export default class Project extends React.Component<Props, State> {
   async componentDidMount() {
     const projectId = (this.props as any).match.params.project_id;
     const project = await reqJSON(
-      '/api/strategicprojects/' + projectId.toString()
+      '/api/strategic/projects/' + projectId.toString()
     );
     const contributions = await reqJSON(
-      '/api/strategiccontributions/project/' + projectId.toString()
+      '/api/strategic/contributions/project/' + projectId.toString()
     );
     this.setState({
       groupList: project.groups,

@@ -28,6 +28,10 @@ export async function searchProjectById(req, id) {
   return { projectID };
 }
 
+export async function getUniqueProjectById(req, id) {
+  return { project: await db.getUniqueProjectById(id) };
+}
+
 export async function searchProjectByName(req, name) {
   return await db.searchProjectByName(name);
 }

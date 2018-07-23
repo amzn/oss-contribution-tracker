@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ export async function getGroup(req, id) {
   }
 
   for (const user of users) {
-    const username = [user.amazon_alias];
+    const username = [user.company_alias];
     const pList = group.projects;
 
     const contribWeek = await dbcontributions.getLastWeekCount(pList, username);
@@ -127,7 +127,7 @@ export async function getGroup(req, id) {
 }
 
 export async function getStrategicProject(req, id) {
-  const project = (await dbprojects.searchProjectById(id))[0]; // returns one project as a list
+  const project = await dbprojects.getUniqueProjectById(id);
   const groups = await dbgroups.getGroupsByProjectId([id]);
   const groupIds = (await dbgroups.searchGroupIdsByProjectId(id)).groups;
   const users = (await dbusers.getUsernamesByGroup(groupIds)).names;
@@ -164,7 +164,7 @@ export async function getStrategicProject(req, id) {
     const contribYear = await dbcontributions.getYTDCount(projId, [user]);
 
     const data = {
-      amazon_alias: user,
+      company_alias: user,
       contribWeek: parseInt(contribWeek.numcontribs, 10),
       contribMTD: parseInt(contribMTD.numcontribs, 10),
       contribMonth: parseInt(contribMonth.numcontribs, 10),
@@ -193,7 +193,8 @@ export async function addNewGroup(req, body) {
   for (const user of body.users) {
     const id = groupId.group_id;
     const date = new Date().toISOString().substring(0, 10);
-    const group = `{"${id}":"${date}"}`;
+    const group = {};
+    group[id] = date;
 
     await dbusers.addGroupsToUser(user, group);
   }
@@ -201,19 +202,17 @@ export async function addNewGroup(req, body) {
 }
 
 export async function addNewUser(req, body) {
-  let groups = '{';
+  const groups = {};
   if (body.groups.length) {
     const date = new Date().toISOString().substring(0, 10);
     for (const group of body.groups) {
-      groups += `"${group}":"${date}",`;
+      groups[group] = date;
     }
-    groups = groups.substring(0, groups.length - 1);
   }
-  groups += '}';
 
   return {
     result: await dbusers.addNewUser(
-      body.amazon_alias,
+      body.company_alias,
       body.github_alias,
       groups
     ),
@@ -237,7 +236,8 @@ export async function updateGroup(req, body) {
     if (!oldUsers || !oldUsers.includes(user)) {
       const id = body.groupId;
       const date = new Date().toISOString().substring(0, 10);
-      const group = `{"${id}":"${date}"}`;
+      const group = {};
+      group[id] = date;
 
       await dbusers.addGroupsToUser(user, group);
     }

@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@ import * as actions from '../actions/strategicActions';
 
 interface Props {
   params: any;
-  fetchGroup: any;
-  fetchGroups: any;
-  fetchProjects: any;
-  fetchUsers: any;
-  updateGroup: any;
-  deleteGroup: any;
+  fetchGroup: (id) => void;
+  fetchGroups: () => void;
+  fetchProjects: () => void;
+  fetchUsers: () => void;
+  updateGroup: (group) => void;
+  deleteGroup: (id) => void;
   group: any;
-  projects: any;
-  users: any;
-  groupId: any;
-  updateAdminNav: any;
+  projects: any[];
+  users: any[];
+  groupId: number;
+  updateAdminNav: (navpage) => void;
 }
 
 interface State {
@@ -69,27 +69,26 @@ class EditGroup extends React.Component<Props, State> {
       }
       const users = [];
       for (const user of this.props.group.users) {
-        users.push(user.amazon_alias);
+        users.push(user.company_alias);
       }
+      const group = this.props.group.details;
       this.setState({
-        name: this.props.group.group.group_name
-          ? this.props.group.group.group_name
-          : '',
-        goal: this.props.group.group.goal ? this.props.group.group.goal : '',
-        sponsor: this.props.group.group.sponsor
-          ? this.props.group.group.sponsor
-          : '',
+        name: group.group_name || '',
+        goal: group.goal || '',
+        sponsor: group.sponsor || '',
         projects: projects.join(','),
         users: users.join(','),
       });
     }
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     const fields = e.target.elements;
     const projects = [];
     const users = [];
+
+    // parse selected projects and put project id values into an array
     if (fields.projectList.length > 1) {
       for (const project of fields.projectList) {
         projects.push(parseInt(project.value, 10));
@@ -97,6 +96,8 @@ class EditGroup extends React.Component<Props, State> {
     } else {
       projects.push(parseInt(fields.projectList.value, 10));
     }
+
+    // parse selected users and put their amazon alias values into an array
     if (fields.userList.length > 1) {
       for (const user of fields.userList) {
         users.push(user.value);
@@ -106,7 +107,7 @@ class EditGroup extends React.Component<Props, State> {
     }
 
     const jsonObj = {
-      groupId: this.props.group.group.group_id,
+      groupId: this.props.group.details.group_id,
       groupName: fields.groupName.value,
       sponsorName: fields.sponsorName.value,
       goals: fields.groupGoals.value,
@@ -114,14 +115,18 @@ class EditGroup extends React.Component<Props, State> {
       users,
     };
 
-    this.props.updateGroup(jsonObj, this.alert);
+    await this.props.updateGroup(jsonObj);
+    this.alert('modified');
   };
 
   userList = () => {
     if (this.props.users.length) {
       const users = this.props.users;
       return users.map(listValue => {
-        return { label: listValue.amazon_alias, value: listValue.amazon_alias };
+        return {
+          label: listValue.company_alias,
+          value: listValue.company_alias,
+        };
       });
     }
   };
@@ -176,8 +181,9 @@ class EditGroup extends React.Component<Props, State> {
     });
   };
 
-  deleteGroup = () => {
-    this.props.deleteGroup({ id: this.props.group.group.group_id }, this.alert);
+  deleteGroup = async () => {
+    await this.props.deleteGroup({ id: this.props.group.details.group_id });
+    this.alert('deleted');
   };
 
   alert = message => {

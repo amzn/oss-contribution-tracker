@@ -32,6 +32,11 @@ export function searchProjectById(id) {
   return pg().query('select * from projects where project_id = $1', [id]);
 }
 
+// Return one or none project by ID
+export function getUniqueProjectById(id) {
+  return pg().oneOrNone('select * from projects where project_id = $1', [id]);
+}
+
 // Select project by name
 export async function searchProjectByName(name) {
   return await pg().oneOrNone(

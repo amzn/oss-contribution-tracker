@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ interface Props {
 }
 
 interface State {
-  projectList: any;
-  userList: any;
+  projectList: any[];
+  userList: any[];
   group: any;
-  contributionList: any;
+  contributionList: any[];
 }
 
 export default class Group extends React.Component<Props, State> {
@@ -42,9 +42,9 @@ export default class Group extends React.Component<Props, State> {
 
   async componentDidMount() {
     const groupId = (this.props as any).match.params.group_id;
-    const group = await reqJSON('/api/strategicgroups/' + groupId.toString());
+    const group = await reqJSON('/api/strategic/groups/' + groupId.toString());
     const contributions = await reqJSON(
-      '/api/strategiccontributions/group/' + groupId.toString()
+      '/api/strategic/contributions/group/' + groupId.toString()
     );
     this.setState({
       projectList: group.projects,

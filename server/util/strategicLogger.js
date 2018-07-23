@@ -35,7 +35,7 @@ function listGroupsByGithub(pg, alias) {
 }
 
 function getAmazonAliasByGithub(pg, alias) {
-  return pg.oneOrNone('select amazon_alias from users where github_alias=$1', [
+  return pg.oneOrNone('select company_alias from users where github_alias=$1', [
     alias,
   ]);
 }
@@ -44,7 +44,7 @@ async function addWhitelistedContrib(pg, contrib, projId) {
   const desc = contrib.title;
   const date = contrib.created_at;
   const alias = (await getAmazonAliasByGithub(pg, contrib.user.login))
-    .amazon_alias;
+    .company_alias;
   const githubStat = contrib.state;
   const contribUrl = contrib.html_url;
   const githubId = contrib.id;

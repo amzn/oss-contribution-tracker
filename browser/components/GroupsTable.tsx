@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import StrategicTableLinkCell from './StrategicTableLinkCell';
 import * as actions from '../actions/strategicActions';
 
 interface Props {
-  updateAdminNav: any;
-  updateAdminGroup: any;
+  updateAdminNav: (navpage) => void;
+  updateAdminGroup: (groupId) => void;
   groups: any;
   type: string;
 }
@@ -48,32 +48,32 @@ class GroupsTable extends React.Component<Props> {
           data={this.props.groups.groupList}
           columns={[
             {
-              Header: <strong>Group</strong>,
+              Header: <b>Group</b>,
               accessor: 'group_id',
               Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
             },
             {
-              Header: <strong># Projects</strong>,
+              Header: <b># Projects</b>,
               accessor: 'numProjects',
             },
             {
-              Header: <strong># Users</strong>,
+              Header: <b># Users</b>,
               accessor: 'numUsers',
             },
             {
-              Header: <strong># Contribs Last Week</strong>,
+              Header: <b># Contribs Last Week</b>,
               accessor: 'contribWeek',
             },
             {
-              Header: <strong># Contribs MTD</strong>,
+              Header: <b># Contribs MTD</b>,
               accessor: 'contribMTD',
             },
             {
-              Header: <strong># Contribs Last Month</strong>,
+              Header: <b># Contribs Last Month</b>,
               accessor: 'contribMonth',
             },
             {
-              Header: <strong># Contribs YTD</strong>,
+              Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
           ]}
@@ -92,7 +92,7 @@ class GroupsTable extends React.Component<Props> {
           data={this.props.groups}
           columns={[
             {
-              Header: <strong>Edit</strong>,
+              Header: <b>Edit</b>,
               accessor: 'group_id',
               width: 50,
               Cell: row => (
@@ -105,32 +105,32 @@ class GroupsTable extends React.Component<Props> {
               ),
             },
             {
-              Header: <strong>Group</strong>,
+              Header: <b>Group</b>,
               accessor: 'group_id',
               Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
             },
             {
-              Header: <strong># Projects</strong>,
+              Header: <b># Projects</b>,
               accessor: 'numProjects',
             },
             {
-              Header: <strong># Users</strong>,
+              Header: <b># Users</b>,
               accessor: 'numUsers',
             },
             {
-              Header: <strong># Contribs Last Week</strong>,
+              Header: <b># Contribs Last Week</b>,
               accessor: 'contribWeek',
             },
             {
-              Header: <strong># Contribs MTD</strong>,
+              Header: <b># Contribs MTD</b>,
               accessor: 'contribMTD',
             },
             {
-              Header: <strong># Contribs Last Month</strong>,
+              Header: <b># Contribs Last Month</b>,
               accessor: 'contribMonth',
             },
             {
-              Header: <strong># Contribs YTD</strong>,
+              Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
           ]}
@@ -149,24 +149,24 @@ class GroupsTable extends React.Component<Props> {
           data={this.props.groups}
           columns={[
             {
-              Header: <strong>Group</strong>,
+              Header: <b>Group</b>,
               accessor: 'group_id',
               Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
             },
             {
-              Header: <strong># Contribs Last Week</strong>,
+              Header: <b># Contribs Last Week</b>,
               accessor: 'contribWeek',
             },
             {
-              Header: <strong># Contribs MTD</strong>,
+              Header: <b># Contribs MTD</b>,
               accessor: 'contribMTD',
             },
             {
-              Header: <strong># Contribs Last Month</strong>,
+              Header: <b># Contribs Last Month</b>,
               accessor: 'contribMonth',
             },
             {
-              Header: <strong># Contribs YTD</strong>,
+              Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
           ]}

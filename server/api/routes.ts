@@ -125,6 +125,10 @@ router.get('/projects/:projectId', (req, res, next) => {
   pack(projectsAPI.searchProjectById(req, req.params.projectId), res, next);
 });
 
+router.get('/projects/unique/:projectId', (req, res, next) => {
+  pack(projectsAPI.getUniqueProjectById(req, req.params.projectId), res, next);
+});
+
 router.get('/approvers', (req, res, next) => {
   pack(approversAPI.listApprovers(req), res, next);
 });
@@ -311,17 +315,17 @@ router.post('/cla/submit', async (req, res, next) => {
  * All API calls related to strategic groups
  */
 // gets all strategic groups
-router.get('/strategicgroups', async (req, res, next) => {
+router.get('/strategic/groups', async (req, res, next) => {
   pack(groupsAPI.listGroups(req), res, next);
 });
 
 // gets strategic group by id
-router.get('/strategicgroups/:id', async (req, res, next) => {
+router.get('/strategic/groups/:id', async (req, res, next) => {
   pack(groupsAPI.getGroup(req, req.params.id), res, next);
 });
 
 // get all strategic contributions by group id
-router.get('/strategiccontributions/group/:id', async (req, res, next) => {
+router.get('/strategic/contributions/group/:id', async (req, res, next) => {
   pack(
     contributionsAPI.listStrategicContributionsByGroup(req, req.params.id),
     res,
@@ -330,7 +334,7 @@ router.get('/strategiccontributions/group/:id', async (req, res, next) => {
 });
 
 // get all strategic contributions by project id
-router.get('/strategiccontributions/project/:id', async (req, res, next) => {
+router.get('/strategic/contributions/project/:id', async (req, res, next) => {
   pack(
     contributionsAPI.listStrategicContributionsByProject(req, req.params.id),
     res,
@@ -339,22 +343,22 @@ router.get('/strategiccontributions/project/:id', async (req, res, next) => {
 });
 
 // get all strategic projects
-router.get('/strategicprojects', async (req, res, next) => {
+router.get('/strategic/projects', async (req, res, next) => {
   pack(groupsAPI.listStrategicProjects(req), res, next);
 });
 
 // gets strategic project by id
-router.get('/strategicprojects/:id', async (req, res, next) => {
+router.get('/strategic/projects/:id', async (req, res, next) => {
   pack(groupsAPI.getStrategicProject(req, req.params.id), res, next);
 });
 
 // gets all users
-router.get('/strategicusers', async (req, res, next) => {
+router.get('/strategic/users', async (req, res, next) => {
   pack(groupsAPI.listUsers(req), res, next);
 });
 
 // add new group
-router.post('/strategicgroups/new', async (req, res, next) => {
+router.post('/strategic/groups/new', async (req, res, next) => {
   const access = (req as any).UserAccess;
   if (access.includes(AccessTypes.admin)) {
     pack(groupsAPI.addNewGroup(req, req.body), res, next);
@@ -366,7 +370,7 @@ router.post('/strategicgroups/new', async (req, res, next) => {
 });
 
 // add new user
-router.post('/strategicusers/new', async (req, res, next) => {
+router.post('/strategic/users/new', async (req, res, next) => {
   const access = (req as any).UserAccess;
   if (access.includes(AccessTypes.admin)) {
     pack(groupsAPI.addNewUser(req, req.body), res, next);
@@ -378,7 +382,7 @@ router.post('/strategicusers/new', async (req, res, next) => {
 });
 
 // update group
-router.post('/strategicgroups/update', async (req, res, next) => {
+router.post('/strategic/groups/update', async (req, res, next) => {
   const access = (req as any).UserAccess;
   if (access.includes(AccessTypes.admin)) {
     pack(groupsAPI.updateGroup(req, req.body), res, next);
@@ -390,7 +394,7 @@ router.post('/strategicgroups/update', async (req, res, next) => {
 });
 
 // delete group
-router.post('/strategicgroups/delete', async (req, res, next) => {
+router.post('/strategic/groups/delete', async (req, res, next) => {
   const access = (req as any).UserAccess;
   if (access.includes(AccessTypes.admin)) {
     pack(groupsAPI.deleteGroup(req, req.body), res, next);

@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@ import Select from 'react-select';
 import * as actions from '../actions/strategicActions';
 
 interface Props {
-  addNewUser: any;
-  fetchGroups: any;
-  groups: any;
-  updateAdminNav: any;
+  addNewUser: (user) => any;
+  fetchGroups: () => void;
+  groups: any[];
+  updateAdminNav: (navpage) => void;
 }
 
 interface State {
-  amazon: string;
+  company: string;
   github: string;
   groups: any[];
   alert: any;
@@ -36,7 +36,7 @@ class UserForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      amazon: '',
+      company: '',
       github: '',
       groups: [],
       alert: null,
@@ -62,21 +62,20 @@ class UserForm extends React.Component<Props, State> {
     }
 
     const jsonObj = {
-      amazon_alias: fields.amazon.value,
+      company_alias: fields.company.value,
       github_alias: fields.github.value,
       groups,
     };
 
-    this.props.addNewUser(jsonObj, this.alert);
+    const response = await this.props.addNewUser(jsonObj);
+    this.alert(response.result);
   };
 
   groupList = () => {
-    if (this.props.groups.length) {
-      const groups = this.props.groups;
-      return groups.map(listValue => {
-        return { label: listValue.group_name, value: listValue.group_id };
-      });
-    }
+    const groups = this.props.groups || [];
+    return groups.map(listValue => {
+      return { label: listValue.group_name, value: listValue.group_id };
+    });
   };
 
   handleGroupChange = value => {
@@ -130,11 +129,11 @@ class UserForm extends React.Component<Props, State> {
               <h3>New User</h3>
               <br />
               <div className="form-group">
-                <label>Amazon alias</label>
+                <label>Company alias</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="amazon"
+                  name="company"
                   required={true}
                 />
               </div>

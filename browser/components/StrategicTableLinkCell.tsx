@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -41,13 +41,13 @@ export default class StrategicTableLinkCell extends React.Component<
   async componentDidMount() {
     const type = this.props.type;
     if (type === 'group') {
-      const group = await reqJSON('/api/strategicgroups/' + this.props.id);
+      const group = await reqJSON('/api/strategic/groups/' + this.props.id);
       this.setState({ group: group.group });
     } else if (type === 'project') {
-      const project = await reqJSON(
-        '/api/projects/' + this.props.id.toString()
+      const projectResult = await reqJSON(
+        '/api/projects/unique/' + this.props.id.toString()
       );
-      this.setState({ project: project.projectID[0] });
+      this.setState({ project: projectResult.project });
     }
   }
 

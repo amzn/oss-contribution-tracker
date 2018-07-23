@@ -23,7 +23,6 @@ import { router as apiRoutes } from './api/routes';
 import { config, load } from './config';
 import pg, { connect } from './db';
 import { onboxRun as runStrategic } from './util/strategicLogger';
-// const octokit = require('@octokit/rest')();
 
 // install a crash handler to log errors
 process.on('uncaughtException', err => {

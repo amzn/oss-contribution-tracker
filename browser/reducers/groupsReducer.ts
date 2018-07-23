@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ import { ActionTypes } from '../actions/strategicActions';
 const initialState = {
   all: [],
   group: {
-    group: {},
+    details: {},
     projects: [],
     users: [],
   },
@@ -36,7 +36,7 @@ const GroupsReducer = (state = initialState, action) => {
       const newState = {
         all: state.all,
         group: {
-          group: action.payload.group,
+          details: action.payload.group,
           projects: action.payload.projects,
           users: action.payload.users,
         },

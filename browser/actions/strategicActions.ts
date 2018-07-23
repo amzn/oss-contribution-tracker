@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -11,7 +11,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-// tslint:disable:no-console
+/* tslint:disable:no-console */
 
 import { postJSON, reqJSON } from '../util/index';
 
@@ -31,7 +31,7 @@ export const ActionTypes = {
 export function fetchGroups() {
   return async dispatch => {
     try {
-      const groups = await reqJSON('/api/strategicgroups');
+      const groups = await reqJSON('/api/strategic/groups');
       return dispatch({
         type: ActionTypes.FETCH_GROUPS,
         payload: groups.groupList,
@@ -45,7 +45,7 @@ export function fetchGroups() {
 export function fetchGroup(id) {
   return async dispatch => {
     try {
-      const group = await reqJSON(`/api/strategicgroups/${id}`);
+      const group = await reqJSON(`/api/strategic/groups/${id}`);
       return dispatch({ type: ActionTypes.FETCH_GROUP, payload: group });
     } catch (error) {
       console.error(error);
@@ -56,7 +56,9 @@ export function fetchGroup(id) {
 export function fetchGroupContribs(id) {
   return async dispatch => {
     try {
-      const contribs = await reqJSON(`/api/strategiccontributions/group/${id}`);
+      const contribs = await reqJSON(
+        `/api/strategic/contributions/group/${id}`
+      );
       return dispatch({
         type: ActionTypes.FETCH_GROUP_CONTRIBS,
         payload: contribs,
@@ -84,7 +86,7 @@ export function fetchProjects() {
 export function fetchUsers() {
   return async dispatch => {
     try {
-      const users = await reqJSON(`/api/strategicusers`);
+      const users = await reqJSON(`/api/strategic/users`);
       return dispatch({ type: ActionTypes.FETCH_USERS, payload: users.users });
     } catch (error) {
       console.error(error);
@@ -92,55 +94,50 @@ export function fetchUsers() {
   };
 }
 
-export function updateGroup(group, callback) {
+export function updateGroup(group) {
   return async dispatch => {
     try {
-      await postJSON('/api/strategicgroups/update', group);
-      return callback('modified');
+      return await postJSON('/api/strategic/groups/update', group);
     } catch (error) {
       console.error(error);
     }
   };
 }
 
-export function addNewGroup(group, callback) {
+export function addNewGroup(group) {
   return async dispatch => {
     try {
-      await postJSON('/api/strategicgroups/new', group);
-      return callback();
+      return await postJSON('/api/strategic/groups/new', group);
     } catch (error) {
       console.error(error);
     }
   };
 }
 
-export function addNewProject(project, callback) {
+export function addNewProject(project) {
   return async dispatch => {
     try {
-      const result = await postJSON('/api/projects/new', project);
-      return callback(result.projectList);
+      return await postJSON('/api/projects/new', project);
     } catch (error) {
       console.error(error);
     }
   };
 }
 
-export function addNewUser(user, callback) {
+export function addNewUser(user) {
   return async dispatch => {
     try {
-      const result = await postJSON('/api/strategicusers/new', user);
-      return callback(result.result);
+      return await postJSON('/api/strategic/users/new', user);
     } catch (error) {
       console.error(error);
     }
   };
 }
 
-export function deleteGroup(id, callback) {
+export function deleteGroup(id) {
   return async dispatch => {
     try {
-      await postJSON('/api/strategicgroups/delete', id);
-      return callback('deleted');
+      return await postJSON('/api/strategic/groups/delete', id);
     } catch (error) {
       console.error(error);
     }

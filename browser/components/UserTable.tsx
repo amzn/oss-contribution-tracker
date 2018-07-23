@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ import * as React from 'react';
 import ReactTable from 'react-table';
 
 interface Props {
-  userList: any;
+  userList: any[];
 }
 
 interface State {
-  userList: any;
+  userList: any[];
 }
 
 export default class UserTable extends React.Component<Props, State> {
@@ -37,10 +37,12 @@ export default class UserTable extends React.Component<Props, State> {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      userList: nextProps.userList,
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.setState({
+        userList: this.props.userList,
+      });
+    }
   }
 
   getTable = () => {
@@ -50,23 +52,23 @@ export default class UserTable extends React.Component<Props, State> {
           data={this.state.userList}
           columns={[
             {
-              Header: <strong>User</strong>,
-              accessor: 'amazon_alias',
+              Header: <b>User</b>,
+              accessor: 'company_alias',
             },
             {
-              Header: <strong># Contribs Last Week</strong>,
+              Header: <b># Contribs Last Week</b>,
               accessor: 'contribWeek',
             },
             {
-              Header: <strong># Contribs MTD</strong>,
+              Header: <b># Contribs MTD</b>,
               accessor: 'contribMTD',
             },
             {
-              Header: <strong># Contribs Last Month</strong>,
+              Header: <b># Contribs Last Month</b>,
               accessor: 'contribMonth',
             },
             {
-              Header: <strong># Contribs YTD</strong>,
+              Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
           ]}

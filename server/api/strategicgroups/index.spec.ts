@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -181,41 +181,35 @@ describe('index', () => {
               ];
             }
           }),
-        searchProjectById: jasmine
+        getUniqueProjectById: jasmine
           .createSpy('dbprojects')
           .and.callFake(projectId => {
             if (projectId === 1) {
-              return [
-                {
-                  project_id: 1,
-                  project_name: 'A',
-                  project_url: 'A.com',
-                  project_verified: true,
-                  project_auto_approval: true,
-                },
-              ];
+              return {
+                project_id: 1,
+                project_name: 'A',
+                project_url: 'A.com',
+                project_verified: true,
+                project_auto_approval: true,
+              };
             } else if (projectId === 2) {
-              return [
-                {
-                  project_id: 2,
-                  project_name: 'B',
-                  project_url: 'B.com',
-                  project_verified: true,
-                  project_auto_approval: true,
-                },
-              ];
+              return {
+                project_id: 2,
+                project_name: 'B',
+                project_url: 'B.com',
+                project_verified: true,
+                project_auto_approval: true,
+              };
             } else if (projectId === 3) {
-              return [
-                {
-                  project_id: 3,
-                  project_name: 'C',
-                  project_url: 'C.com',
-                  project_verified: true,
-                  project_auto_approval: true,
-                },
-              ];
+              return {
+                project_id: 3,
+                project_name: 'C',
+                project_url: 'C.com',
+                project_verified: true,
+                project_auto_approval: true,
+              };
             } else {
-              return [];
+              return {};
             }
           }),
       },
@@ -235,12 +229,12 @@ describe('index', () => {
           if (groupId === '1') {
             return [
               {
-                amazon_alias: 'alpha',
+                company_alias: 'alpha',
                 github_alias: 'alpha',
                 groups: { 1: '2017-01-01', 2: '2017-01-01' },
               },
               {
-                amazon_alias: 'beta',
+                company_alias: 'beta',
                 github_alias: 'beta',
                 groups: { 1: '2017-06-01' },
               },
@@ -248,12 +242,12 @@ describe('index', () => {
           } else if (groupId === '2') {
             return [
               {
-                amazon_alias: 'alpha',
+                company_alias: 'alpha',
                 github_alias: 'alpha',
                 groups: { 1: '2017-01-01', 2: '2017-01-01' },
               },
               {
-                amazon_alias: 'charlie',
+                company_alias: 'charlie',
                 github_alias: 'charlie',
                 groups: { 2: '2018-02-01' },
               },
@@ -269,7 +263,7 @@ describe('index', () => {
       getGroupById: mock.dbgroups.getGroupById,
     });
     mockery.registerMock('../../db/projects', {
-      searchProjectById: mock.dbprojects.searchProjectById,
+      getUniqueProjectById: mock.dbprojects.getUniqueProjectById,
       getProjectsByGroup: mock.dbprojects.getProjectsByGroup,
       getAllStrategicProjects: mock.dbprojects.getAllStrategicProjects,
     });
@@ -422,7 +416,7 @@ describe('index', () => {
         ],
         users: [
           {
-            amazon_alias: 'alpha',
+            company_alias: 'alpha',
             github_alias: 'alpha',
             groups: { 1: '2017-01-01', 2: '2017-01-01' },
             contribWeek: 1,
@@ -431,7 +425,7 @@ describe('index', () => {
             contribYear: 4,
           },
           {
-            amazon_alias: 'beta',
+            company_alias: 'beta',
             github_alias: 'beta',
             groups: { 1: '2017-06-01' },
             contribWeek: 1,
@@ -446,7 +440,7 @@ describe('index', () => {
 
     it('should get strategic project info by id', async done => {
       const project = await strategic.getStrategicProject({}, 1);
-      expect(mock.dbprojects.searchProjectById).toHaveBeenCalled();
+      expect(mock.dbprojects.getUniqueProjectById).toHaveBeenCalled();
       expect(mock.dbgroups.searchGroupIdsByProjectId).toHaveBeenCalled();
       expect(mock.dbusers.getUsernamesByGroup).toHaveBeenCalled();
       expect(mock.dbcontributions.getLastWeekCount).toHaveBeenCalled();
@@ -483,21 +477,21 @@ describe('index', () => {
         ],
         users: [
           {
-            amazon_alias: 'alpha',
+            company_alias: 'alpha',
             contribWeek: 1,
             contribMTD: 2,
             contribMonth: 3,
             contribYear: 4,
           },
           {
-            amazon_alias: 'beta',
+            company_alias: 'beta',
             contribWeek: 1,
             contribMTD: 2,
             contribMonth: 3,
             contribYear: 4,
           },
           {
-            amazon_alias: 'charlie',
+            company_alias: 'charlie',
             contribWeek: 1,
             contribMTD: 2,
             contribMonth: 3,

@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ import Select from 'react-select';
 import * as actions from '../actions/strategicActions';
 
 interface Props {
-  addNewProject: any;
-  updateAdminNav: any;
+  addNewProject: (project) => any;
+  updateAdminNav: (navpage) => void;
 }
 
 interface State {
@@ -43,7 +43,7 @@ class ProjectForm extends React.Component<Props, State> {
     };
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     const fields = e.target.elements;
 
@@ -54,7 +54,8 @@ class ProjectForm extends React.Component<Props, State> {
       project_verified: fields.verified.value,
     };
 
-    this.props.addNewProject(jsonObj, this.alert);
+    const result = await this.props.addNewProject(jsonObj);
+    this.alert(result.projectList);
   };
 
   handleVerifiedChange = value => {
@@ -62,6 +63,7 @@ class ProjectForm extends React.Component<Props, State> {
   };
 
   alert = result => {
+    // if the project already exists
     if (result === 'exists') {
       this.setState({
         alert: (

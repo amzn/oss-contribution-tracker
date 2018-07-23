@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -55,37 +55,37 @@ export default class ProjectTable extends React.Component<Props, State> {
           data={this.state.projectList}
           columns={[
             {
-              Header: <strong>Project</strong>,
+              Header: <b>Project</b>,
               accessor: 'project_id',
               Cell: d => <StrategicTableLinkCell id={d.value} type="project" />,
             },
             {
-              Header: <strong>Project URL</strong>,
+              Header: <b>Project URL</b>,
               accessor: 'project_url',
               Cell: d => <a href={d.value}>link</a>,
             },
             {
-              Header: <strong># Groups</strong>,
+              Header: <b># Groups</b>,
               accessor: 'numGroups',
             },
             {
-              Header: <strong># Users</strong>,
+              Header: <b># Users</b>,
               accessor: 'numUsers',
             },
             {
-              Header: <strong># Contribs Last Week</strong>,
+              Header: <b># Contribs Last Week</b>,
               accessor: 'contribWeek',
             },
             {
-              Header: <strong># Contribs MTD</strong>,
+              Header: <b># Contribs MTD</b>,
               accessor: 'contribMTD',
             },
             {
-              Header: <strong># Contribs Last Month</strong>,
+              Header: <b># Contribs Last Month</b>,
               accessor: 'contribMonth',
             },
             {
-              Header: <strong># Contribs YTD</strong>,
+              Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
           ]}
@@ -104,29 +104,29 @@ export default class ProjectTable extends React.Component<Props, State> {
           data={this.state.projectList}
           columns={[
             {
-              Header: <strong>Project</strong>,
+              Header: <b>Project</b>,
               accessor: 'project_id',
               Cell: d => <StrategicTableLinkCell id={d.value} type="project" />,
             },
             {
-              Header: <strong>Project URL</strong>,
+              Header: <b>Project URL</b>,
               accessor: 'project_url',
               Cell: d => <a href={d.value}>link</a>,
             },
             {
-              Header: <strong># Contribs Last Week</strong>,
+              Header: <b># Contribs Last Week</b>,
               accessor: 'contribWeek',
             },
             {
-              Header: <strong># Contribs MTD</strong>,
+              Header: <b># Contribs MTD</b>,
               accessor: 'contribMTD',
             },
             {
-              Header: <strong># Contribs Last Month</strong>,
+              Header: <b># Contribs Last Month</b>,
               accessor: 'contribMonth',
             },
             {
-              Header: <strong># Contribs YTD</strong>,
+              Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
           ]}

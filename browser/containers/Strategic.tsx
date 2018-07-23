@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ import GroupsTable from '../components/GroupsTable';
 import ProjectTable from '../components/ProjectTable';
 
 interface State {
-  groupList: any;
-  projectList: any;
+  groupList: any[];
+  projectList: any[];
 }
 
 export default class Strategic extends React.Component<{}, State> {
@@ -32,8 +32,8 @@ export default class Strategic extends React.Component<{}, State> {
   }
 
   async componentDidMount() {
-    const groupList = await reqJSON('/api/strategicgroups');
-    const projectList = await reqJSON('/api/strategicprojects');
+    const groupList = await reqJSON('/api/strategic/groups');
+    const projectList = await reqJSON('/api/strategic/projects');
     this.setState({
       groupList,
       projectList: projectList.projectList,

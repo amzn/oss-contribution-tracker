@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -47,37 +47,38 @@ export default class StrategicTable extends React.Component<Props, State> {
     });
   }
 
+  // cuts off the time in the stored datetime format to have (yyyy-mm-dd) which is 10 characters
   sliceDate = date => {
     return date.slice(0, 10);
   };
 
   getGroupTable = () => {
-    if (this.state.contributionList !== 0) {
+    if (this.state.contributionList !== null) {
       return (
         <div id="contributions_table_admin">
           <ReactTable
             data={this.state.contributionList}
             columns={[
               {
-                Header: <strong>Project</strong>,
+                Header: <b>Project</b>,
                 accessor: 'project_name',
               },
               {
-                Header: <strong>Description</strong>,
+                Header: <b>Description</b>,
                 accessor: 'contribution_description',
               },
               {
-                Header: <strong>Commit URL</strong>,
+                Header: <b>Commit URL</b>,
                 accessor: 'contribution_url',
                 Cell: d => <a href={d.value}>link</a>,
               },
               {
-                Header: <strong>Submission Date</strong>,
+                Header: <b>Submission Date</b>,
                 id: 'contribution_date',
                 accessor: d => this.sliceDate(d.contribution_date),
               },
               {
-                Header: <strong>Contributor Alias</strong>,
+                Header: <b>Contributor Alias</b>,
                 accessor: 'contributor_alias',
               },
             ]}
@@ -93,28 +94,28 @@ export default class StrategicTable extends React.Component<Props, State> {
   };
 
   getProjectTable = () => {
-    if (this.state.contributionList !== 0) {
+    if (this.state.contributionList !== null) {
       return (
         <div id="contributions_table_admin">
           <ReactTable
             data={this.state.contributionList}
             columns={[
               {
-                Header: <strong>Description</strong>,
+                Header: <b>Description</b>,
                 accessor: 'contribution_description',
               },
               {
-                Header: <strong>Commit URL</strong>,
+                Header: <b>Commit URL</b>,
                 accessor: 'contribution_url',
                 Cell: d => <a href={d.value}>link</a>,
               },
               {
-                Header: <strong>Submission Date</strong>,
+                Header: <b>Submission Date</b>,
                 id: 'contribution_date',
                 accessor: d => this.sliceDate(d.contribution_date),
               },
               {
-                Header: <strong>Contributor Alias</strong>,
+                Header: <b>Contributor Alias</b>,
                 accessor: 'contributor_alias',
               },
             ]}

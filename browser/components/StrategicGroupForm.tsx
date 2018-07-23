@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ import Select from 'react-select';
 import * as actions from '../actions/strategicActions';
 
 interface Props {
-  fetchProjects: any;
-  fetchUsers: any;
-  fetchGroups: any;
-  addNewGroup: any;
-  projects: any;
-  users: any;
-  updateAdminNav: any;
+  fetchProjects: () => void;
+  fetchUsers: () => void;
+  fetchGroups: () => void;
+  addNewGroup: (group) => void;
+  projects: any[];
+  users: any[];
+  updateAdminNav: (navpage) => void;
 }
 
 interface State {
@@ -55,11 +55,13 @@ class GroupForm extends React.Component<Props, State> {
     this.props.fetchUsers();
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     const fields = e.target.elements;
     const projects = [];
     const users = [];
+
+    // puts selected projects in list format with the specific values from the form
     if (fields.projectList.length > 1) {
       for (const project of fields.projectList) {
         projects.push(parseInt(project.value, 10));
@@ -67,6 +69,8 @@ class GroupForm extends React.Component<Props, State> {
     } else {
       projects.push(parseInt(fields.projectList.value, 10));
     }
+
+    // puts selected users in list format with the specific values from the form
     if (fields.userList.length > 1) {
       for (const user of fields.userList) {
         users.push(user.value);
@@ -83,14 +87,18 @@ class GroupForm extends React.Component<Props, State> {
       users,
     };
 
-    this.props.addNewGroup(jsonObj, this.alert);
+    await this.props.addNewGroup(jsonObj);
+    this.alert();
   };
 
   userList = () => {
     if (this.props.users.length) {
       const users = this.props.users;
       return users.map(listValue => {
-        return { label: listValue.amazon_alias, value: listValue.amazon_alias };
+        return {
+          label: listValue.company_alias,
+          value: listValue.company_alias,
+        };
       });
     }
   };
