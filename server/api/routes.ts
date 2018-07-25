@@ -405,6 +405,11 @@ router.post('/strategic/groups/delete', async (req, res, next) => {
   }
 });
 
+// get strategic report
+router.get('/strategic/report/:id/:date', async (req, res, next) => {
+  pack(groupsAPI.getReport(req, req.params.id, req.params.date), res, next);
+});
+
 // error handling for all of the above
 router.use(function(err: any, req: any, res: any, next: any) {
   if (
