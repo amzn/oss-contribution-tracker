@@ -31,7 +31,7 @@ interface Props {
 
 interface State {
   groupId: number;
-  alert: any;
+  alert: JSX.Element;
 }
 
 class GroupsTable extends React.Component<Props, State> {
@@ -74,7 +74,7 @@ class GroupsTable extends React.Component<Props, State> {
   };
 
   downloadReport = async date => {
-    const group = this.props.groups[this.state.groupId];
+    const group = this.props.groups[this.state.groupId] || this.props.groups.groupList[this.state.groupId];
     const report = await reqJSON(
       `/api/strategic/report/${group.group_id}/${date}`
     );
@@ -122,11 +122,24 @@ class GroupsTable extends React.Component<Props, State> {
               Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
+            {
+              Header: <b>Report</b>,
+              accessor: 'group_id',
+              width: 80,
+              Cell: row => (
+                <div className="center">
+                  <Link to="/strategicprojects" onClick={this.handleDownload}>
+                    <i id={row.index} className="fa fa-download" />
+                  </Link>
+                </div>
+              ),
+            },
           ]}
           defaultPageSize={10}
           className="-striped -highlight"
           filterable={true}
         />
+        {this.state.alert}
       </div>
     );
   };

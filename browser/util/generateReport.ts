@@ -40,14 +40,18 @@ function convertToText(data) {
     `This group has ${report.users.length} contributors and ${
       report.projects.length
     } projects.\n\n` +
-    `There were a total of ${report.group.total} commits in ${
+    `There were a total of ${report.group.total} contributions in ${
       months[month]
-    } ${year}.\n` +
-    `${report.group.strategic} of those commits were strategic (${report.group
+    } ${year}.\n`;
+
+  if (report.group.total !== 0) {
+    summary += `${report.group.strategic} of those contributions were strategic (${report.group
       .strategic /
       report.group.total *
-      100}%).\n\n` +
-    `User Metrics\n\n`;
+      100}%).\n`
+  }
+
+  summary += `\nUser Metrics\n\n`;
 
   for (const user of report.users) {
     summary += `${user.company_alias} made ${user.total} contributions.\n`;
@@ -57,13 +61,22 @@ function convertToText(data) {
   for (const project of report.projects) {
     summary +=
       `Project: ${project.project_name}\n` +
-      `There were a total of ${project.total} commits to this project.\n` +
-      `${project.strategic} of those commits were strategic.\n\n` +
-      `The full list of strategic commits is:\n`;
-    for (const contribution of project.contributions) {
-      summary += `${contribution.contributor_alias} -- ${
-        contribution.contribution_description
-      } -- ${contribution.contribution_url}\n`;
+      `There were a total of ${project.total} contributions to this project.\n`;
+
+    if (project.total !== 0) {
+      summary += `${project.strategic} of those contributions were strategic (${project
+        .strategic /
+        project.total *
+        100}%).\n\n`;
+    }
+
+    if (project.strategic !== 0) {
+      summary += `The full list of strategic contributions is:\n`;
+      for (const contribution of project.contributions) {
+        summary += `${contribution.contributor_alias} -- ${
+          contribution.contribution_description
+        } -- ${contribution.contribution_url}\n`;
+      }
     }
     summary += '\n';
   }
