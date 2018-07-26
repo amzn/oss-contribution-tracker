@@ -20,15 +20,55 @@ import * as actions from '../actions/strategicActions';
 
 interface Props {
   params: any;
-  fetchGroup: (id) => void;
+  fetchGroup: (id) => void; // function pointers explaining input and output
   fetchGroups: () => void;
   fetchProjects: () => void;
   fetchUsers: () => void;
   updateGroup: (group) => void;
   deleteGroup: (id) => void;
-  group: any;
-  projects: any[];
-  users: any[];
+  group: {
+    details: {
+      goal: string;
+      group_id: number;
+      group_name: string;
+      projects: number[];
+      sponsor: string;
+    };
+    projects: Array<{
+      project_id: number;
+      project_license: string;
+      project_name: string;
+      proejct_url: string;
+      project_verified: boolean;
+      project_auto_approvable: boolean;
+      contribMTD: number;
+      contribMonth: number;
+      contribWeek: number;
+      contribYear: number;
+    }>;
+    users: Array<{
+      company_alias: string;
+      contribMTD: number;
+      contribMonth: number;
+      contribWeek: number;
+      contribYear: number;
+      github_alias: string;
+      groups: any; // in the format of an number: string, however the number is always changing so I cannot specify a key
+    }>;
+  };
+  projects: Array<{
+    project_auto_approvable: boolean;
+    project_id: number;
+    project_license: string;
+    project_name: string;
+    project_url: string;
+    project_verified: boolean;
+  }>;
+  users: Array<{
+    company_alias: string;
+    github_alias: string;
+    groups: any; // as above
+  }>;
   groupId: number;
   updateAdminNav: (navpage) => void;
 }

@@ -21,15 +21,22 @@ import * as actions from '../actions/strategicActions';
 interface Props {
   addNewUser: (user) => any;
   fetchGroups: () => void;
-  groups: any[];
+  groups: Array<{
+    group_id: number;
+    group_name: string;
+    goal: string;
+    sponsor: string;
+    numUsers: number;
+    numProjects: number;
+  }>;
   updateAdminNav: (navpage) => void;
 }
 
 interface State {
   company: string;
   github: string;
-  groups: any[];
-  alert: any;
+  groups: number[];
+  alert: JSX.Element;
 }
 
 class UserForm extends React.Component<Props, State> {

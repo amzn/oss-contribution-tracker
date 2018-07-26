@@ -15,12 +15,48 @@ import * as React from 'react';
 import ReactTable from 'react-table';
 
 interface Props {
-  contributionList: any;
+  contributionList: Array<{
+    approval_date: string;
+    approval_notes: string;
+    approval_status: string;
+    approver_id: number;
+    contirbution_closed_date: string;
+    contribution_date: string;
+    contirbution_description: string;
+    contribution_github_status: string;
+    contribution_id: number;
+    contribution_metdata: any;
+    contribution_project_review: boolean;
+    contribution_submission_date: string;
+    contribution_url: string;
+    contributor_alias: string;
+    github_id: number;
+    project_id: number;
+    project_name: string;
+  }>;
   type: string;
 }
 
 interface State {
-  contributionList: any;
+  contributionList: Array<{
+    approval_date: string;
+    approval_notes: string;
+    approval_status: string;
+    approver_id: number;
+    contirbution_closed_date: string;
+    contribution_date: string;
+    contirbution_description: string;
+    contribution_github_status: string;
+    contribution_id: number;
+    contribution_metdata: any;
+    contribution_project_review: boolean;
+    contribution_submission_date: string;
+    contribution_url: string;
+    contributor_alias: string;
+    github_id: number;
+    project_id: number;
+    project_name: string;
+  }>;
   type: string;
 }
 
