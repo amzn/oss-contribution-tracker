@@ -45,10 +45,11 @@ function convertToText(data) {
     } ${year}.\n`;
 
   if (report.group.total !== 0) {
-    summary += `${report.group.strategic} of those contributions were strategic (${report.group
-      .strategic /
+    summary += `${
+      report.group.strategic
+    } of those contributions were strategic (${report.group.strategic /
       report.group.total *
-      100}%).\n`
+      100}%).\n`;
   }
 
   summary += `\nUser Metrics\n\n`;
@@ -64,8 +65,9 @@ function convertToText(data) {
       `There were a total of ${project.total} contributions to this project.\n`;
 
     if (project.total !== 0) {
-      summary += `${project.strategic} of those contributions were strategic (${project
-        .strategic /
+      summary += `${
+        project.strategic
+      } of those contributions were strategic (${project.strategic /
         project.total *
         100}%).\n\n`;
     }
