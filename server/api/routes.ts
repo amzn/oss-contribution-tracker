@@ -11,6 +11,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as winston from 'winston';
@@ -24,6 +25,7 @@ import * as claAPI from './cla';
 import * as contributionsAPI from './contributions';
 import * as metricsAPI from './metrics';
 import * as projectsAPI from './projects';
+import * as groupsAPI from './strategicgroups';
 
 export let router = express.Router();
 
@@ -101,7 +103,7 @@ router.get('/projects/approval', async (req, res, next) => {
 });
 
 // Implement when adding projects needed
-/*router.post('/projects/new', (req, res, next) => {
+router.post('/projects/new', async (req, res, next) => {
   const access = (req as any).UserAccess;
   if (access.includes(AccessTypes.admin)) {
     pack(projectsAPI.addProject(req, req.body), res, next);
@@ -112,8 +114,8 @@ router.get('/projects/approval', async (req, res, next) => {
     res.send({
       error: 'You do not posses the permissions to access that',
     });
-  };
-});*/
+  }
+});
 
 router.get('/projects/name/:projectName', (req, res, next) => {
   pack(projectsAPI.searchProjectByName(req, req.params.projectName), res, next);
@@ -121,6 +123,10 @@ router.get('/projects/name/:projectName', (req, res, next) => {
 
 router.get('/projects/:projectId', (req, res, next) => {
   pack(projectsAPI.searchProjectById(req, req.params.projectId), res, next);
+});
+
+router.get('/projects/unique/:projectId', (req, res, next) => {
+  pack(projectsAPI.getUniqueProjectById(req, req.params.projectId), res, next);
 });
 
 router.get('/approvers', (req, res, next) => {
@@ -302,6 +308,100 @@ router.post('/cla/submit', async (req, res, next) => {
     const user = await getUser(req);
     winston.warn(`${user} did not have permissions to access /cla/submit`);
     return next(new AccessError('no access to CLA management'));
+  }
+});
+
+/*
+ * All API calls related to strategic groups
+ */
+// gets all strategic groups
+router.get('/strategic/groups', async (req, res, next) => {
+  pack(groupsAPI.listGroups(req), res, next);
+});
+
+// gets strategic group by id
+router.get('/strategic/groups/:id', async (req, res, next) => {
+  pack(groupsAPI.getGroup(req, req.params.id), res, next);
+});
+
+// get all strategic contributions by group id
+router.get('/strategic/contributions/group/:id', async (req, res, next) => {
+  pack(
+    contributionsAPI.listStrategicContributionsByGroup(req, req.params.id),
+    res,
+    next
+  );
+});
+
+// get all strategic contributions by project id
+router.get('/strategic/contributions/project/:id', async (req, res, next) => {
+  pack(
+    contributionsAPI.listStrategicContributionsByProject(req, req.params.id),
+    res,
+    next
+  );
+});
+
+// get all strategic projects
+router.get('/strategic/projects', async (req, res, next) => {
+  pack(groupsAPI.listStrategicProjects(req), res, next);
+});
+
+// gets strategic project by id
+router.get('/strategic/projects/:id', async (req, res, next) => {
+  pack(groupsAPI.getStrategicProject(req, req.params.id), res, next);
+});
+
+// gets all users
+router.get('/strategic/users', async (req, res, next) => {
+  pack(groupsAPI.listUsers(req), res, next);
+});
+
+// add new group
+router.post('/strategic/groups/new', async (req, res, next) => {
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(groupsAPI.addNewGroup(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /admin/group`);
+    return next(new AccessError('no access to Strategic Group management'));
+  }
+});
+
+// add new user
+router.post('/strategic/users/new', async (req, res, next) => {
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(groupsAPI.addNewUser(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /admin/group`);
+    return next(new AccessError('no access to Strategic Group management'));
+  }
+});
+
+// update group
+router.post('/strategic/groups/update', async (req, res, next) => {
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(groupsAPI.updateGroup(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /group`);
+    return next(new AccessError('no access to Strategic Group management'));
+  }
+});
+
+// delete group
+router.post('/strategic/groups/delete', async (req, res, next) => {
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(groupsAPI.deleteGroup(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access edit group`);
+    return next(new AccessError('no access to Strategic Group management'));
   }
 });
 
