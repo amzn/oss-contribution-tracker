@@ -85,9 +85,7 @@ class GroupsTable extends React.Component<Props, State> {
   };
 
   downloadReport = async date => {
-    const group =
-      this.props.groups[this.state.groupId] ||
-      this.props.groups.groupList[this.state.groupId];
+    const group = this.props.groups[this.state.groupId];
     const report = await reqJSON(
       `/api/strategic/report/${group.group_id}/${date}`
     );
