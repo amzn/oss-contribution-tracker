@@ -16,12 +16,38 @@ import ReactTable from 'react-table';
 import StrategicTableLinkCell from './StrategicTableLinkCell';
 
 interface Props {
-  projectList: any;
+  projectList: Array<{
+    project_id: number;
+    project_name: string;
+    project_url: string;
+    project_license: string;
+    project_verified: boolean;
+    project_auto_approvable: boolean;
+    contribWeek: number;
+    contribMTD: number;
+    contribMonth: number;
+    contribYear: number;
+    numGroups?: number;
+    numUsers?: number;
+  }>;
   type: string;
 }
 
 interface State {
-  projectList: any;
+  projectList: Array<{
+    project_id: number;
+    project_name: string;
+    project_url: string;
+    project_license: string;
+    project_verified: boolean;
+    project_auto_approvable: boolean;
+    contribWeek: number;
+    contribMTD: number;
+    contribMonth: number;
+    contribYear: number;
+    numGroups?: number;
+    numUsers?: number;
+  }>;
   type: string;
 }
 

@@ -25,7 +25,18 @@ import { reqJSON } from '../util/index';
 interface Props {
   updateAdminNav: (navpage) => void;
   updateAdminGroup: (groupId) => void;
-  groups: any;
+  groups: {
+    group_id: number;
+    group_name: string;
+    goal: string;
+    sponsor: string;
+    projects: number[];
+    numUsers: number;
+    contribWeek: number;
+    contribMTD: number;
+    contribMonth: number;
+    contribYear: number;
+  };
   type: string;
 }
 
@@ -93,7 +104,7 @@ class GroupsTable extends React.Component<Props, State> {
     return (
       <div id="contributions_table_admin">
         <ReactTable
-          data={this.props.groups.groupList}
+          data={this.props.groups}
           columns={[
             {
               Header: <b>Group</b>,
@@ -265,7 +276,7 @@ class GroupsTable extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state, props) => ({
-  groups: props.groups,
+  groups: props.groups.groupList || props.groups,
   type: props.type,
 });
 

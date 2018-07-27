@@ -23,10 +23,54 @@ interface Props {
 }
 
 interface State {
-  groupList: any[];
-  userList: any[];
-  project: any;
-  contributionList: any[];
+  groupList: Array<{
+    group_id: number;
+    group_name: string;
+    goal: string;
+    sponsor: string;
+    projects: number[];
+    numUsers: number;
+    contribWeek: number;
+    contribMTD: number;
+    contribMonth: number;
+    contribYear: number;
+  }>;
+  userList: Array<{
+    company_alias: string;
+    contribMTD: number;
+    contribMonth: number;
+    contribWeek: number;
+    contribYear: number;
+    github_alias: string;
+    groups: any; // in the format of an number: string, however the number is always changing so I cannot specify a key
+  }>;
+  project: {
+    project_id?: number;
+    project_name?: string;
+    project_url?: string;
+    project_license?: string;
+    project_verified?: boolean;
+    project_auto_approvable?: boolean;
+  };
+  contributionList: Array<{
+    approval_date: string;
+    approval_notes: string;
+    approval_status: string;
+    approver_id: number;
+    contirbution_closed_date: string;
+    contribution_date: string;
+    contirbution_description: string;
+    contribution_github_status: string;
+    contribution_id: number;
+    contribution_metdata: any;
+    contribution_project_review: boolean;
+    contribution_submission_date: string;
+    contribution_url: string;
+    contributor_alias: string;
+    github_id: number;
+    project_id: number;
+    project_name: string;
+  }>;
 }
 
 export default class Project extends React.Component<Props, State> {
@@ -35,7 +79,7 @@ export default class Project extends React.Component<Props, State> {
     this.state = {
       groupList: [],
       userList: [],
-      project: [],
+      project: {},
       contributionList: [],
     };
   }

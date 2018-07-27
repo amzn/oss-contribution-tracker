@@ -23,8 +23,19 @@ interface Props {
   fetchUsers: () => void;
   fetchGroups: () => void;
   addNewGroup: (group) => void;
-  projects: any[];
-  users: any[];
+  projects: Array<{
+    project_id: number;
+    project_name: string;
+    project_url: string;
+    project_license: string;
+    project_verified: boolean;
+    project_auto_approvable: boolean;
+  }>;
+  users: Array<{
+    company_alias: string;
+    github_alias: string;
+    groups: any; // format of group id mapping to date string
+  }>;
   updateAdminNav: (navpage) => void;
 }
 
@@ -32,9 +43,9 @@ interface State {
   name: string;
   goals: string;
   sponsor: string;
-  projects: any[];
-  users: any[];
-  alert: any;
+  projects: number[];
+  users: string[];
+  alert: JSX.Element;
 }
 
 class GroupForm extends React.Component<Props, State> {

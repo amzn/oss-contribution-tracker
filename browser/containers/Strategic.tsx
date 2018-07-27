@@ -18,8 +18,32 @@ import GroupsTable from '../components/GroupsTable';
 import ProjectTable from '../components/ProjectTable';
 
 interface State {
-  groupList: any[];
-  projectList: any[];
+  groupList: Array<{
+    group_id: number;
+    group_name: string;
+    goal: string;
+    sponsor: string;
+    projects: number[];
+    numUsers: number;
+    contribWeek: number;
+    contribMTD: number;
+    contribMonth: number;
+    contribYear: number;
+  }>;
+  projectList: Array<{
+    project_id: number;
+    project_name: string;
+    project_url: string;
+    project_license: string;
+    project_verified: boolean;
+    project_auto_approvable: boolean;
+    contribWeek: number;
+    contribMTD: number;
+    contribMonth: number;
+    contribYear: number;
+    numGroups?: number;
+    numUsers?: number;
+  }>;
 }
 
 export default class Strategic extends React.Component<{}, State> {

@@ -20,8 +20,21 @@ interface Props {
 }
 
 interface State {
-  group: any;
-  project: any;
+  group: {
+    group_id: number;
+    group_name: string;
+    goal: string;
+    sponsor: string;
+    projects: number[];
+  };
+  project: {
+    project_id: number;
+    project_name: string;
+    project_url: string;
+    project_license: string;
+    project_verified: boolean;
+    project_auto_approvable: boolean;
+  };
   type: string;
 }
 
