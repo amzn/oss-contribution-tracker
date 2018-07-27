@@ -74,39 +74,40 @@ class Approvals extends React.Component<Props, State> {
       <form onSubmit={this.handleApproval}>
         <div className="form-group">
           <label>Approve/Deny</label>
-          <br />
-          <div className="btn-group" role="group" aria-label="...">
-            <button
-              id="approveBtn"
-              type="button"
-              className="btn btn-success btn-sm active"
-              onClick={this.approveContrib}
-              disabled={this.state.acceptHighlight}
-            >
-              <i className="fa fa-check" />
-            </button>
-            <button
-              id="denyBtn"
-              type="button"
-              className="btn btn-danger btn-sm active"
-              onClick={this.denyContrib}
-              disabled={this.state.declineHighlight}
-            >
-              <i className="fa fa-ban" />
-            </button>
+          <div className="btn-toolbar">
+            <div className="btn-group" role="group">
+              <button
+                id="approveBtn"
+                type="button"
+                className="btn btn-success btn-sm active"
+                onClick={this.approveContrib}
+                disabled={this.state.acceptHighlight}
+              >
+                <i className="fa fa-check" />
+              </button>
+              <button
+                id="denyBtn"
+                type="button"
+                className="btn btn-danger btn-sm active"
+                onClick={this.denyContrib}
+                disabled={this.state.declineHighlight}
+              >
+                <i className="fa fa-ban" />
+              </button>
+            </div>
           </div>
-          <br />
-          <label>Approval Notes</label> <br />
+        </div>
+        <div className="form-group">
+          <label>Approval Notes</label>
           <textarea
             className="form-control"
             rows={3}
             name="approvalNotes"
             required={true}
-          />{' '}
-          <br />
+          />
         </div>
-        <div className="col-md-10">
-          <div className="pullRight">
+        <div className="form-group">
+          <div className="btn-group">
             <Link className="btn btn-secondary" to="/admin">
               Cancel
             </Link>

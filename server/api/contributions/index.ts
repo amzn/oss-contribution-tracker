@@ -13,7 +13,9 @@
  */
 import * as dbApprovers from '../../db/approvers';
 import * as dbContribution from '../../db/contributions';
+import * as dbGroups from '../../db/groups';
 import * as dbProjects from '../../db/projects';
+import * as dbUsers from '../../db/users';
 
 import { config } from '../../config';
 import { RequestError } from '../../errors/index';
@@ -45,6 +47,28 @@ export async function listBulkContributions(req) {
 export async function listApprovalContributions(req) {
   const list = await dbContribution.listApprovalContributions();
   return list;
+}
+
+export async function listStrategicContributionsByGroup(req, groupId) {
+  const projects = (await dbGroups.getGroupById(groupId)).projects;
+  const users = (await dbUsers.getUsernamesByGroup([groupId.toString()])).names;
+  const list = await dbContribution.listStrategicContributionsByGroup(
+    projects,
+    users
+  );
+  // add project name
+  for (const c of list) {
+    c.project_name = (await dbProjects.searchProjectById(
+      c.project_id
+    ))[0].project_name; // returns one project as a list
+  }
+  return list;
+}
+
+export async function listStrategicContributionsByProject(req, projId) {
+  return {
+    list: await dbContribution.listStrategicContributionsByProject(projId),
+  };
 }
 
 export async function getAllContributorAlias(req) {
@@ -117,15 +141,15 @@ export async function addNewAutoApprovedContribution(req, body, user) {
 }
 
 export async function diffCheck(req, body) {
-  const size = getDiffSize(body.diff);
-  if (size === 0) {
+  const { lines, chunks } = getDiffSize(body.diff);
+  if (chunks === 0) {
     throw new RequestError(
       'Submitted text is not a unified diff, or it had no changes'
     );
   }
   return {
-    ok: size < config.contributions.autoApprove.diffLimit,
-    size,
+    ok: lines < config.contributions.autoApprove.diffLimit,
+    lines,
   };
 }
 

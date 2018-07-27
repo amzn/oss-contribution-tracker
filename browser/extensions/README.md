@@ -87,6 +87,27 @@ A [React functional component].
         * `user` - an object describing the current user. See `App.tsx` for structure.
 * Return: a rendered React component.
 
+### `page-end`
+
+Add content to the end of the page.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+* Return: a rendered React component.
+
+
+### `page-start`
+
+Add content to the beginning of the page.
+
+A [React functional component].
+
+* Input:
+    * `props` - React props. Empty.
+* Return: a rendered React component.
+
 ### `ldap-info`
 
 Area for displaying additional ldap information.

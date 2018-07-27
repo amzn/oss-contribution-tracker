@@ -5,7 +5,7 @@ CREATE TABLE approvers (
 );
 -- insert an auto-approver user if it did not already exist
 INSERT INTO approvers (approver_alias, approver_active)
-  SELECT 'auto-approver', 1
+  SELECT 'auto-approver', true
   WHERE NOT EXISTS (
     SELECT approver_id FROM approvers WHERE approver_alias = 'auto-approver'
   );

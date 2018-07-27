@@ -22,6 +22,10 @@ config.server = {
   port: 8000,
 };
 
+/*
+ * to run the strategic logger as a standalone script,
+ * must configure database and github token within the script in the run function
+ */
 config.database = {
   host: 'localhost',
   port: 5432,
@@ -29,6 +33,10 @@ config.database = {
   user: 'postgres',
   password: () => null,
   ssl: null,
+};
+
+config.github = {
+  token: '', // github token used in Octokit
 };
 
 config.fallbackUser = 'nobody';
@@ -55,6 +63,18 @@ config.display = {
   poc: [
     'ADD A Point of Contact', // user(s) that are points of contacts for CCLAs
   ],
+};
+
+/*
+ * Config for cron scheduler
+ * type: onbox, crontab, none
+ * cronTime: scheduler in cron pattern starting from seconds
+ * timeZone: string of the timezone
+ */
+config.cron = {
+  type: 'onbox', // runs cron-like js scheduler
+  cronTime: '* * * * *', // configure cron schedule
+  timeZone: 'America/Los_Angeles', // configure timezone
 };
 
 // load once asked for

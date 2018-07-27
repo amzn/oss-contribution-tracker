@@ -11,27 +11,21 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 
 interface Props {
-  rowIndex: number;
-  field: any;
-  data: any;
-  col: any;
-  columnKey: string;
+  link: string;
 }
 
 export default class TableLinkCell extends React.Component<Partial<Props>, {}> {
   renderLink(link) {
     if (link) {
       return <a href={link}>Link</a>;
+    } else {
+      return <div />;
     }
   }
-
   render() {
-    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
-    const link = data[rowIndex][field];
-    return <Cell {...props}>{this.renderLink(link)}</Cell>;
+    return this.renderLink(this.props.link);
   }
 }

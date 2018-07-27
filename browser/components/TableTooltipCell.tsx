@@ -11,16 +11,11 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Cell } from 'fixed-data-table';
 import * as React from 'react';
 import ReactTooltip = require('react-tooltip');
 
 interface Props {
-  rowIndex: number;
-  field: any;
-  data: any;
-  col: any;
-  columnKey: string;
+  notes: any;
 }
 interface State {
   show: any;
@@ -36,11 +31,9 @@ export default class TooltipCell extends React.Component<
     };
   }
   render() {
-    const { data, rowIndex, field, ...props } = this.props;
-    const value = data[rowIndex][field];
     return (
-      <Cell
-        {...props}
+      <div
+        className="center"
         onMouseEnter={() => {
           ReactTooltip.show();
         }}
@@ -48,10 +41,10 @@ export default class TooltipCell extends React.Component<
           ReactTooltip.hide();
         }}
       >
-        <a data-tip={value} className="im-pointer">
+        <a data-tip={this.props.notes} className="im-pointer">
           <i className="fa fa-pencil-square" />
         </a>
-      </Cell>
+      </div>
     );
   }
 }

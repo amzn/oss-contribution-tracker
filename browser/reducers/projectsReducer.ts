@@ -1,4 +1,4 @@
-/* Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -11,20 +11,24 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Cell } from 'fixed-data-table';
-import * as React from 'react';
 
-interface Props extends React.Props<any> {
-  rowIndex: number;
-  field: any;
-  data: any;
-  col: any;
-  columnKey: string;
-}
+import { ActionTypes } from '../actions/strategicActions';
 
-export default class TableTextCell extends React.Component<Partial<Props>, {}> {
-  render() {
-    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
-    return <Cell {...props}>{data[rowIndex][field]}</Cell>;
+const initialState = {
+  all: [],
+};
+
+const ProjectsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.FETCH_PROJECTS: {
+      const newState = {
+        all: action.payload,
+      };
+      return newState;
+    }
+    default:
+      return state;
   }
-}
+};
+
+export default ProjectsReducer;

@@ -28,8 +28,11 @@ import EditCLA from './EditCla';
 import EditContribution from './EditContribution';
 import Employee from './Employee';
 import GithubLinkUpdater from './GithubLinkUpdater';
+import Group from './Group';
 import List from './List';
 import Metrics from './Metrics';
+import Project from './Project';
+import Strategic from './Strategic';
 
 interface Props {
   children: any;
@@ -132,7 +135,9 @@ export class App extends React.Component<Props, State> {
     const securedRoutes = this.buildSecureRoutes();
 
     return (
-      <div>
+      <>
+        <ExtensionPoint ext="page-start" />
+
         <nav className="navbar navbar-expand-sm navbar-light bg-light">
           <ExtensionPoint ext="navbar-logo">
             <Link to="/" className="navbar-brand">
@@ -157,9 +162,14 @@ export class App extends React.Component<Props, State> {
               <li className="nav-item">
                 <ExtensionPoint ext="navbar-contribution" user={user}>
                   <Link to="/contribute" className="nav-link">
-                    New Contribution
+                    Log Contribution
                   </Link>
                 </ExtensionPoint>
+              </li>
+              <li className="nav-item">
+                <Link to="/strategicprojects" className="nav-link">
+                  Strategic Projects
+                </Link>
               </li>
               <li className="nav-item">
                 <Link to="/list" className="nav-link">
@@ -170,15 +180,6 @@ export class App extends React.Component<Props, State> {
                 <Link to="/employee" className="nav-link">
                   Contributions By User
                 </Link>
-              </li>
-              <li className="nav-item">
-                <a
-                  target="_blank"
-                  href="https://github.com/amzn/oss-contribution-tracker/issues"
-                  className="nav-link"
-                >
-                  <i className="fa fa-question-circle" /> Help
-                </a>
               </li>
             </ul>
             <ExtensionPoint ext="navbar-end" user={user} />
@@ -196,6 +197,21 @@ export class App extends React.Component<Props, State> {
                 <Route exact={true} path="/list" component={List} />
                 <Route
                   exact={true}
+                  path="/strategicprojects"
+                  component={Strategic}
+                />
+                <Route
+                  exact={true}
+                  path="/strategicprojects/group/:group_id"
+                  component={Group}
+                />
+                <Route
+                  exact={true}
+                  path="/strategicprojects/project/:project_id"
+                  component={Project}
+                />
+                <Route
+                  exact={true}
                   path="/contribute"
                   component={Contributions}
                 />
@@ -211,13 +227,14 @@ export class App extends React.Component<Props, State> {
           </div>
 
           <div className="row mt-4">
-            <div className="mx-auto col-lg-11">
-              <hr />
+            <div className="mx-auto col-lg-10">
               <ExtensionPoint ext="footer" />
             </div>
           </div>
         </div>
-      </div>
+
+        <ExtensionPoint ext="page-end" />
+      </>
     );
   }
 }

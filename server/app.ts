@@ -14,12 +14,15 @@
 import 'source-map-support/register';
 
 import * as compression from 'compression';
+import { CronJob } from 'cron';
 import * as express from 'express';
+import * as fs from 'fs';
 import * as winston from 'winston';
 
 import { router as apiRoutes } from './api/routes';
 import { config, load } from './config';
-import { connect } from './db';
+import pg, { connect } from './db';
+import { onboxRun as runStrategic } from './util/strategicLogger';
 
 // install a crash handler to log errors
 process.on('uncaughtException', err => {
@@ -84,6 +87,39 @@ export let start = async function(port, hostname) {
   });
 
   winston.info('Configuration ready; launching HTTP server');
+
+  if (config.cron.type === 'onbox') {
+    // run cron-like scheduler
+    const strategicUpdater = new CronJob(
+      config.cron.cronTime,
+      () => {
+        runStrategic(config, pg());
+      },
+      false,
+      config.cron.timeZone
+    );
+    strategicUpdater.start();
+  } else {
+    // output crontab execution file
+    fs.writeFile(
+      'strategicScheduler',
+      config.cron.cronTime + ' /server/util/strategicLogger.js',
+      err => {
+        if (err) {
+          throw err;
+        }
+        winston.info(
+          '*******************************************************************************************'
+        );
+        winston.info(
+          'Cron script, strategicScheduler, has been created in the root directory for standalone use!'
+        );
+        winston.info(
+          '*******************************************************************************************'
+        );
+      }
+    );
+  }
 
   // go!
   app.listen(port, hostname);

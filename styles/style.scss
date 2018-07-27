@@ -4,7 +4,7 @@
 @import '~font-awesome/css/font-awesome.css';
 @import '~react-select/scss/default.scss';
 @import '~react-bootstrap-sweetalert/lib/css/animations.css';
-@import '~fixed-data-table/dist/fixed-data-table.min.css';
+@import '~react-table/react-table.css';
 
 input:invalid,
 textarea:invalid {
@@ -15,3 +15,10 @@ textarea:invalid {
   max-height: 600px;
   overflow-y: auto;
 }
+
+.center {
+  margin: auto;
+  width: 50%;
+}
+
+@import './site.scss';

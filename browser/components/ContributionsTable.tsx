@@ -11,17 +11,13 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Cell, Column, Table } from 'fixed-data-table';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+import ReactTable from 'react-table';
 
 import TableApprovalStatusCell from '../components/TableApprovalStatusCell';
-import TableDateCell from '../components/TableDateCell';
-import TableGitHubStatusCell from '../components/TableGitHubStatusCell';
 import TableLinkCell from '../components/TableLinkCell';
-import TableSummaryCell from '../components/TableSummaryCell';
-import TableTextCell from '../components/TableTextCell';
 
 interface OwnProps {
   contributionList: any;
@@ -97,84 +93,49 @@ class ContributionsTable extends React.Component<Props, State> {
     });
   };
 
-  static contributorEntry = (item, exists) => {
-    if (exists) {
-      return (
-        <Column
-          key={item.name + '_contributor'}
-          header={<Cell>Contributor Alias</Cell>}
-          cell={
-            <TableTextCell
-              data={item}
-              field="contributor_alias"
-              col="contributor_alias"
-            />
-          }
-          width={125}
-        />
-      );
-    }
-  };
-
   static renderTables = (name, item, tableProps) => {
     return (
       <div key={name}>
-        <h4>{name}</h4>
-        <Table
-          key={item.name + '_table'}
-          rowsCount={item.length}
-          rowHeight={50}
-          headerHeight={50}
-          width={850}
-          maxHeight={500}
-        >
-          <Column
-            key={item.name + '_summary'}
-            header={<Cell>Summary</Cell>}
-            cell={
-              <TableSummaryCell data={item} field="contribution_description" />
-            }
-            width={tableProps.summaryWidth}
-          />
-          <Column
-            key={item.name + '_url'}
-            header={<Cell>Context URL</Cell>}
-            cell={<TableLinkCell data={item} field="contribution_url" />}
-            width={75}
-          />
-          <Column
-            key={item.name + '_submission_date'}
-            header={<Cell>Submission Date</Cell>}
-            cell={
-              <TableDateCell data={item} field="contribution_submission_date" />
-            }
-            width={100}
-          />
-          <Column
-            key={item.name + '_approval_status'}
-            header={<Cell>Approval Status</Cell>}
-            cell={
-              <TableApprovalStatusCell data={item} field="approval_status" />
-            }
-            width={100}
-          />
-          <Column
-            key={item.name + '_github_status'}
-            header={<Cell>Github Status</Cell>}
-            cell={
-              <TableGitHubStatusCell
-                data={item}
-                field="contribution_github_status"
-              />
-            }
-            width={100}
-          />
-          {tableProps.contributor ? (
-            ContributionsTable.contributorEntry(item, tableProps.contributor)
-          ) : (
-            <div />
-          )}
-        </Table>
+        <h4>Project {name}</h4>
+        <ReactTable
+          data={item}
+          columns={[
+            {
+              Header: <strong>Summary</strong>,
+              accessor: 'contribution_description',
+            },
+            {
+              Header: <strong>Commit URL </strong>,
+              accessor: 'contribution_url',
+              Cell: row => <TableLinkCell link={row.value} />,
+            },
+            {
+              Header: <strong>Submission Date</strong>,
+              id: 'contribution_submission_date',
+              accessor: d => d.contribution_submission_date.slice(0, 10),
+            },
+            {
+              Header: <strong>Approval Status</strong>,
+              accessor: 'approval_status',
+              Cell: row => (
+                <TableApprovalStatusCell approval_status={row.value} />
+              ),
+            },
+            {
+              Header: <strong>Github Status</strong>,
+              accessor: 'contribution_github_status',
+              Cell: row => (
+                <TableApprovalStatusCell approval_status={row.value} />
+              ),
+            },
+            {
+              Header: <strong>Contributor Alias</strong>,
+              accessor: 'contributor_alias',
+            },
+          ]}
+          defaultPageSize={10}
+          className="-striped -highlight"
+        />
         <br />
       </div>
     );
@@ -200,11 +161,13 @@ class ContributionsTable extends React.Component<Props, State> {
           menuContainerStyle={{ zIndex: 4 }}
           openOnFocus={true}
         />
-        <div>
+        <div className="mt-2">
           {this.state.selectedProject ? (
             this.state.tables.get(this.state.selectedProject)
           ) : (
-            <p>Search for and select a project to see contributions.</p>
+            <p className="text-muted">
+              Search for and select a project to see contributions.
+            </p>
           )}
         </div>
       </div>

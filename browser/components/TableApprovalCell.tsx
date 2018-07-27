@@ -11,16 +11,12 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import { Cell } from 'fixed-data-table';
+
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 interface Props {
-  rowIndex: number;
-  field: any;
-  data: any;
-  col: any;
-  columnKey: string;
+  id: string;
 }
 
 export default class TableApprovalCell extends React.Component<
@@ -28,18 +24,10 @@ export default class TableApprovalCell extends React.Component<
   {}
 > {
   render() {
-    const { rowIndex, field, data, col, columnKey, ...props } = this.props;
-    const id = data[rowIndex].contribution_id;
     return (
-      <Cell {...props}>
-        <div className="row">
-          <div className="col-md-6">
-            <Link className="btn btn-info" to={`/approvals/${id}`}>
-              Approve/Deny
-            </Link>
-          </div>
-        </div>
-      </Cell>
+      <Link className="btn btn-sm btn-info" to={`/approvals/${this.props.id}`}>
+        Approve/Deny
+      </Link>
     );
   }
 }
