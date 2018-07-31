@@ -14,6 +14,8 @@
 import * as React from 'react';
 import SimpleLineChart from '../components/SimpleLineChart';
 
+import RadzChart from '../components/DonutChart';
+
 interface Props {
   usersAndCounts: any;
   contribCountByYearAll: any;
@@ -38,34 +40,14 @@ export default class MetricsLists extends React.Component<Props, {}> {
     });
   };
 
-  topProjectsByYear = (year, type) => {
-    let list;
-    if (type === 'cur') {
-      list = this.props.topContribProjectsThisYear.slice(0, 10);
-    } else if (type === 'last') {
-      list = this.props.topContribProjectsLastYear.slice(0, 10);
-    } else {
-      list = [];
-    }
-    return list.map(item => {
-      return (
-        <li key={'topProjectsByYear_' + item.project_name + item.count}>
-          {item.count} - {item.project_name}
-        </li>
-      );
+  getProcessedList(list) {
+    return list.map(value => {
+      return {
+        label: value.project_name,
+        value: value.count,
+      };
     });
-  };
-
-  topProjectsAllTime = () => {
-    const list = this.props.topContribProjectsAllTime.slice(0, 10);
-    return list.map(item => {
-      return (
-        <li key={'topProjectsAllTime_' + item.project_name}>
-          {item.count} - {item.project_name}
-        </li>
-      );
-    });
-  };
+  }
 
   topContributors = list => {
     return list ? (
@@ -83,26 +65,66 @@ export default class MetricsLists extends React.Component<Props, {}> {
 
   render() {
     const metrics = this.metricsAll();
-    const topProjectsAll = this.topProjectsAllTime();
     const curYear = new Date().getFullYear();
     return (
       <div>
         <div id="metrics">
           <h2>Metrics</h2>
-          <h4>Contributions by Year</h4>
-          <div id="chart">
-            <SimpleLineChart metricsDataByYear={this.props.allMetrics} />
+          <div className="row">
+            <div className="col-4">
+              <RadzChart
+                data={this.getProcessedList(
+                  this.props.topContribProjectsThisYear.slice(0, 10)
+                )}
+                centerText={curYear.toString()}
+                height={400}
+                width={600}
+                id={'viz' + curYear.toString()}
+                cornerRadius={0.3}
+                padAngle={0.015}
+                centerTextdx={'-1em'}
+              />
+            </div>
+            <div className="col-4">
+              <RadzChart
+                data={this.getProcessedList(
+                  this.props.topContribProjectsAllTime.slice(0, 10)
+                )}
+                centerText={'All Time'}
+                height={500}
+                width={750}
+                id={'viz' + 'alltime'}
+                cornerRadius={0.3}
+                padAngle={0.015}
+                centerTextSize={'70px'}
+                centerTextdx={'-1.6em'}
+              />
+            </div>
+
+            <div className="col-4">
+              <RadzChart
+                data={this.getProcessedList(
+                  this.props.topContribProjectsLastYear.slice(0, 10)
+                )}
+                centerText={(curYear - 1).toString()}
+                height={400}
+                width={650}
+                id={'viz' + (curYear - 1).toString()}
+                cornerRadius={0.3}
+                padAngle={0.015}
+                centerTextdx={'-1em'}
+              />
+            </div>
           </div>
-          <ul>{metrics}</ul>
-          <h4>Top Project Contributions ({curYear})</h4>
-          <ul>{this.topProjectsByYear(curYear, 'cur')}</ul>
-
-          <h4>Top Project Contributions ({curYear - 1})</h4>
-          <ul>{this.topProjectsByYear(curYear - 1, 'last')}</ul>
-
-          <h4>Top Project Contributions (all time)</h4>
-          <ul>{topProjectsAll}</ul>
-
+          <h4>Contributions by Year</h4>
+          <div className="row" id="chart">
+            <div className="col-6">
+              <SimpleLineChart metricsDataByYear={this.props.allMetrics} />
+            </div>
+            <div className="col-4 center">
+              <ul>{metrics}</ul>
+            </div>
+          </div>
           <h4>Top Contributors 100+</h4>
           <ul>{this.topContributors(this.props.usersAndCounts.onehundo)}</ul>
 
