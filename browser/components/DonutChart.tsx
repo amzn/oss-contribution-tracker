@@ -92,7 +92,7 @@ export default class Rad extends React.Component<Partial<Props>, {}> {
       .style('text-anchor', function(d) {
         return midAngle(d) < Math.PI ? 'start' : 'end';
       });
-
+    // g is the actual SVG tag name for a group.
     const g = svg
       .selectAll('.arc')
       .data(pie(data))

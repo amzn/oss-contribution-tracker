@@ -14,7 +14,7 @@
 import * as React from 'react';
 import SimpleLineChart from '../components/SimpleLineChart';
 
-import RadzChart from '../components/RadzChart';
+import RadzChart from '../components/DonutChart';
 
 interface Props {
   usersAndCounts: any;
