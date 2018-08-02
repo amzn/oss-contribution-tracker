@@ -12,7 +12,7 @@
  * permissions and limitations under the License.
  */
 const months = [
-  undefined,
+  'Jan',
   'Jan',
   'Feb',
   'Mar',
@@ -32,17 +32,21 @@ function convertToText(data) {
   const report = typeof data !== 'object' ? JSON.parse(data) : data;
   const month = parseInt(data.date.slice(5, 7), 10);
   const year = parseInt(data.date.slice(0, 4), 10);
-  let summary =
-    `Group: ${report.group.group_name}\n\n` +
-    `Sponsor: ${report.group.sponsor}\n\n` +
-    `Goals\n` +
-    `${report.group.goal}\n\n` +
-    `This group has ${report.users.length} contributors and ${
-      report.projects.length
-    } projects.\n\n` +
-    `There were a total of ${report.group.total} contributions in ${
-      months[month]
-    } ${year}.\n`;
+  let summary = `Group: ${report.group.group_name}
+
+Sponsor: ${report.group.sponsor}
+
+Goals
+${report.group.goal}
+
+This group has ${report.users.length} contributors and ${
+    report.projects.length
+  } projects.
+
+There were a total of ${report.group.total} contributions in ${
+    months[month]
+  } ${year}.
+`;
 
   if (report.group.total !== 0) {
     summary += `${
@@ -52,32 +56,43 @@ function convertToText(data) {
       100}%).\n`;
   }
 
-  summary += `\nUser Metrics\n\n`;
+  summary += `
+User Metrics
+
+`;
 
   for (const user of report.users) {
-    summary += `${user.company_alias} made ${user.total} contributions.\n`;
+    summary += `${user.company_alias} made ${user.total} contributions.
+`;
   }
 
-  summary += `\nProject Metrics\n\n`;
+  summary += `
+Project Metrics
+
+`;
   for (const project of report.projects) {
-    summary +=
-      `Project: ${project.project_name}\n` +
-      `There were a total of ${project.total} contributions to this project.\n`;
+    summary += `Project: ${project.project_name}
+There were a total of ${project.total} contributions to this project.
+`;
 
     if (project.total !== 0) {
       summary += `${
         project.strategic
       } of those contributions were strategic (${project.strategic /
         project.total *
-        100}%).\n\n`;
+        100}%).
+
+`;
     }
 
     if (project.strategic !== 0) {
-      summary += `The full list of strategic contributions is:\n`;
+      summary += `The full list of strategic contributions is:
+`;
       for (const contribution of project.contributions) {
         summary += `${contribution.contributor_alias} -- ${
           contribution.contribution_description
-        } -- ${contribution.contribution_url}\n`;
+        } -- ${contribution.contribution_url}
+`;
       }
     }
     summary += '\n';

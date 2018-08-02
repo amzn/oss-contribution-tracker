@@ -139,7 +139,7 @@ class GroupsTable extends React.Component<Props, State> {
               width: 80,
               Cell: row => (
                 <div className="center">
-                  <Link to="/strategicprojects" onClick={this.handleDownload}>
+                  <Link to="/strategic-projects" onClick={this.handleDownload}>
                     <i id={row.index} className="fa fa-download" />
                   </Link>
                 </div>

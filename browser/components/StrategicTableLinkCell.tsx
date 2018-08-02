@@ -67,7 +67,7 @@ export default class StrategicTableLinkCell extends React.Component<
   renderProjectLink = () => {
     if (this.state.project) {
       return (
-        <a href={'/strategicprojects/project/' + this.props.id}>
+        <a href={'/strategic-projects/project/' + this.props.id}>
           {' '}
           {this.state.project.project_name}{' '}
         </a>
@@ -80,7 +80,7 @@ export default class StrategicTableLinkCell extends React.Component<
   renderGroupLink = () => {
     if (this.state.group) {
       return (
-        <a href={'/strategicprojects/group/' + this.props.id}>
+        <a href={'/strategic-projects/group/' + this.props.id}>
           {this.state.group.group_name}{' '}
         </a>
       );
