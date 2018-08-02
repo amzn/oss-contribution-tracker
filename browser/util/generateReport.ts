@@ -11,8 +11,10 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
+// this array is used to easily convert numeric months into strings so Jan-Dec spans month[1-12]
 const months = [
-  'Jan',
+  undefined, // month[0] is undefined so Jan can start at month[1]
   'Jan',
   'Feb',
   'Mar',

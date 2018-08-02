@@ -207,7 +207,7 @@ export class App extends React.Component<Props, State> {
                 />
                 <Route
                   exact={true}
-                  path="/strategicp-rojects/project/:project_id"
+                  path="/strategic-projects/project/:project_id"
                   component={Project}
                 />
                 <Route
