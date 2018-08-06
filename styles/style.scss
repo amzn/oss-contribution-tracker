@@ -21,6 +21,12 @@ textarea:invalid {
   width: 50%;
 }
 
+.group-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .centerLess {
   margin: auto;
   width: 55%;

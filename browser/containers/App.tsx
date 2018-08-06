@@ -167,7 +167,7 @@ export class App extends React.Component<Props, State> {
                 </ExtensionPoint>
               </li>
               <li className="nav-item">
-                <Link to="/strategicprojects" className="nav-link">
+                <Link to="/strategic-projects" className="nav-link">
                   Strategic Projects
                 </Link>
               </li>
@@ -197,17 +197,17 @@ export class App extends React.Component<Props, State> {
                 <Route exact={true} path="/list" component={List} />
                 <Route
                   exact={true}
-                  path="/strategicprojects"
+                  path="/strategic-projects"
                   component={Strategic}
                 />
                 <Route
                   exact={true}
-                  path="/strategicprojects/group/:group_id"
+                  path="/strategic-projects/group/:group_id"
                   component={Group}
                 />
                 <Route
                   exact={true}
-                  path="/strategicprojects/project/:project_id"
+                  path="/strategic-projects/project/:project_id"
                   component={Project}
                 />
                 <Route

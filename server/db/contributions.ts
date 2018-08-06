@@ -234,3 +234,42 @@ export async function listStrategicContributionsByProject(id) {
     [id]
   );
 }
+
+export async function monthlyStrategicContributionsByProject(id, users, date) {
+  const month = date.slice(5, 7);
+  const year = date.slice(0, 4);
+
+  return await pg().query(
+    'select * from contributions where project_id = $1 ' +
+      "and approval_status='approved-strategic' " +
+      'and EXTRACT(MONTH from contribution_date) = $2 ' +
+      'and EXTRACT(YEAR from contribution_date) = $3 ' +
+      'and contributor_alias=ANY($4) ' +
+      'order by contribution_date desc',
+    [id, month, year, users]
+  );
+}
+
+export async function monthlyTotalByProject(id, date) {
+  const month = date.slice(5, 7);
+  const year = date.slice(0, 4);
+
+  return await pg().oneOrNone(
+    'select count(*) as total from contributions ' +
+      'where project_id = $1 and EXTRACT(MONTH from contribution_date) = $2 ' +
+      'and EXTRACT(YEAR from contribution_date) = $3',
+    [id, month, year]
+  );
+}
+
+export async function monthlyTotalByUser(projectIds, user, date) {
+  const month = date.slice(5, 7);
+  const year = date.slice(0, 4);
+
+  return await pg().oneOrNone(
+    'select count(*) as total from contributions ' +
+      'where project_id =ANY($1) and EXTRACT(MONTH from contribution_date) = $2 ' +
+      'and EXTRACT(YEAR from contribution_date) = $3 and contributor_alias = $4',
+    [projectIds, month, year, user]
+  );
+}

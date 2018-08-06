@@ -12,12 +12,15 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import StrategicTableLinkCell from './StrategicTableLinkCell';
 
 import * as actions from '../actions/strategicActions';
+import * as utils from '../util/generateReport';
+import { reqJSON } from '../util/index';
 
 interface Props {
   updateAdminNav: (navpage) => void;
@@ -37,12 +40,17 @@ interface Props {
   type: string;
 }
 
-class GroupsTable extends React.Component<Props> {
+interface State {
+  groupId: number;
+  alert: JSX.Element;
+}
+
+class GroupsTable extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      groups: [],
-      type: '',
+      groupId: 0,
+      alert: null,
     };
   }
 
@@ -50,6 +58,44 @@ class GroupsTable extends React.Component<Props> {
     const groupId = e.target.id;
     this.props.updateAdminGroup(groupId);
     this.props.updateAdminNav('editGroup');
+  };
+
+  handleDownload = e => {
+    const groupId = e.target.id;
+    this.setState({ groupId });
+    this.alert();
+  };
+
+  alert = () => {
+    this.setState({
+      alert: (
+        <SweetAlert
+          type="input"
+          showCancel={true}
+          inputType="month"
+          title="Report Month"
+          onConfirm={this.downloadReport}
+          onCancel={this.hideAlert}
+          cancelBtnBsStyle="warning"
+        >
+          Please select the specific month and year for the report.
+        </SweetAlert>
+      ),
+    });
+  };
+
+  downloadReport = async date => {
+    const group = this.props.groups[this.state.groupId];
+    const report = await reqJSON(
+      `/api/strategic/report/${group.group_id}/${date}`
+    );
+    report.date = date;
+    utils.onClickDownload(report);
+    this.hideAlert();
+  };
+
+  hideAlert = () => {
+    this.setState({ alert: null });
   };
 
   getAllTable = () => {
@@ -87,11 +133,24 @@ class GroupsTable extends React.Component<Props> {
               Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
+            {
+              Header: <b>Report</b>,
+              accessor: 'group_id',
+              width: 80,
+              Cell: row => (
+                <div className="center">
+                  <Link to="/strategic-projects" onClick={this.handleDownload}>
+                    <i id={row.index} className="fa fa-download" />
+                  </Link>
+                </div>
+              ),
+            },
           ]}
           defaultPageSize={10}
           className="-striped -highlight"
           filterable={true}
         />
+        {this.state.alert}
       </div>
     );
   };
@@ -108,10 +167,9 @@ class GroupsTable extends React.Component<Props> {
               width: 50,
               Cell: row => (
                 <div className="center">
-                  {' '}
                   <Link to="/admin" onClick={this.handleEdit}>
                     <i id={row.value} className="fa fa-pencil-square" />
-                  </Link>{' '}
+                  </Link>
                 </div>
               ),
             },
@@ -144,11 +202,24 @@ class GroupsTable extends React.Component<Props> {
               Header: <b># Contribs YTD</b>,
               accessor: 'contribYear',
             },
+            {
+              Header: <b>Report</b>,
+              accessor: 'group_id',
+              width: 80,
+              Cell: row => (
+                <div className="center">
+                  <Link to="/admin" onClick={this.handleDownload}>
+                    <i id={row.index} className="fa fa-download" />
+                  </Link>
+                </div>
+              ),
+            },
           ]}
           defaultPageSize={10}
           className="-striped -highlight"
           filterable={true}
         />
+        {this.state.alert}
       </div>
     );
   };

@@ -260,3 +260,44 @@ export async function deleteGroup(req, body) {
   }
   return { group: await dbgroups.deleteGroup(body.id) };
 }
+
+export async function getReport(req, id, date) {
+  const group = await dbgroups.getGroupById(id);
+  const projects = await dbprojects.getProjectsByGroup(id);
+  const users = await dbusers.getUsersByGroup(id);
+  const usernames = (await dbusers.getUsernamesByGroup([id])).names;
+
+  group.total = 0;
+  group.strategic = 0;
+
+  for (const project of projects) {
+    const projId = project.project_id;
+
+    project.contributions = await dbcontributions.monthlyStrategicContributionsByProject(
+      projId,
+      usernames,
+      date
+    );
+    project.total = parseInt(
+      (await dbcontributions.monthlyTotalByProject(projId, date)).total,
+      10
+    );
+    project.strategic = project.contributions.length;
+
+    group.total += project.total;
+    group.strategic += project.strategic;
+  }
+
+  for (const user of users) {
+    user.total = parseInt(
+      (await dbcontributions.monthlyTotalByUser(
+        group.projects,
+        user.company_alias,
+        date
+      )).total,
+      10
+    );
+  }
+
+  return { group, projects, users };
+}

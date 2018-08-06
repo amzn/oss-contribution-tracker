@@ -12,6 +12,8 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import * as utils from '../util/generateReport';
 import { reqJSON } from '../util/index';
 
 import ProjectTable from '../components/ProjectTable';
@@ -23,6 +25,7 @@ interface Props {
 }
 
 interface State {
+  alert: JSX.Element;
   projectList: Array<{
     project_id: number;
     project_name: string;
@@ -82,6 +85,7 @@ export default class Group extends React.Component<Props, State> {
       userList: [],
       group: {},
       contributionList: [],
+      alert: null,
     };
   }
 
@@ -99,10 +103,50 @@ export default class Group extends React.Component<Props, State> {
     });
   }
 
+  handleDownload = e => {
+    this.alert();
+  };
+
+  alert = () => {
+    this.setState({
+      alert: (
+        <SweetAlert
+          type="input"
+          showCancel={true}
+          inputType="month"
+          title="Report Month"
+          onConfirm={this.downloadReport}
+          onCancel={this.hideAlert}
+          cancelBtnBsStyle="warning"
+        >
+          Please select the specific month and year for the report.
+        </SweetAlert>
+      ),
+    });
+  };
+
+  downloadReport = async date => {
+    const report = await reqJSON(
+      `/api/strategic/report/${this.state.group.group_id}/${date}`
+    );
+    report.date = date;
+    utils.onClickDownload(report);
+    this.hideAlert();
+  };
+
+  hideAlert = () => {
+    this.setState({ alert: null });
+  };
+
   render() {
     return (
       <div>
-        <h2> {this.state.group.group_name} Group Details </h2>
+        <div className="group-header">
+          <h2> {this.state.group.group_name} Group Details </h2>
+          <button className="btn btn-primary" onClick={this.handleDownload}>
+            Download Report
+          </button>
+        </div>
         <hr />
         <h4> Projects </h4>
         <div id="contributionsListAll">
@@ -121,6 +165,7 @@ export default class Group extends React.Component<Props, State> {
             type="group"
           />
         </div>
+        {this.state.alert}
       </div>
     );
   }

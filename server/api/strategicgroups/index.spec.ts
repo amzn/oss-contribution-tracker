@@ -35,6 +35,36 @@ describe('index', () => {
         getYTDCount: jasmine.createSpy('dbcontributions').and.returnValue({
           numcontribs: '4',
         }),
+        monthlyStrategicContributionsByProject: jasmine
+          .createSpy('dbcontributions')
+          .and.returnValue([
+            {
+              contribution_id: 1,
+              project_id: 1,
+              contribution_description: 'test contrib 1',
+              contirbution_date: '2018-06-11',
+              contributor_alias: 'alpha',
+              contribution_url: 'A.com/contrib1',
+            },
+            {
+              contribution_id: 2,
+              project_id: 1,
+              contribution_description: 'test contrib 2',
+              contirbution_date: '2018-06-08',
+              contributor_alias: 'beta',
+              contribution_url: 'A.com/contrib2',
+            },
+          ]),
+        monthlyTotalByProject: jasmine
+          .createSpy('dbcontributions')
+          .and.returnValue({
+            total: '5',
+          }),
+        monthlyTotalByUser: jasmine
+          .createSpy('dbcontributions')
+          .and.returnValue({
+            total: '2',
+          }),
       },
       dbgroups: {
         listGroups: jasmine.createSpy('dbgroups').and.returnValue([
@@ -63,13 +93,13 @@ describe('index', () => {
             }
           }),
         getGroupById: jasmine.createSpy('dbgroups').and.callFake(groupId => {
-          if (groupId === 1) {
+          if (groupId === 1 || groupId === '1') {
             return {
               group_id: 1,
               group_name: 'Test 1',
               projects: [1, 2],
             };
-          } else if (groupId === 2) {
+          } else if (groupId === 2 || groupId === '2') {
             return {
               group_id: 2,
               group_name: 'Test 2',
@@ -145,7 +175,7 @@ describe('index', () => {
         getProjectsByGroup: jasmine
           .createSpy('dbprojects')
           .and.callFake(groupId => {
-            if (groupId === 1) {
+            if (groupId === 1 || groupId === '1') {
               return [
                 {
                   project_id: 1,
@@ -162,7 +192,7 @@ describe('index', () => {
                   project_auto_approval: true,
                 },
               ];
-            } else if (groupId === 2) {
+            } else if (groupId === 2 || groupId === '2') {
               return [
                 {
                   project_id: 1,
@@ -254,6 +284,23 @@ describe('index', () => {
             ];
           }
         }),
+        listAllUsers: jasmine.createSpy('dbusers').and.returnValue([
+          {
+            company_alias: 'alpha',
+            github_alias: 'alpha',
+            groups: { 1: '2017-01-01', 2: '2017-01-01' },
+          },
+          {
+            company_alias: 'beta',
+            github_alias: 'beta',
+            groups: { 1: '2017-06-01' },
+          },
+          {
+            company_alias: 'charlie',
+            github_alias: 'charlie',
+            groups: { 2: '2018-02-01' },
+          },
+        ]),
       },
     };
     mockery.registerMock('../../db/groups', {
@@ -270,12 +317,17 @@ describe('index', () => {
     mockery.registerMock('../../db/users', {
       getUsersByGroup: mock.dbusers.getUsersByGroup,
       getUsernamesByGroup: mock.dbusers.getUsernamesByGroup,
+      listAllUsers: mock.dbusers.listAllUsers,
     });
     mockery.registerMock('../../db/contributions', {
       getLastWeekCount: mock.dbcontributions.getLastWeekCount,
       getMTDCount: mock.dbcontributions.getMTDCount,
       getLastMonthCount: mock.dbcontributions.getLastMonthCount,
       getYTDCount: mock.dbcontributions.getYTDCount,
+      monthlyStrategicContributionsByProject:
+        mock.dbcontributions.monthlyStrategicContributionsByProject,
+      monthlyTotalByProject: mock.dbcontributions.monthlyTotalByProject,
+      monthlyTotalByUser: mock.dbcontributions.monthlyTotalByUser,
     });
     mockery.registerAllowable('./index');
     strategic = require('./index');
@@ -520,6 +572,124 @@ describe('index', () => {
             project_url: 'B.com',
             project_verified: true,
             project_auto_approval: true,
+          },
+        ],
+      });
+      done();
+    });
+
+    it('should list all the users', async done => {
+      const users = await strategic.listUsers({});
+      expect(mock.dbusers.listAllUsers).toHaveBeenCalled();
+      expect(users).toEqual({
+        users: [
+          {
+            company_alias: 'alpha',
+            github_alias: 'alpha',
+            groups: { 1: '2017-01-01', 2: '2017-01-01' },
+          },
+          {
+            company_alias: 'beta',
+            github_alias: 'beta',
+            groups: { 1: '2017-06-01' },
+          },
+          {
+            company_alias: 'charlie',
+            github_alias: 'charlie',
+            groups: { 2: '2018-02-01' },
+          },
+        ],
+      });
+      done();
+    });
+
+    it('should return the report', async done => {
+      const report = await strategic.getReport({}, '1', '2018-06');
+      expect(mock.dbgroups.getGroupById).toHaveBeenCalled();
+      expect(mock.dbprojects.getProjectsByGroup).toHaveBeenCalled();
+      expect(mock.dbusers.getUsersByGroup).toHaveBeenCalled();
+      expect(mock.dbusers.getUsernamesByGroup).toHaveBeenCalled();
+      expect(
+        mock.dbcontributions.monthlyStrategicContributionsByProject
+      ).toHaveBeenCalled();
+      expect(mock.dbcontributions.monthlyTotalByProject).toHaveBeenCalled();
+      expect(mock.dbcontributions.monthlyTotalByProject).toHaveBeenCalled();
+      expect(report).toEqual({
+        group: {
+          group_id: 1,
+          group_name: 'Test 1',
+          projects: [1, 2],
+          total: 10,
+          strategic: 4,
+        },
+        projects: [
+          {
+            project_id: 1,
+            project_name: 'A',
+            project_url: 'A.com',
+            project_verified: true,
+            project_auto_approval: true,
+            contributions: [
+              {
+                contribution_id: 1,
+                project_id: 1,
+                contribution_description: 'test contrib 1',
+                contirbution_date: '2018-06-11',
+                contributor_alias: 'alpha',
+                contribution_url: 'A.com/contrib1',
+              },
+              {
+                contribution_id: 2,
+                project_id: 1,
+                contribution_description: 'test contrib 2',
+                contirbution_date: '2018-06-08',
+                contributor_alias: 'beta',
+                contribution_url: 'A.com/contrib2',
+              },
+            ],
+            total: 5,
+            strategic: 2,
+          },
+          {
+            project_id: 2,
+            project_name: 'B',
+            project_url: 'B.com',
+            project_verified: true,
+            project_auto_approval: true,
+            contributions: [
+              {
+                contribution_id: 1,
+                project_id: 1,
+                contribution_description: 'test contrib 1',
+                contirbution_date: '2018-06-11',
+                contributor_alias: 'alpha',
+                contribution_url: 'A.com/contrib1',
+              },
+              {
+                contribution_id: 2,
+                project_id: 1,
+                contribution_description: 'test contrib 2',
+                contirbution_date: '2018-06-08',
+                contributor_alias: 'beta',
+                contribution_url: 'A.com/contrib2',
+              },
+            ],
+            total: 5,
+            strategic: 2,
+          },
+        ],
+        users: [
+          {
+            company_alias: 'alpha',
+            github_alias: 'alpha',
+            groups: { 1: '2017-01-01', 2: '2017-01-01' },
+            total: 2,
+          },
+          {
+            company_alias: 'beta',
+            github_alias: 'beta',
+            groups: { 1: '2017-06-01' },
+            total: 2,
           },
         ],
       });
