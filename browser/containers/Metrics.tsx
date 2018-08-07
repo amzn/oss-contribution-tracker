@@ -121,9 +121,9 @@ export default class Metrics extends React.Component<Props, State> {
       this.state.topContribProjectsLastYear
     );
     return (
-      <div>
+      <>
         <ExtensionPoint ext="landing-content">{metrics}</ExtensionPoint>
-      </div>
+      </>
     );
   }
 }

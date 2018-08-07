@@ -67,76 +67,77 @@ export default class MetricsLists extends React.Component<Props, {}> {
     const metrics = this.metricsAll();
     const curYear = new Date().getFullYear();
     return (
-      <div>
-        <div id="metrics">
-          <h2>Metrics</h2>
-          <div className="row">
-            <div className="col-4">
-              <RadzChart
-                data={this.getProcessedList(
-                  this.props.topContribProjectsThisYear.slice(0, 10)
-                )}
-                centerText={curYear.toString()}
-                height={400}
-                width={600}
-                id={'viz' + curYear.toString()}
-                cornerRadius={0.3}
-                padAngle={0.015}
-                centerTextdx={'-1em'}
-              />
-            </div>
-            <div className="col-4">
-              <RadzChart
-                data={this.getProcessedList(
-                  this.props.topContribProjectsAllTime.slice(0, 10)
-                )}
-                centerText={'All Time'}
-                height={500}
-                width={750}
-                id={'viz' + 'alltime'}
-                cornerRadius={0.3}
-                padAngle={0.015}
-                centerTextSize={'70px'}
-                centerTextdx={'-1.6em'}
-              />
-            </div>
-
-            <div className="col-4">
-              <RadzChart
-                data={this.getProcessedList(
-                  this.props.topContribProjectsLastYear.slice(0, 10)
-                )}
-                centerText={(curYear - 1).toString()}
-                height={400}
-                width={650}
-                id={'viz' + (curYear - 1).toString()}
-                cornerRadius={0.3}
-                padAngle={0.015}
-                centerTextdx={'-1em'}
-              />
-            </div>
+      <div id="metrics">
+        <h2>Metrics</h2>
+        <div className="row">
+          <div className="col-xl-3">
+            <RadzChart
+              data={this.getProcessedList(
+                this.props.topContribProjectsThisYear.slice(0, 10)
+              )}
+              centerText={curYear.toString()}
+              height={200}
+              width={300}
+              id={'viz' + curYear.toString()}
+              cornerRadius={0.3}
+              padAngle={0.015}
+              centerTextSize={'40px'}
+              centerTextdx={'-1em'}
+            />
           </div>
-          <h4>Contributions by Year</h4>
-          <div className="row" id="chart">
-            <div className="col-6">
-              <SimpleLineChart metricsDataByYear={this.props.allMetrics} />
-            </div>
-            <div className="col-4 center">
-              <ul>{metrics}</ul>
-            </div>
+
+          <div className="col-xl-6">
+            <RadzChart
+              data={this.getProcessedList(
+                this.props.topContribProjectsAllTime.slice(0, 10)
+              )}
+              centerText={'All Time'}
+              height={300}
+              width={500}
+              id={'vizalltime'}
+              cornerRadius={0.3}
+              padAngle={0.015}
+              centerTextSize={'45px'}
+              centerTextdx={'-1.6em'}
+            />
           </div>
-          <h4>Top Contributors 100+</h4>
-          <ul>{this.topContributors(this.props.usersAndCounts.onehundo)}</ul>
 
-          <h4>Top Contributors 50+</h4>
-          <ul>{this.topContributors(this.props.usersAndCounts.fifty)}</ul>
-
-          <h4>Top Contributors 20+</h4>
-          <ul>{this.topContributors(this.props.usersAndCounts.twenty)}</ul>
-
-          <h4>Top Contributors 10+</h4>
-          <ul>{this.topContributors(this.props.usersAndCounts.ten)}</ul>
+          <div className="col-xl-3">
+            <RadzChart
+              data={this.getProcessedList(
+                this.props.topContribProjectsLastYear.slice(0, 10)
+              )}
+              centerText={(curYear - 1).toString()}
+              height={200}
+              width={300}
+              id={'viz' + (curYear - 1).toString()}
+              cornerRadius={0.3}
+              padAngle={0.015}
+              centerTextSize={'40px'}
+              centerTextdx={'-1em'}
+            />
+          </div>
         </div>
+        <h4>Contributions by Year</h4>
+        <div className="row" id="chart">
+          <div className="col-xl-8">
+            <SimpleLineChart metricsDataByYear={this.props.allMetrics} />
+          </div>
+          <div className="col-xl-4 center">
+            <ul>{metrics}</ul>
+          </div>
+        </div>
+        <h4>Top Contributors 100+</h4>
+        <ul>{this.topContributors(this.props.usersAndCounts.onehundo)}</ul>
+
+        <h4>Top Contributors 50+</h4>
+        <ul>{this.topContributors(this.props.usersAndCounts.fifty)}</ul>
+
+        <h4>Top Contributors 20+</h4>
+        <ul>{this.topContributors(this.props.usersAndCounts.twenty)}</ul>
+
+        <h4>Top Contributors 10+</h4>
+        <ul>{this.topContributors(this.props.usersAndCounts.ten)}</ul>
       </div>
     );
   }

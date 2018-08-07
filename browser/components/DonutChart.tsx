@@ -120,7 +120,8 @@ export default class Rad extends React.Component<Partial<Props>, {}> {
       })
       .style('text-anchor', function(d) {
         return midAngle(d) < Math.PI ? 'start' : 'end';
-      });
+      })
+      .style('font-size', '0.8em');
 
     g
       .append('polyline')
