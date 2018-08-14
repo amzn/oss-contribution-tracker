@@ -38,7 +38,7 @@ export default class SimpleLineChart extends React.Component<Props, {}> {
   render() {
     const data = this.stringToNumbers();
     return (
-      <ComposedChart width={930} height={450} data={data}>
+      <ComposedChart width={700} height={400} data={data}>
         <XAxis dataKey="year" />
         <YAxis />
         <Tooltip />
