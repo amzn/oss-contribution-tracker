@@ -17,19 +17,21 @@ let config = {};
 
 config.domain = process.env.DOMAIN;
 
-(config.server = {
+config.server = {
   hostname: '0.0.0.0',
   port: 8000,
-}),
-  (config.database = {
-    host: 'database',
-    port: 5432,
-    database: 'postgres',
-    user: 'postgres',
-    password: () => null,
-    ssl: null,
-  }),
-  (config.fallbackUser = 'nobody');
+};
+
+config.database = {
+  host: 'database',
+  port: 5432,
+  database: 'postgres',
+  user: 'postgres',
+  password: () => null,
+  ssl: null,
+};
+
+config.fallbackUser = 'nobody';
 
 config.ldap = {
   o: '', // objectClass

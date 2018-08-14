@@ -22,7 +22,6 @@ import * as winston from 'winston';
 import { router as apiRoutes } from './api/routes';
 import { config, load } from './config';
 import pg, { connect } from './db';
-import { onboxRun as runStrategic } from './util/strategicLogger';
 
 // install a crash handler to log errors
 process.on('uncaughtException', err => {
@@ -89,6 +88,7 @@ export let start = async function(port, hostname) {
   winston.info('Configuration ready; launching HTTP server');
 
   if (config.cron.type === 'onbox') {
+    const runStrategic = require('./util/strategicLogger').onboxRun;
     // run cron-like scheduler
     const strategicUpdater = new CronJob(
       config.cron.cronTime,
