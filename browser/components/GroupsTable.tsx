@@ -70,26 +70,70 @@ class GroupsTable extends React.Component<Props, State> {
     this.setState({
       alert: (
         <SweetAlert
-          type="input"
-          showCancel={true}
-          inputType="month"
-          title="Report Month"
+          title="Report Date"
           onConfirm={this.downloadReport}
-          onCancel={this.hideAlert}
-          cancelBtnBsStyle="warning"
+          showConfirm={false}
         >
           Please select the specific month and year for the report.
+          <form onSubmit={this.downloadReport}>
+            <div className="form-row">
+              <div className="form-group col">
+                <label htmlFor="month">Select month</label>
+                <select className="form-control" id="month">
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              <div className="form-group col">
+                <label htmlFor="year">Select year</label>
+                <select className="form-control" id="year">
+                  <option>2018</option>
+                  <option>2017</option>
+                  <option>2016</option>
+                  <option>2015</option>
+                  <option>2014</option>
+                </select>
+              </div>
+            </div>
+            <div className="row justify-content-around">
+              <button
+                className="btn btn-warning btn-lg col-4"
+                onClick={this.hideAlert}
+              >
+                {' '}
+                Cancel{' '}
+              </button>
+              <button type="submit" className="btn btn-primary btn-lg col-4">
+                {' '}
+                Download{' '}
+              </button>
+            </div>
+          </form>
         </SweetAlert>
       ),
     });
   };
 
-  downloadReport = async date => {
+  downloadReport = async e => {
+    e.preventDefault();
+    const fields = e.target.elements;
     const group = this.props.groups[this.state.groupId];
     const report = await reqJSON(
-      `/api/strategic/report/${group.group_id}/${date}`
+      `/api/strategic/report/${group.group_id}/${fields.year.value}-${
+        fields.month.value
+      }`
     );
-    report.date = date;
+    report.date = `${fields.year.value}-${fields.month.value}`;
     utils.onClickDownload(report);
     this.hideAlert();
   };
