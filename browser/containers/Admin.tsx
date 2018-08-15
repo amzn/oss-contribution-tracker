@@ -64,6 +64,7 @@ class Admin extends Component<Props, State> {
   async componentDidMount() {
     await this.getApprovals();
     await this.getCLAs();
+    await this.getContributions();
     await this.props.fetchGroups();
   }
 
@@ -78,6 +79,13 @@ class Admin extends Component<Props, State> {
     const claList = await reqJSON('/api/cla');
     this.setState({
       claTable: claList.claTable,
+    });
+  };
+
+  getContributions = async () => {
+    const contributionList = await reqJSON('/api/contributions/bulk');
+    this.setState({
+      contributionList,
     });
   };
 
