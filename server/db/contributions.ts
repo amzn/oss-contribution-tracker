@@ -273,3 +273,9 @@ export async function monthlyTotalByUser(projectIds, user, date) {
     [projectIds, month, year, user]
   );
 }
+
+export async function oldestContributionYear() {
+  return await pg().oneOrNone(
+    'select extract(year from min(contribution_date)) as year from contributions'
+  );
+}

@@ -188,3 +188,7 @@ export async function updateContributionLink(req, body) {
     body.link
   );
 }
+
+export async function getOldestContributionYear(req) {
+  return await dbContribution.oldestContributionYear();
+}

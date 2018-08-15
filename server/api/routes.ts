@@ -180,6 +180,11 @@ router.post('/contributions/approve', async (req, res, next) => {
   }
 });
 
+// get oldest contribution year
+router.get('/contributions/oldest', async (req, res, next) => {
+  pack(contributionsAPI.getOldestContributionYear(req), res, next);
+});
+
 router.get('/contributions/:username', (req, res, next) => {
   pack(
     contributionsAPI.listUserContributions(req, req.params.username),
