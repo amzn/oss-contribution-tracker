@@ -13,10 +13,10 @@
  */
 import * as React from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import * as utils from '../util/generateReport';
 import { reqJSON } from '../util/index';
 
 import ProjectTable from '../components/ProjectTable';
+import ReportForm from '../components/ReportForm.tsx';
 import StrategicTable from '../components/StrategicTable';
 import UserTable from '../components/UserTable';
 
@@ -111,27 +111,18 @@ export default class Group extends React.Component<Props, State> {
     this.setState({
       alert: (
         <SweetAlert
-          type="input"
-          showCancel={true}
-          inputType="month"
-          title="Report Month"
-          onConfirm={this.downloadReport}
-          onCancel={this.hideAlert}
-          cancelBtnBsStyle="warning"
+          title="Report Date"
+          onConfirm={this.hideAlert}
+          showConfirm={false}
         >
           Please select the specific month and year for the report.
+          <ReportForm
+            groupId={this.state.group.group_id}
+            hideAlert={this.hideAlert}
+          />
         </SweetAlert>
       ),
     });
-  };
-
-  downloadReport = async date => {
-    const report = await reqJSON(
-      `/api/strategic/report/${this.state.group.group_id}/${date}`
-    );
-    report.date = date;
-    utils.onClickDownload(report);
-    this.hideAlert();
   };
 
   hideAlert = () => {

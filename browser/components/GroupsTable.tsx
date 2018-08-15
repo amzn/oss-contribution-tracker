@@ -16,11 +16,10 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
+import ReportForm from './ReportForm.tsx';
 import StrategicTableLinkCell from './StrategicTableLinkCell';
 
 import * as actions from '../actions/strategicActions';
-import * as utils from '../util/generateReport';
-import { reqJSON } from '../util/index';
 
 interface Props {
   updateAdminNav: (navpage) => void;
@@ -60,9 +59,9 @@ class GroupsTable extends React.Component<Props, State> {
     this.props.updateAdminNav('editGroup');
   };
 
-  handleDownload = e => {
+  handleDownload = async e => {
     const groupId = e.target.id;
-    this.setState({ groupId });
+    await this.setState({ groupId });
     this.alert();
   };
 
@@ -70,28 +69,18 @@ class GroupsTable extends React.Component<Props, State> {
     this.setState({
       alert: (
         <SweetAlert
-          type="input"
-          showCancel={true}
-          inputType="month"
-          title="Report Month"
-          onConfirm={this.downloadReport}
-          onCancel={this.hideAlert}
-          cancelBtnBsStyle="warning"
+          title="Report Date"
+          onConfirm={this.hideAlert}
+          showConfirm={false}
         >
           Please select the specific month and year for the report.
+          <ReportForm
+            groupId={this.props.groups[this.state.groupId].group_id}
+            hideAlert={this.hideAlert}
+          />
         </SweetAlert>
       ),
     });
-  };
-
-  downloadReport = async date => {
-    const group = this.props.groups[this.state.groupId];
-    const report = await reqJSON(
-      `/api/strategic/report/${group.group_id}/${date}`
-    );
-    report.date = date;
-    utils.onClickDownload(report);
-    this.hideAlert();
   };
 
   hideAlert = () => {
