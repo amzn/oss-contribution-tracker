@@ -207,7 +207,7 @@ class GroupForm extends React.Component<Props, State> {
                 <label>Users</label>
                 <Select
                   name="userList"
-                  placeholder="Select Project"
+                  placeholder="Select User"
                   options={userOptions}
                   onChange={this.handleUserChange}
                   required={true}
