@@ -17,7 +17,7 @@ function getAllStrategicProjects(pg) {
 }
 
 function searchProjectById(pg, id) {
-  return pg.query('select * from projects where project_id = $1', [id]);
+  return pg.oneOrNone('select * from projects where project_id = $1', [id]);
 }
 
 function searchGroupsByProjectId(pg, id) {
@@ -112,31 +112,33 @@ async function updateStrategicContribs(pg) {
   const projects = await getAllStrategicProjects(pg);
   projects.forEach(async proj => {
     const project = await searchProjectById(pg, parseInt(proj.id, 10));
-    const url = project[0].project_url;
-    const urlTokens = url.split('/');
-    const last = urlTokens.length - 1;
-    const repo = urlTokens[last];
-    const owner = urlTokens[last - 1];
+    const url = project.project_url;
+    if (url && url.match(/github/i)) {
+      const urlTokens = url.split('/');
+      const last = urlTokens.length - 1;
+      const repo = urlTokens[last];
+      const owner = urlTokens[last - 1];
 
-    // groups this project belongs to
-    const groups = (await searchGroupsByProjectId(pg, proj.id)).groups;
+      // groups this project belongs to
+      const groups = (await searchGroupsByProjectId(pg, proj.id)).groups;
 
-    // find all new contributions
-    const contribs = await fetchNewContribs(pg, owner, repo);
+      // find all new contributions
+      const contribs = await fetchNewContribs(pg, owner, repo);
 
-    for (const contrib of contribs) {
-      if ((await contributionExists(pg, contrib.id)).length !== 0) {
-        break;
-      }
-      if (await whitelistedContrib(pg, contrib, groups)) {
-        // insert to database
-        await addWhitelistedContrib(pg, contrib, proj.id);
+      for (const contrib of contribs) {
+        if ((await contributionExists(pg, contrib.id)).length !== 0) {
+          break;
+        }
+        if (await whitelistedContrib(pg, contrib, groups)) {
+          // insert to database
+          await addWhitelistedContrib(pg, contrib, proj.id);
+        }
       }
     }
   });
 }
 
-function run() {
+async function run() {
   const options = {};
 
   const pgp = pgPromise(options);
@@ -158,19 +160,22 @@ function run() {
     token: '',
   });
 
-  updateStrategicContribs(pg);
+  await updateStrategicContribs(pg);
 }
 
 // to use as stand-alone, remove export
-export function onboxRun(config, pg) {
+export async function onboxRun(config, pg) {
   octokit.authenticate({
     type: 'oauth',
     token: config.github.token,
   });
 
-  updateStrategicContribs(pg);
+  await updateStrategicContribs(pg);
 }
 
 if (require.main === module) {
-  run();
+  run().catch(error => {
+    // tslint:disable-next-line:no-console
+    console.error(error);
+  });
 }
