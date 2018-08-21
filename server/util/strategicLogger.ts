@@ -138,7 +138,7 @@ async function updateStrategicContribs(pg) {
   });
 }
 
-function run() {
+async function run() {
   const options = {};
 
   const pgp = pgPromise(options);
@@ -160,19 +160,19 @@ function run() {
     token: '',
   });
 
-  updateStrategicContribs(pg);
+  await updateStrategicContribs(pg);
 }
 
 // to use as stand-alone, remove export
-export function onboxRun(config, pg) {
+export async function onboxRun(config, pg) {
   octokit.authenticate({
     type: 'oauth',
     token: config.github.token,
   });
 
-  updateStrategicContribs(pg);
+  await updateStrategicContribs(pg);
 }
 
 if (require.main === module) {
-  run();
+  await run();
 }
