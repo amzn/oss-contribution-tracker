@@ -174,5 +174,8 @@ export async function onboxRun(config, pg) {
 }
 
 if (require.main === module) {
-  await run();
+  run().catch(error => {
+    // tslint:disable-next-line:no-console
+    console.error(error);
+  });
 }
