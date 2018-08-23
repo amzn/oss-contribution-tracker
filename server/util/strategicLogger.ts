@@ -138,7 +138,7 @@ async function updateStrategicContribs(pg) {
       // groups this project belongs to
       const groups = (await searchGroupsByProjectId(pg, proj.id)).groups;
 
-      const date = await getLastScrapeDate(pg, parseInt(proj.id, 10));
+      let date = await getLastScrapeDate(pg, parseInt(proj.id, 10));
 
       if (date) {
         date = date.last_scrape_date;
