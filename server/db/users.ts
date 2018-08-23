@@ -22,6 +22,12 @@ export function searchUserByGithub(alias) {
   return pg().oneOrNone('select * from users where github_alias = $1', [alias]);
 }
 
+export function searchUserByCompanyAlias(alias) {
+  return pg().oneOrNone('select * from users where company_alias = $1', [
+    alias,
+  ]);
+}
+
 export function listGroupsByGithub(alias) {
   return pg().oneOrNone(
     'select array(select jsonb_object_keys(groups)::int) as groups from users where github_alias = $1',
@@ -46,33 +52,41 @@ export function getUsernamesByGroup(groups) {
 }
 
 // Add a new user to the DB
-export async function addNewUser(amazonAlias, githubAlias, groups) {
+export async function addNewUser(companyAlias, githubAlias, groups) {
   const check = await pg().oneOrNone(
     'select company_alias from users where company_alias = $1',
-    [amazonAlias]
+    [companyAlias]
   );
   if (!check) {
     return await pg().none(
       'insert into users (company_alias, github_alias, groups) ' +
         'values ($1, $2, $3)',
-      [amazonAlias, githubAlias, groups]
+      [companyAlias, githubAlias, groups]
     );
   }
   return 'exists';
 }
 
 // Add groups to a user
-export async function addGroupsToUser(amazonAlias, groups) {
+export async function addGroupsToUser(companyAlias, groups) {
   return await pg().none(
     'update users set groups = groups || $1 where company_alias = $2',
-    [groups, amazonAlias]
+    [groups, companyAlias]
   );
 }
 
 // Remove groups from a user
-export async function removeGroupFromUser(amazonAlias, group) {
+export async function removeGroupFromUser(companyAlias, group) {
   return await pg().none(
     "update users set groups = groups - '$1' where company_alias = $2",
-    [group, amazonAlias]
+    [group, companyAlias]
+  );
+}
+
+// Update user
+export async function updateUser(companyAlias, githubAlias, groups) {
+  return await pg().none(
+    'update users set github_alias = $1, groups = $2 where company_alias = $3',
+    [githubAlias, groups, companyAlias]
   );
 }

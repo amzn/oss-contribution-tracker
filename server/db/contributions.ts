@@ -226,6 +226,14 @@ export async function listStrategicContributionsByGroup(projects, users) {
   );
 }
 
+export async function listStrategicContributionsByUser(user, projects, date) {
+  return await pg().query(
+    'select * from contributions where contributor_alias=$1 ' +
+      'and project_id=ANY($2) and contribution_date between $3 and now()',
+    [user, projects, date]
+  );
+}
+
 export async function listStrategicContributionsByProject(id) {
   return await pg().query(
     'select * from contributions where project_id=$1 ' +

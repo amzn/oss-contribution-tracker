@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "OSS Contribution Tracker",
   "scripts": {
-    "build": "tsc -p server && webpack && npm run copy-static",
+    "build": "tsc -p server && chmod +x ./build/server/util/strategicLogger.js && webpack && npm run copy-static",
     "copy-static": "mkdir -p build/server && cp -r config build && cp -r assets build/server",
     "dev": "./scripts/dev-server",
     "test": "npm run build && jasmine 'build/server/**/*.spec.js'",
@@ -91,6 +91,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "request": "^2.69.0",
+    "ts-node": "^7.0.1",
     "underscore": "^1.8.3",
     "whatwg-fetch": "^2.0.2",
     "winston": "^2.4.0"

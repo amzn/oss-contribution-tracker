@@ -80,6 +80,11 @@ export async function listStrategicProjects(req) {
   return { projectList };
 }
 
+export async function getGroupDetails(req, id) {
+  const group = await dbgroups.getGroupById(id);
+  return { group };
+}
+
 export async function getGroup(req, id) {
   const group = await dbgroups.getGroupById(id);
   const projects = await dbprojects.getProjectsByGroup(id);
@@ -175,6 +180,10 @@ export async function getStrategicProject(req, id) {
   return { project, groups, users: userList };
 }
 
+export async function getUser(req, id) {
+  return { user: await dbusers.searchUserByCompanyAlias(id) };
+}
+
 export async function listProjects(req) {
   return { projectList: await dbprojects.getProjectsByGroup(req.body.id) };
 }
@@ -204,7 +213,7 @@ export async function addNewGroup(req, body) {
 export async function addNewUser(req, body) {
   const groups = {};
   if (body.groups.length) {
-    const date = new Date().toISOString().substring(0, 10);
+    const date = body.date || new Date().toISOString().substring(0, 10);
     for (const group of body.groups) {
       groups[group] = date;
     }
@@ -259,6 +268,10 @@ export async function deleteGroup(req, body) {
     }
   }
   return { group: await dbgroups.deleteGroup(body.id) };
+}
+
+export async function updateUser(req, id, body) {
+  return { user: await dbusers.updateUser(id, body.github_alias, body.groups) };
 }
 
 export async function getReport(req, id, date) {

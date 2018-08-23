@@ -72,6 +72,7 @@ class UserForm extends React.Component<Props, State> {
       company_alias: fields.company.value,
       github_alias: fields.github.value,
       groups,
+      date: fields.date.value,
     };
 
     const response = await this.props.addNewUser(jsonObj);
@@ -165,6 +166,16 @@ class UserForm extends React.Component<Props, State> {
                   multi={true}
                   simpleValue={true}
                   value={this.state.groups}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Start date</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="date"
+                  required={true}
                 />
               </div>
 

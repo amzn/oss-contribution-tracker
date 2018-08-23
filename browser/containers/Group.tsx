@@ -71,7 +71,6 @@ interface State {
     contribution_submission_date: string;
     contribution_url: string;
     contributor_alias: string;
-    github_id: number;
     project_id: number;
     project_name: string;
   }>;

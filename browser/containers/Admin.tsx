@@ -25,6 +25,7 @@ import GroupsTable from '../components/GroupsTable';
 import ProjectForm from '../components/ProjectForm';
 import GroupForm from '../components/StrategicGroupForm';
 import UserForm from '../components/UserForm';
+import ViewUser from '../components/ViewUser';
 
 import * as actions from '../actions/strategicActions';
 
@@ -42,6 +43,7 @@ interface Props {
 interface State {
   approvalList: any;
   contributionList: any;
+  userList: any[];
   user: any;
   key: number;
   claTable: any;
@@ -55,6 +57,7 @@ class Admin extends Component<Props, State> {
       approvalList: new Array(),
       contributionList: new Array(),
       user: '',
+      userList: new Array(),
       key: 0,
       claTable: new Array(),
       claProjectNames: new Array(),
@@ -65,6 +68,7 @@ class Admin extends Component<Props, State> {
     await this.getApprovals();
     await this.getCLAs();
     await this.getContributions();
+    await this.getUsers();
     await this.props.fetchGroups();
   }
 
@@ -86,6 +90,13 @@ class Admin extends Component<Props, State> {
     const contributionList = await reqJSON('/api/contributions/bulk');
     this.setState({
       contributionList,
+    });
+  };
+
+  getUsers = async () => {
+    const userList = await reqJSON('/api/strategic/users');
+    this.setState({
+      userList: userList.users,
     });
   };
 
@@ -124,6 +135,10 @@ class Admin extends Component<Props, State> {
     this.changeNav('newUser');
   };
 
+  setEditUser = () => {
+    this.changeNav('editUser');
+  };
+
   displaySelected = () => {
     switch (this.props.nav) {
       case 'approveContrib':
@@ -148,6 +163,8 @@ class Admin extends Component<Props, State> {
         return <ProjectForm />;
       case 'newUser':
         return <UserForm />;
+      case 'editUser':
+        return <ViewUser userList={this.state.userList} />;
       default:
         return <p>Select an option from the left.</p>;
     }
@@ -209,6 +226,13 @@ class Admin extends Component<Props, State> {
                 className="list-group-item list-group-item-action"
               >
                 Edit Groups
+              </a>
+              <a
+                href="#"
+                onClick={this.setEditUser}
+                className="list-group-item list-group-item-action"
+              >
+                Edit Users
               </a>
               <a
                 href="#"
