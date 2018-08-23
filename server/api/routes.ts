@@ -330,7 +330,7 @@ router.get('/strategic/groups/:id', async (req, res, next) => {
 });
 
 // gets strategic group info only by id
-router.get('/strategic/groupdetails/:id', async (req, res, next) => {
+router.get('/strategic/group-details/:id', async (req, res, next) => {
   pack(groupsAPI.getGroupDetails(req, req.params.id), res, next);
 });
 

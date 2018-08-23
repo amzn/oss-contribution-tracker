@@ -64,7 +64,7 @@ export default class EditUser extends React.Component<Props, State> {
     const groups = [];
     for (const key in this.state.groups) {
       if (this.state.groups.hasOwnProperty(key)) {
-        const group = (await reqJSON(`/api/strategic/groupdetails/${key}`))
+        const group = (await reqJSON(`/api/strategic/group-details/${key}`))
           .group;
         if (group) {
           groups.push(
