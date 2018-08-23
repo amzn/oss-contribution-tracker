@@ -192,6 +192,10 @@ export async function listUsers(req) {
   return { users: await dbusers.listAllUsers() };
 }
 
+export async function listGroupUsers(req) {
+  return { users: await dbusers.listAllUsersInGroups() };
+}
+
 export async function addNewGroup(req, body) {
   const groupId = await dbgroups.addNewGroup(
     body.groupName,

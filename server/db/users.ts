@@ -18,6 +18,11 @@ export function listAllUsers() {
   return pg().query('select * from users');
 }
 
+// lists all users that are a member of at least one group
+export function listAllUsersInGroups() {
+  return pg().query(`select * from users where groups::text != '{}'::text;`);
+}
+
 export function searchUserByGithub(alias) {
   return pg().oneOrNone('select * from users where github_alias = $1', [alias]);
 }

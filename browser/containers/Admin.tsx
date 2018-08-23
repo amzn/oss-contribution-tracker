@@ -94,7 +94,7 @@ class Admin extends Component<Props, State> {
   };
 
   getUsers = async () => {
-    const userList = await reqJSON('/api/strategic/users');
+    const userList = await reqJSON('/api/strategic/groups/users');
     this.setState({
       userList: userList.users,
     });
