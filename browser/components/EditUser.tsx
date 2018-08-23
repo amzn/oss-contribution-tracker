@@ -159,6 +159,12 @@ export default class EditUser extends React.Component<Props, State> {
                     onChange={this.handleGithubChange}
                   />
                 </div>
+                <br />
+                <p>
+                  Here are the dates that {this.state.company_alias} joined each
+                  group
+                </p>
+                <hr />
                 {this.state.groupList}
                 <button
                   className="btn btn-secondary"
