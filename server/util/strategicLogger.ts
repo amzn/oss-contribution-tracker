@@ -4,9 +4,9 @@ const pgPromise = require('pg-promise');
 const octokit = require('@octokit/rest')();
 
 /* database functions */
-function contributionExists(pg, contribId) {
-  return pg.query('select * from contributions where github_id=$1', [
-    contribId,
+function contributionExists(pg, url) {
+  return pg.query('select * from contributions where contribution_url=$1', [
+    url,
   ]);
 }
 
@@ -34,7 +34,7 @@ function listGroupsByGithub(pg, alias) {
   );
 }
 
-function getAmazonAliasByGithub(pg, alias) {
+function getCompanyAliasByGithub(pg, alias) {
   return pg.oneOrNone('select company_alias from users where github_alias=$1', [
     alias,
   ]);
@@ -43,20 +43,19 @@ function getAmazonAliasByGithub(pg, alias) {
 async function addWhitelistedContrib(pg, contrib, projId) {
   const desc = contrib.title;
   const date = contrib.created_at;
-  const alias = (await getAmazonAliasByGithub(pg, contrib.user.login))
+  const alias = (await getCompanyAliasByGithub(pg, contrib.user.login))
     .company_alias;
   const githubStat = contrib.state;
-  const contribUrl = contrib.html_url;
-  const githubId = contrib.id;
+  const contribUrl = contrib.pull_request.html_url;
 
   const approver = 1; // get approverId
   const approvalStat = 'approved-strategic';
   return await pg.none(
     'insert into contributions (project_id, contribution_description, contribution_date, ' +
-      'contributor_alias, contribution_github_status, contribution_url, github_id, approver_id, ' +
+      'contributor_alias, contribution_github_status, contribution_url, approver_id, ' +
       'approval_status, approval_notes, approval_date, contribution_submission_date, ' +
       'contribution_closed_date, contribution_project_review, contribution_metadata) ' +
-      'values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15:json)',
+      'values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14:json)',
     [
       projId,
       desc,
@@ -64,7 +63,6 @@ async function addWhitelistedContrib(pg, contrib, projId) {
       alias,
       githubStat,
       contribUrl,
-      githubId,
       approver,
       approvalStat,
       null,
@@ -77,6 +75,20 @@ async function addWhitelistedContrib(pg, contrib, projId) {
   );
 }
 
+async function getLastScrapeDate(pg, id) {
+  return pg.oneOrNone(
+    'select last_scrape_date from scraper where project_id=$1',
+    [id]
+  );
+}
+
+async function updateLastScrapeDate(pg, id) {
+  return pg.none(
+    'insert into scraper (project_id, last_scrape_date) values ($1, $2) on conflict (project_id) do update set last_scrape_date=$2',
+    [id, new Date()]
+  );
+}
+
 async function whitelistedContrib(pg, contrib, groups) {
   const username = contrib.user.login;
   const user = await listGroupsByGithub(pg, username);
@@ -86,23 +98,27 @@ async function whitelistedContrib(pg, contrib, groups) {
   return false;
 }
 
-async function fetchNewContribs(pg, owner, repo) {
-  let response = await octokit.pullRequests.getAll({
-    owner: owner.toString(),
-    repo: repo.toString(),
-    state: 'all',
-  });
+async function fetchNewIssues(pg, owner, repo, date) {
+  let response = null;
+  if (date) {
+    response = await octokit.issues.getForRepo({
+      owner: owner.toString(),
+      repo: repo.toString(),
+      state: 'all',
+      since: date.toString(),
+    });
+  } else {
+    response = await octokit.issues.getForRepo({
+      owner: owner.toString(),
+      repo: repo.toString(),
+      state: 'all',
+    });
+  }
   let { data } = response;
 
-  let lastContribId = data[data.length - 1].id;
-
-  while (
-    octokit.hasNextPage(response) &&
-    (await contributionExists(pg, lastContribId)).length === 0
-  ) {
+  while (octokit.hasNextPage(response)) {
     response = await octokit.getNextPage(response);
     data = data.concat(response.data);
-    lastContribId = data[data.length - 1].id;
   }
 
   return await data;
@@ -122,18 +138,28 @@ async function updateStrategicContribs(pg) {
       // groups this project belongs to
       const groups = (await searchGroupsByProjectId(pg, proj.id)).groups;
 
-      // find all new contributions
-      const contribs = await fetchNewContribs(pg, owner, repo);
+      let date = await getLastScrapeDate(pg, parseInt(proj.id, 10));
 
-      for (const contrib of contribs) {
-        if ((await contributionExists(pg, contrib.id)).length !== 0) {
-          break;
-        }
-        if (await whitelistedContrib(pg, contrib, groups)) {
+      if (date) {
+        date = date.last_scrape_date;
+      }
+
+      // find all new issues
+      const issues = await fetchNewIssues(pg, owner, repo, date);
+
+      for (const issue of issues) {
+        // check that the contribution doesn't exist and it's made by a whitelisted user
+        if (
+          issue.pull_request &&
+          (await contributionExists(pg, issue.pull_request.html_url)).length ===
+            0 &&
+          (await whitelistedContrib(pg, issue, groups))
+        ) {
           // insert to database
-          await addWhitelistedContrib(pg, contrib, proj.id);
+          await addWhitelistedContrib(pg, issue, proj.id);
         }
       }
+      await updateLastScrapeDate(pg, parseInt(proj.id, 10));
     }
   });
 }

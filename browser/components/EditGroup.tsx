@@ -53,7 +53,7 @@ interface Props {
       contribWeek: number;
       contribYear: number;
       github_alias: string;
-      groups: any; // in the format of an number: string, however the number is always changing so I cannot specify a key
+      groups: any; // in the format of a number: string, however the number is always changing so I cannot specify a key
     }>;
   };
   projects: Array<{

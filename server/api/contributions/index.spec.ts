@@ -51,9 +51,47 @@ describe('index', () => {
               return { names: ['alpha', 'beta', 'charlie'] };
             }
           }),
+        getUsersByGroup: jasmine.createSpy('dbusers').and.returnValue([
+          {
+            company_alias: 'alpha',
+            github_alias: 'alpha',
+            groups: {
+              '1': '2018-05-05',
+              '2': '2018-05-05',
+            },
+          },
+          {
+            company_alias: 'beta',
+            github_alias: 'beta',
+            groups: {
+              '1': '2017-08-08',
+              '2': '2017-08-08',
+            },
+          },
+        ]),
       },
       dbcontributions: {
         listStrategicContributionsByGroup: jasmine
+          .createSpy('dbcontributions')
+          .and.returnValue([
+            {
+              contribution_id: 1,
+              project_id: 1,
+              contribution_description: 'test contrib 1',
+              contirbution_date: '2018-06-11',
+              contributor_alias: 'alpha',
+              contribution_url: 'A.com/contrib1',
+            },
+            {
+              contribution_id: 2,
+              project_id: 2,
+              contribution_description: 'test contrib 2',
+              contirbution_date: '2018-06-08',
+              contributor_alias: 'beta',
+              contribution_url: 'B.com/contrib2',
+            },
+          ]),
+        listStrategicContributionsByUser: jasmine
           .createSpy('dbcontributions')
           .and.returnValue([
             {
@@ -142,12 +180,15 @@ describe('index', () => {
     });
     mockery.registerMock('../../db/users', {
       getUsernamesByGroup: mock.dbusers.getUsernamesByGroup,
+      getUsersByGroup: mock.dbusers.getUsersByGroup,
     });
     mockery.registerMock('../../db/contributions', {
       listStrategicContributionsByGroup:
         mock.dbcontributions.listStrategicContributionsByGroup,
       listStrategicContributionsByProject:
         mock.dbcontributions.listStrategicContributionsByProject,
+      listStrategicContributionsByUser:
+        mock.dbcontributions.listStrategicContributionsByUser,
     });
     mockery.registerAllowable('./index');
     contributions = require('./index');
@@ -165,12 +206,30 @@ describe('index', () => {
         1
       );
       expect(mock.dbgroups.getGroupById).toHaveBeenCalled();
-      expect(mock.dbusers.getUsernamesByGroup).toHaveBeenCalled();
+      expect(mock.dbusers.getUsersByGroup).toHaveBeenCalled();
       expect(
-        mock.dbcontributions.listStrategicContributionsByGroup
+        mock.dbcontributions.listStrategicContributionsByUser
       ).toHaveBeenCalled();
       expect(mock.dbprojects.searchProjectById).toHaveBeenCalled();
       expect(contribs).toEqual([
+        {
+          contribution_id: 1,
+          project_id: 1,
+          contribution_description: 'test contrib 1',
+          contirbution_date: '2018-06-11',
+          contributor_alias: 'alpha',
+          contribution_url: 'A.com/contrib1',
+          project_name: 'A',
+        },
+        {
+          contribution_id: 2,
+          project_id: 2,
+          contribution_description: 'test contrib 2',
+          contirbution_date: '2018-06-08',
+          contributor_alias: 'beta',
+          contribution_url: 'B.com/contrib2',
+          project_name: 'B',
+        },
         {
           contribution_id: 1,
           project_id: 1,
