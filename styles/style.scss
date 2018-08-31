@@ -59,4 +59,13 @@ textarea:invalid {
   font-size: 70px;
 }
 
+.btn-transparent {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.btn-transparent:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+
 @import './site.scss';

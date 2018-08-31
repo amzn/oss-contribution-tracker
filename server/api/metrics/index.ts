@@ -46,3 +46,57 @@ export async function allMetrics(req) {
     usersAndCounts: await db.usersAndCounts(),
   };
 }
+
+export async function getAllReports(req) {
+  return [
+    {
+      id: 1,
+      title: 'Contributions by Year',
+    },
+    {
+      id: 2,
+      title: 'Top Contributors',
+    },
+  ];
+}
+
+export async function getReport(req, id) {
+  switch (id) {
+    case '1':
+      return {
+        title: 'Contributions by Year',
+        description: 'This reports contribution and project metrics by year.',
+        tables: [
+          {
+            data: await db.allMetrics(),
+          },
+        ],
+      };
+    case '2':
+      return {
+        title: 'Top Contributors',
+        description:
+          'This lists the top contributors by various bracket levels.',
+        tables: [
+          {
+            title: 'Top Contributors 100+',
+            data: await db.usersByCountRange(100, 500),
+          },
+          {
+            title: 'Top Contributors 50+',
+            data: await db.usersByCountRange(50, 100),
+          },
+          {
+            title: 'Top Contributors 20+',
+            data: await db.usersByCountRange(20, 50),
+          },
+          {
+            title: 'Top Contributors 10+',
+            data: await db.usersByCountRange(10, 20),
+          },
+        ],
+      };
+    default:
+      return { title: null };
+  }
+}

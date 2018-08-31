@@ -32,6 +32,7 @@ import Group from './Group';
 import List from './List';
 import Metrics from './Metrics';
 import Project from './Project';
+import Report from './Report';
 import Strategic from './Strategic';
 
 interface Props {
@@ -47,6 +48,10 @@ interface State {
     groups: string[];
     roles: string[];
   };
+  reports: Array<{
+    title: string;
+    id: number;
+  }>;
 }
 
 enum AccessTypes {
@@ -65,12 +70,14 @@ export class App extends React.Component<Props, State> {
         groups: [],
         roles: [],
       },
+      reports: [],
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const user = await reqJSON('/api/user');
-    this.setState({ user });
+    const reports = await reqJSON('/api/reports/all');
+    this.setState({ user, reports });
   }
 
   dismissError = () => {
@@ -128,11 +135,28 @@ export class App extends React.Component<Props, State> {
     return routes;
   };
 
+  buildReportDropdown = () => {
+    const dropdown = [];
+    for (const report of this.state.reports) {
+      dropdown.push(
+        <a
+          className="dropdown-item"
+          key={report.id.toString()}
+          href={'/reports/' + report.id.toString()}
+        >
+          {report.title}
+        </a>
+      );
+    }
+    return dropdown;
+  };
+
   render() {
     const { generalError } = this.props;
     const { user } = this.state;
 
     const securedRoutes = this.buildSecureRoutes();
+    const dropdownLinks = this.buildReportDropdown();
 
     return (
       <>
@@ -172,14 +196,49 @@ export class App extends React.Component<Props, State> {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/list" className="nav-link">
-                  Contributions By Project
-                </Link>
+                <div className="dropdown">
+                  <button
+                    className="btn btn-transparent dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Contributions
+                  </button>
+                  <div
+                    className="dropdown-menu dropdown-menu-right"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a className="dropdown-item" href="/list">
+                      Contributions By Project
+                    </a>
+                    <a className="dropdown-item" href="/employee">
+                      Contributions By User
+                    </a>
+                  </div>
+                </div>
               </li>
               <li className="nav-item">
-                <Link to="/employee" className="nav-link">
-                  Contributions By User
-                </Link>
+                <div className="dropdown">
+                  <button
+                    className="btn btn-transparent dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Reports
+                  </button>
+                  <div
+                    className="dropdown-menu dropdown-menu-right"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    {dropdownLinks}
+                  </div>
+                </div>
               </li>
             </ul>
             <ExtensionPoint ext="navbar-end" user={user} />
@@ -219,6 +278,11 @@ export class App extends React.Component<Props, State> {
                   exact={true}
                   path="/contribute/link"
                   component={GithubLinkUpdater}
+                />
+                <Route
+                  exact={true}
+                  path="/reports/:report_id"
+                  component={Report}
                 />
                 {securedRoutes}
                 <ExtensionPoint ext="routes-additional" />
