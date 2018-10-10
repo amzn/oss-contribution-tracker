@@ -12,8 +12,8 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
+import { CSVLink } from 'react-csv';
 import ReactTable from 'react-table';
-import * as utils from '../util/exportCsv';
 
 import TableApprovalStatusCell from '../components/TableApprovalStatusCell';
 import TableEditCell from '../components/TableEditCell';
@@ -50,10 +50,6 @@ export default class EditContributionTable extends React.Component<
       contributionList: nextProps.contributionList,
     });
   }
-
-  csvDownload = () => {
-    utils.onClickDownload(this.state.contributionList);
-  };
 
   render() {
     return (
@@ -110,9 +106,14 @@ export default class EditContributionTable extends React.Component<
           filterable={true}
         />
         <br />
-        <button onClick={this.csvDownload} className="btn btn-secondary">
-          <i className="fa fa-download" /> Download CSV
-        </button>
+        <CSVLink
+          data={this.state.contributionList}
+          filename="All-contributions.csv"
+        >
+          <button className="btn btn-secondary">
+            <i className="fa fa-download" /> Download CSV
+          </button>
+        </CSVLink>
       </div>
     );
   }

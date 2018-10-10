@@ -182,8 +182,8 @@ export async function getLastWeekCount(ids, users) {
     'select count(*) as numContribs from contributions ' +
       'WHERE contribution_date BETWEEN ' +
       'NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-7 ' +
-      'AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3)',
-    [ids, 'approved-strategic', users]
+      'AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER AND project_id=ANY($1) AND contributor_alias=ANY($2)',
+    [ids, users]
   );
 }
 
@@ -192,8 +192,8 @@ export async function getMTDCount(ids, users) {
     'select count(*) as numContribs from contributions ' +
       'WHERE (contribution_date BETWEEN ' +
       '(NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER + 1)::DATE ' +
-      'AND NOW()::DATE) AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3)',
-    [ids, 'approved-strategic', users]
+      'AND NOW()::DATE) AND project_id=ANY($1) AND contributor_alias=ANY($2)',
+    [ids, users]
   );
 }
 
@@ -202,8 +202,8 @@ export async function getLastMonthCount(ids, users) {
     'select count(*) as numContribs from contributions ' +
       'WHERE (contribution_date BETWEEN ' +
       '(NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER + 1 - INTERVAL $1)::DATE ' +
-      'AND (NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER)::DATE) AND project_id=ANY($2) AND approval_status=$3 AND contributor_alias=ANY($4)',
-    ['1 MONTH', ids, 'approved-strategic', users]
+      'AND (NOW()::DATE-EXTRACT(DAY FROM NOW())::INTEGER)::DATE) AND project_id=ANY($2) AND contributor_alias=ANY($3)',
+    ['1 MONTH', ids, users]
   );
 }
 
@@ -212,15 +212,15 @@ export async function getYTDCount(ids, users) {
     'select count(*) as numContribs from contributions ' +
       'WHERE (contribution_date BETWEEN ' +
       "DATE_TRUNC('year', now()) AND now() " +
-      'AND project_id=ANY($1) AND approval_status=$2 AND contributor_alias=ANY($3))',
-    [ids, 'approved-strategic', users]
+      'AND project_id=ANY($1) AND contributor_alias=ANY($2))',
+    [ids, users]
   );
 }
 
 export async function listStrategicContributionsByGroup(projects, users) {
   return await pg().query(
     'select * from contributions where project_id=ANY($1) ' +
-      "and contributor_alias=ANY($2) and approval_status='approved-strategic' " +
+      'and contributor_alias=ANY($2) ' +
       'order by contribution_date desc',
     [projects, users]
   );
@@ -237,7 +237,6 @@ export async function listStrategicContributionsByUser(user, projects, date) {
 export async function listStrategicContributionsByProject(id) {
   return await pg().query(
     'select * from contributions where project_id=$1 ' +
-      "and approval_status='approved-strategic' " +
       'order by contribution_date desc',
     [id]
   );
@@ -249,7 +248,6 @@ export async function monthlyStrategicContributionsByProject(id, users, date) {
 
   return await pg().query(
     'select * from contributions where project_id = $1 ' +
-      "and approval_status='approved-strategic' " +
       'and EXTRACT(MONTH from contribution_date) = $2 ' +
       'and EXTRACT(YEAR from contribution_date) = $3 ' +
       'and contributor_alias=ANY($4) ' +

@@ -94,6 +94,14 @@ router.get('/metrics/all', (req, res, next) => {
   pack(metricsAPI.allMetrics(req), res, next);
 });
 
+router.get('/reports/all', (req, res, next) => {
+  pack(metricsAPI.getAllReports(req), res, next);
+});
+
+router.get('/reports/:id', (req, res, next) => {
+  pack(metricsAPI.getReport(req, req.params.id), res, next);
+});
+
 router.get('/projects', (req, res, next) => {
   pack(projectsAPI.listProjects(req), res, next);
 });

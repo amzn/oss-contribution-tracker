@@ -62,3 +62,13 @@ export function allMetrics() {
       'count(distinct project_id) as project_count from contributions group by year order by year'
   );
 }
+
+export function usersByCountRange(low, high) {
+  return pg().query(
+    'select contributor_alias as "Alias", count(contributor_alias) as "Count" from contributions ' +
+      'group by contributor_alias having count(contributor_alias) >= $1 ' +
+      'and count(contributor_alias) < $2 ' +
+      'order by "Count" desc',
+    [low, high]
+  );
+}

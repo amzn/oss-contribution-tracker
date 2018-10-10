@@ -45,17 +45,14 @@ This group has ${report.users.length} contributors and ${
     report.projects.length
   } projects.
 
-There were a total of ${report.group.total} contributions in ${
+The group made a total of ${report.group.strategic} contributions in ${
     months[month]
   } ${year}.
 `;
 
-  if (report.group.total !== 0) {
-    summary += `${
-      report.group.strategic
-    } of those contributions were strategic (${report.group.strategic /
-      report.group.total *
-      100}%).\n`;
+  if (report.group.total - report.group.strategic !== 0) {
+    summary += `There were ${report.group.total -
+      report.group.strategic} other contributions across Amazon this month.\n`;
   }
 
   summary += `
@@ -74,21 +71,17 @@ Project Metrics
 `;
   for (const project of report.projects) {
     summary += `Project: ${project.project_name}
-There were a total of ${project.total} contributions to this project.
+The group made ${project.strategic} contributions to this project this month.
 `;
 
-    if (project.total !== 0) {
-      summary += `${
-        project.strategic
-      } of those contributions were strategic (${project.strategic /
-        project.total *
-        100}%).
-
+    if (project.total - project.strategic !== 0) {
+      summary += `There were ${project.total -
+        project.strategic} other contributions to this porject across Amazon this month.
 `;
     }
 
     if (project.strategic !== 0) {
-      summary += `The full list of strategic contributions is:
+      summary += `\nThe full list of strategic contributions is:
 `;
       for (const contribution of project.contributions) {
         summary += `${contribution.contributor_alias} -- ${

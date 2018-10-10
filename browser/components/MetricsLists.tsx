@@ -49,95 +49,68 @@ export default class MetricsLists extends React.Component<Props, {}> {
     });
   }
 
-  topContributors = list => {
-    return list ? (
-      list.map(item => {
-        return (
-          <li key={'topContributors_' + item.alias}>
-            {item.alias} | {item.count}
-          </li>
-        );
-      })
-    ) : (
-      <div />
-    );
-  };
-
   render() {
-    const metrics = this.metricsAll();
     const curYear = new Date().getFullYear();
     return (
       <div id="metrics">
         <h2>Metrics</h2>
-        <div className="row">
-          <div className="col-xl-3">
-            <RadzChart
-              data={this.getProcessedList(
-                this.props.topContribProjectsThisYear.slice(0, 10)
-              )}
-              centerText={curYear.toString()}
-              height={200}
-              width={300}
-              id={'viz' + curYear.toString()}
-              cornerRadius={0.3}
-              padAngle={0.015}
-              centerTextSize={'40px'}
-              centerTextdx={'-1em'}
-            />
-          </div>
+        <div>
+          <div className="row">
+            <div className="col">
+              <div className="float-left">
+                <RadzChart
+                  data={this.getProcessedList(
+                    this.props.topContribProjectsThisYear.slice(0, 10)
+                  )}
+                  centerText={curYear.toString()}
+                  height={150}
+                  width={450}
+                  id={'viz' + curYear.toString()}
+                  cornerRadius={0.3}
+                  padAngle={0.015}
+                  centerTextSize={'20px'}
+                  centerTextdx={'-1em'}
+                />
+              </div>
+              <div className="float-right">
+                <RadzChart
+                  data={this.getProcessedList(
+                    this.props.topContribProjectsLastYear.slice(0, 10)
+                  )}
+                  centerText={(curYear - 1).toString()}
+                  height={150}
+                  width={450}
+                  id={'viz' + (curYear - 1).toString()}
+                  cornerRadius={0.3}
+                  padAngle={0.015}
+                  centerTextSize={'20px'}
+                  centerTextdx={'-1em'}
+                />
+              </div>
+            </div>
 
-          <div className="col-xl-6">
-            <RadzChart
-              data={this.getProcessedList(
-                this.props.topContribProjectsAllTime.slice(0, 10)
-              )}
-              centerText={'All Time'}
-              height={300}
-              width={500}
-              id={'vizalltime'}
-              cornerRadius={0.3}
-              padAngle={0.015}
-              centerTextSize={'45px'}
-              centerTextdx={'-1.6em'}
-            />
-          </div>
+            <div className="col">
+              <RadzChart
+                data={this.getProcessedList(
+                  this.props.topContribProjectsAllTime.slice(0, 10)
+                )}
+                centerText={'All Time'}
+                height={300}
+                width={550}
+                id={'vizalltime'}
+                cornerRadius={0.3}
+                padAngle={0.015}
+                centerTextSize={'30px'}
+                centerTextdx={'-1.7em'}
+              />
+            </div>
 
-          <div className="col-xl-3">
-            <RadzChart
-              data={this.getProcessedList(
-                this.props.topContribProjectsLastYear.slice(0, 10)
-              )}
-              centerText={(curYear - 1).toString()}
-              height={200}
-              width={300}
-              id={'viz' + (curYear - 1).toString()}
-              cornerRadius={0.3}
-              padAngle={0.015}
-              centerTextSize={'40px'}
-              centerTextdx={'-1em'}
-            />
-          </div>
-        </div>
-        <h4>Contributions by Year</h4>
-        <div className="row" id="chart">
-          <div className="col-xl-8">
-            <SimpleLineChart metricsDataByYear={this.props.allMetrics} />
-          </div>
-          <div className="col-xl-4 center">
-            <ul>{metrics}</ul>
+            <div className="col" id="chart">
+              <SimpleLineChart metricsDataByYear={this.props.allMetrics} />
+            </div>
           </div>
         </div>
-        <h4>Top Contributors 100+</h4>
-        <ul>{this.topContributors(this.props.usersAndCounts.onehundo)}</ul>
-
-        <h4>Top Contributors 50+</h4>
-        <ul>{this.topContributors(this.props.usersAndCounts.fifty)}</ul>
-
-        <h4>Top Contributors 20+</h4>
-        <ul>{this.topContributors(this.props.usersAndCounts.twenty)}</ul>
-
-        <h4>Top Contributors 10+</h4>
-        <ul>{this.topContributors(this.props.usersAndCounts.ten)}</ul>
+        <br />
       </div>
     );
   }

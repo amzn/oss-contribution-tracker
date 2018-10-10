@@ -42,7 +42,7 @@ export default class Metrics extends React.Component<Props, State> {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const metrics = await reqJSON('/api/metrics/all');
     const topTenContributor = [];
     const topTwentyContributor = [];
@@ -120,6 +120,19 @@ export default class Metrics extends React.Component<Props, State> {
       this.state.topContribProjectsThisYear,
       this.state.topContribProjectsLastYear
     );
-    return <ExtensionPoint ext="landing-content">{metrics}</ExtensionPoint>;
+    return (
+      <div>
+        <ExtensionPoint ext="landing-blurb">
+          <h1>Welcome to OSS-Contribution-Tracker.</h1>
+          <h4>
+            OSS-Contribution-Tracker is a tool that tracks external
+            contributions to third-party open source software and CLAs that are
+            sometimes associated.
+          </h4>
+        </ExtensionPoint>
+        <br />
+        <ExtensionPoint ext="landing-content">{metrics}</ExtensionPoint>
+      </div>
+    );
   }
 }
