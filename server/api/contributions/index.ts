@@ -162,13 +162,12 @@ export async function diffCheck(req, body) {
 export async function updateContribution(req, body) {
   if (body.project_new) {
     // This is claimed to be a new project so let's find out and create if necessary
-    // TODO: toggle back to false once multiple people are submitting contributions
     const resp = await dbProjects.addProject(
       body.project_name,
       null,
       null,
-      true
-    ); // false);
+      config.contributions.autoApprove.newProjects
+    );
     body.project_id = resp.project_id;
   }
   const contributionID = await dbContribution.updateContribution(
