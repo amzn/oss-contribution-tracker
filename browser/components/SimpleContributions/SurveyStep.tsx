@@ -13,12 +13,14 @@ import { StepName } from './steps';
  */
 
 interface Props<D> {
-  data: {[k in StepName]: any};
+  data: { [k in StepName]: any };
   ownData: D;
   trail: StepName[];
   changeStep: (nextStep: StepName) => void;
   setStepData: (data: D) => void;
 }
 
-export default class SurveyStep<S, D = any> extends React.Component<Props<D>, S> {
-}
+export default class SurveyStep<S, D = any> extends React.Component<
+  Props<D>,
+  S
+> {}

@@ -9,7 +9,6 @@ interface State {
 }
 
 export default class AutoApproved extends SurveyStep<State> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -23,14 +22,19 @@ export default class AutoApproved extends SurveyStep<State> {
     // last element (len-1) is this step; look for second-to-last
     if (trail[trail.length - 2] !== 'approval-router') {
       // usage of console intentional
-      console.error('Reached auto-approval step before router. This is a bug!', trail);
+      // tslint:disable-next-line:no-console
+      console.error(
+        'Reached auto-approval step before router. This is a bug!',
+        trail
+      );
       throw new Error('Invalid approval state');
     }
+    // tslint:disable-next-line:no-floating-promises
     this.submitAutoContribution();
   }
 
   submitAutoContribution = async () => {
-    this.setState({loading: true, error: null});
+    this.setState({ loading: true, error: null });
     const data = this.props.data;
     const trail = this.props.trail;
     try {
@@ -51,7 +55,7 @@ export default class AutoApproved extends SurveyStep<State> {
         loading: false,
       });
     }
-  }
+  };
 
   render() {
     if (this.state.loading) {
@@ -66,10 +70,13 @@ export default class AutoApproved extends SurveyStep<State> {
       return (
         <div>
           There was a problem submitting your contribution:
-
           <p>{this.state.error}</p>
-
-          <button className="btn btn-secondary" onClick={this.submitAutoContribution}>Retry</button>
+          <button
+            className="btn btn-secondary"
+            onClick={this.submitAutoContribution}
+          >
+            Retry
+          </button>
         </div>
       );
     }
@@ -77,16 +84,15 @@ export default class AutoApproved extends SurveyStep<State> {
     return (
       <div>
         <p>
-          Your contribution falls within auto-approvable policies. It has been logged as a pending contribution. Submit your contribution to the upstream project, then return here to update it:
+          Your contribution falls within auto-approvable policies. It has been
+          logged as a pending contribution. Submit your contribution to the
+          upstream project, then return here to update it:
         </p>
         <p>
           <a href="/contribute/link">Manage pending contributions</a>
         </p>
-        <p>
-          Thank you for contributing to open source!
-        </p>
+        <p>Thank you for contributing to open source!</p>
       </div>
     );
   }
-
 }

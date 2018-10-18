@@ -5,24 +5,32 @@ import { register } from '../ext';
 
 import SimpleContribWizard from '../components/SimpleContributions/SimpleContribWizard';
 
-register('routes-additional', ({user}) => {
+register('routes-additional', ({ user }) => {
   return (
-    <Route exact path="/contribute/intake" component={SimpleContribWizard} />
+    <Route
+      exact={true}
+      path="/contribute/intake"
+      component={SimpleContribWizard}
+    />
   );
 });
 
-register('navbar-contribution', ({user}) => {
+register('navbar-contribution', ({ user }) => {
   if (!user.roles.includes('auto-approve')) {
     return null;
   }
 
   return (
-    <Link to="/contribute/intake" className="nav-link">Submit New Contribution</Link>
+    <Link to="/contribute/intake" className="nav-link">
+      Submit New Contribution
+    </Link>
   );
 });
 
-register('navbar-admin-links', (props) => {
+register('navbar-admin-links', props => {
   return (
-    <Link to="/contribute" className="nav-link">Log Contribution</Link>
+    <Link to="/contribute" className="nav-link">
+      Log Contribution
+    </Link>
   );
 });

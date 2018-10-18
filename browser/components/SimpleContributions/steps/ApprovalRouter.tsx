@@ -4,8 +4,7 @@ import SurveyStep from '../SurveyStep';
 
 import { config } from '../../../../server/config';
 
-export default class AutoApproved extends SurveyStep<{}> {
-
+export default class ApprovalRouter extends SurveyStep<{}> {
   constructor(props) {
     super(props);
   }
@@ -38,7 +37,11 @@ export default class AutoApproved extends SurveyStep<{}> {
     }
 
     // check the contribution type
-    if (!config.contributions.autoApprove.allowedTypes.includes(data['contrib-type'].type)) {
+    if (
+      !config.contributions.autoApprove.allowedTypes.includes(
+        data['contrib-type'].type
+      )
+    ) {
       return false;
     }
 
@@ -54,10 +57,9 @@ export default class AutoApproved extends SurveyStep<{}> {
     }
 
     return true;
-  }
+  };
 
   render() {
     return <p>Verifying your submission...</p>;
   }
-
 }

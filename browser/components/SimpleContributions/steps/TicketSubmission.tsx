@@ -5,17 +5,15 @@ import ExtensionPoint from '../../../util/ExtensionPoint';
 import SurveyStep from '../SurveyStep';
 
 export default class TicketSubmission extends SurveyStep<{}> {
-
   render() {
-
     return (
       <div>
-        <p>
-          Your change was not able to be automatically approved. You must follow the regular <Link to="/contribute">Log Contribution</Link> process.
-        </p>
-
         <ExtensionPoint ext="simple-contrib-auto-approve-deny">
-          <p/>
+          <p>
+            Your change was not able to be automatically approved. You must
+            follow the regular <Link to="/contribute">Log Contribution</Link>
+            process.
+          </p>
         </ExtensionPoint>
       </div>
     );
