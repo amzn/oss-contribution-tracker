@@ -8,9 +8,8 @@ import ProjectDetails from './steps/ProjectDetails';
 import ProjectPicker from './steps/ProjectPicker';
 import TicketSubmission from './steps/TicketSubmission';
 
-
 export const steps = {
-  'agreement': Agreement,
+  agreement: Agreement,
   'project-picker': ProjectPicker,
   'project-details': ProjectDetails,
   'contrib-type': ContribType,

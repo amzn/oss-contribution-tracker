@@ -91,7 +91,15 @@ config.cron = {
 // load once asked for
 function load() {
   // verify users filled out the config
-  if (!config.display.signatory || !config.display.poc || config.admin.posixGroup.length === 0 || !config.approver.posixGroup || !config.ldap.o || !config.ldap.url === 'ldaps://' || !config.database.password) {
+  if (
+    !config.display.signatory ||
+    !config.display.poc ||
+    config.admin.posixGroup.length === 0 ||
+    !config.approver.posixGroup ||
+    !config.ldap.o ||
+    !config.ldap.url === 'ldaps://' ||
+    !config.database.password
+  ) {
     throw new Error('You have not properly filled out the config file.');
     process.exit(1);
   } else {

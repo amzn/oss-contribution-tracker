@@ -5,11 +5,10 @@ import { StepName, steps } from './steps';
 interface State {
   step: StepName;
   trail: StepName[];
-  data: {[k in StepName]: any};
+  data: { [k in StepName]: any };
 }
 
 export default class SimpleContribWizard extends React.Component<{}, State> {
-
   constructor(props) {
     super(props);
 
@@ -30,7 +29,7 @@ export default class SimpleContribWizard extends React.Component<{}, State> {
       step: nextStep,
       trail: this.state.trail.concat([nextStep]),
     });
-  }
+  };
 
   setStepData = (data: any) => {
     this.setState({
@@ -39,17 +38,19 @@ export default class SimpleContribWizard extends React.Component<{}, State> {
         [this.state.step]: data,
       },
     });
-  }
+  };
 
   renderStep(name: StepName) {
     const Step = steps[name];
-    return <Step
-      data={this.state.data}
-      ownData={this.state.data[name]}
-      trail={this.state.trail}
-      changeStep={this.changeStep}
-      setStepData={this.setStepData}
-    />;
+    return (
+      <Step
+        data={this.state.data}
+        ownData={this.state.data[name]}
+        trail={this.state.trail}
+        changeStep={this.changeStep}
+        setStepData={this.setStepData}
+      />
+    );
   }
 
   render() {
@@ -63,5 +64,4 @@ export default class SimpleContribWizard extends React.Component<{}, State> {
       </div>
     );
   }
-
 }
