@@ -34,16 +34,17 @@ config.database = {
 config.fallbackUser = 'nobody';
 
 config.ldap = {
-  o: '', // objectClass
+  o: null, // objectClass
   url: 'ldaps://', // ldap server url
+  attributes: [],
 };
 
 config.admin = {
-  posixGroup: [''], // admin posix group(s)
+  posixGroup: [], // admin posix group(s)
 };
 
 config.approver = {
-  posixGroup: '', // approver posix group
+  posixGroup: null, // approver posix group
 };
 
 config.roles = {
@@ -53,16 +54,55 @@ config.roles = {
 // Users defined for dropdowns
 config.display = {
   signatory: [
-    'ADD A SIGNATORY', // user(s) that approve CCLAs
+    null, // user(s) that approve CCLAs
   ],
   poc: [
-    'ADD A POC', // user(s) that are points of contacts for CCLAs
+    null, // user(s) that are points of contacts for CCLAs
   ],
+};
+
+// Line limit for the diff checker
+config.contributions = {
+  autoApprove: {
+    // contribution types allowed for simple contribution
+    // allowedTypes: allowed options: bugfix, feature, doc, config, test, other
+    allowedTypes: ['bugfix', 'doc', 'config', 'test'],
+    // contribDescTypes: used in ContribTypes for steps that require additional contributions details
+    contribDescTypes: ['feature', 'other'],
+    diffLimit: 100,
+    newProjects: false,
+  },
+};
+
+/*
+ * Config for cron scheduler
+ * type: onbox, crontab, none
+ * cronTime: scheduler in cron pattern starting from seconds
+ * timeZone: string of the timezone
+ */
+config.cron = {
+  type: 'onbox', // runs cron-like js scheduler
+  cronTime: '* * * * *', // configure cron schedule
+  timeZone: 'America/Los_Angeles', // configure timezone
 };
 
 // load once asked for
 function load() {
-  return Promise.resolve(config);
+  // verify users filled out the config
+  if (
+    !config.display.signatory ||
+    !config.display.poc ||
+    config.admin.posixGroup.length === 0 ||
+    !config.approver.posixGroup ||
+    !config.ldap.o ||
+    !config.ldap.url === 'ldaps://' ||
+    !config.database.password
+  ) {
+    throw new Error('You have not properly filled out the config file.');
+    process.exit(1);
+  } else {
+    return Promise.resolve(config);
+  }
 }
 
 module.exports = {

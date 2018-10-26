@@ -65,6 +65,19 @@ config.display = {
   ],
 };
 
+// Line limit for the diff checker
+config.contributions = {
+  autoApprove: {
+    // contribution types allowed for simple contribution
+    // allowed options: bugfix, feature, doc, config, test, other
+    allowedTypes: ['bugfix', 'doc', 'config', 'test'],
+    // contribDescTypes: used in ContribTypes for steps that require additional contributions details
+    contribDescTypes: ['feature', 'other'],
+    diffLimit: 100,
+    newProjects: false,
+  },
+};
+
 /*
  * Config for cron scheduler
  * type: onbox, crontab, none
@@ -79,7 +92,21 @@ config.cron = {
 
 // load once asked for
 function load() {
-  return Promise.resolve(config);
+  // verify users filled out the config
+  if (
+    !config.display.signatory ||
+    !config.display.poc ||
+    config.admin.posixGroup.length === 0 ||
+    !config.approver.posixGroup ||
+    !config.ldap.o ||
+    !config.ldap.url === 'ldaps://' ||
+    !config.database.password
+  ) {
+    throw new Error('You have not properly filled out the config file.');
+    process.exit(1);
+  } else {
+    return Promise.resolve(config);
+  }
 }
 
 module.exports = {
