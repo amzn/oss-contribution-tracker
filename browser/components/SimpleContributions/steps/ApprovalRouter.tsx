@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import SurveyStep from '../SurveyStep';
 
-import { config } from '../../../../server/config';
+import { browser } from '../../../../server/config';
 
 export default class ApprovalRouter extends SurveyStep<{}> {
   constructor(props) {
@@ -38,7 +38,7 @@ export default class ApprovalRouter extends SurveyStep<{}> {
 
     // check the contribution type
     if (
-      !config.contributions.autoApprove.allowedTypes.includes(
+      !browser.autoApprove.allowedTypes.includes(
         data['contrib-type'].type
       )
     ) {

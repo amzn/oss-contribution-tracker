@@ -110,7 +110,8 @@ function load() {
 }
 
 module.exports = {
-  default: config,
+  browser: config.contributions,
   config: config,
-  load: base.load,
+  default: config,
+  load,
 };

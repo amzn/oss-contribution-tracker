@@ -17,5 +17,6 @@ const actual = require(`../config/${name}.js`);
 
 export let config = actual.config;
 export let load = actual.load;
+export let browser = actual.browser;
 
 export default config;

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import SurveyStep from '../SurveyStep';
 
-import { config } from '../../../../server/config';
+import { browser } from '../../../../server/config';
 
 type TypeName = 'bugfix' | 'feature' | 'doc' | 'config' | 'test' | 'other';
 
@@ -28,7 +28,7 @@ export default class ContribType extends SurveyStep<{}, Data> {
 
   nextStep = () => {
     if (
-      config.contributions.autoApprove.contribDescTypes.includes(
+      browser.autoApprove.contribDescTypes.includes(
         this.props.ownData.type
       )
     ) {
