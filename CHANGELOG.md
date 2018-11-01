@@ -13,6 +13,9 @@ require manual edits to pluggable interfaces.
 
 ## 1.1.0
 
+### Changed
+- Added config for the browser (browser/config.js) to control the simpleContributions workflow.
+
 ### Added
 - This CHANGELOG.md! Unless requested I am not going to backfill the changelog.
 - Simple contribution process. This adds a new way to submit contributions that allows for automatic approval based on type and size of contribution. These are setup through the config.contributions.autoApprove object which allows you to specify the allowed length of the change as well as differing types.

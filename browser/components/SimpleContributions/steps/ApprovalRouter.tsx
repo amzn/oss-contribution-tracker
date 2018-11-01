@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import SurveyStep from '../SurveyStep';
 
-import { browser } from '../../../../server/config';
+import { browser } from '../../../config';
 
 export default class ApprovalRouter extends SurveyStep<{}> {
   constructor(props) {

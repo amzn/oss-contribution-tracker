@@ -8,7 +8,7 @@
     "noUnusedLocals": true
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts", "../browser/config.js"
   ],
   "exclude": [
     "node_modules"
