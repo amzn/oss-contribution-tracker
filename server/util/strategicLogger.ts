@@ -3,6 +3,11 @@
 const pgPromise = require('pg-promise');
 const octokit = require('@octokit/rest')();
 
+function sleep() {
+  /* Use random sleep time (3-12 seconds) to avoid stampeding the API */
+  return new Promise(resolve => setTimeout(resolve, Math.floor((Math.random() * 10000) + 3000)));
+};
+
 /* database functions */
 function contributionExists(pg, url) {
   return pg.query('select * from contributions where contribution_url=$1', [
@@ -115,10 +120,12 @@ async function fetchNewIssues(pg, owner, repo, date) {
     });
   }
   let { data } = response;
+  await sleep();
 
   while (octokit.hasNextPage(response)) {
     response = await octokit.getNextPage(response);
     data = data.concat(response.data);
+    await sleep();
   }
 
   return await data;

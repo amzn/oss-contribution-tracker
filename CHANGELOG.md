@@ -15,6 +15,7 @@ require manual edits to pluggable interfaces.
 
 ### Changed
 - Added config for the browser (browser/config.js) to control the simpleContributions workflow.
+- strategicLogger.ts can stampede the GitHub API and throw abuse errors so I added a sleep function (random sleep between 3 and 12 seconds) to stutter the requests.
 
 ### Added
 - This CHANGELOG.md! Unless requested I am not going to backfill the changelog.
