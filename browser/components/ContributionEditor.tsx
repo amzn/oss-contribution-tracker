@@ -36,6 +36,10 @@ interface State {
   approval_status: string;
   projectDisabled: boolean;
   alert: any;
+  contrib_contrib_date: string,
+  contrib_notification_date: string,
+  contrib_close_date: string,
+  approval_date: string,
 }
 
 class ContributionsEditor extends React.Component<Partial<Props>, State> {
@@ -49,6 +53,10 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       approval_status: '',
       projectDisabled: false,
       alert: null,
+      contrib_contrib_date: '',
+      contrib_notification_date: '',
+      contrib_close_date: '',
+      approval_date: '',
     };
   }
 
@@ -80,6 +88,25 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
         this.setState({
           project_name: nextProps.contrib_data.project_name,
         });
+      }
+      if (this.state.contrib.contribution_date) {
+        this.setState({
+          contrib_contrib_date: this.formatDate(this.state.contrib.contribution_date)});
+      }
+      if (this.state.contrib.contribution_submission_date){
+        this.setState({
+          contrib_notification_date: this.formatDate(this.state.contrib.contribution_submission_date)
+        })
+      }
+      if (this.state.contrib.approval_date){
+        this.setState({
+          approval_date: this.formatDate(this.state.contrib.approval_date)
+        })
+      }
+      if (this.state.contrib.contribution_closed_date){
+        this.setState({
+          contrib_close_date: this.formatDate(this.state.contrib.contribution_closed_date)
+        })
       }
     } else {
       this.setState({
@@ -244,6 +271,31 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     });
   };
 
+  formatDate = date => {
+    return new Date(date).toISOString().split('T')[0];
+  };
+
+  handleDateChange = d => {
+    const target = d.target;
+    if (target.id === 'contributionDateInput') {
+      this.setState({
+        contrib_contrib_date: target.value
+      });
+    } else if (target.id === 'contributionSubmissionDateInput') {
+      this.setState({
+        contrib_notification_date: target.value
+      });
+    } else if (target.id === 'approvalDateInput') {
+      this.setState({
+        approval_date: target.value
+      });
+    } else if (target.id === 'contributionClosedDateInput') {
+      this.setState({
+        contrib_close_date: target.value
+      });
+    }
+  };
+
   render() {
     const values = [
       { label: 'approved', value: 'approved' },
@@ -293,6 +345,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   className="form-control"
                   id="contributionDateInput"
                   name="contributionDateInput"
+                  value={this.state.contrib_contrib_date}
+                  onChange={this.handleDateChange}
                 />
               </div>
               <div className="form-group">
@@ -302,6 +356,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   className="form-control"
                   id="contributionSubmissionDateInput"
                   name="contributionSubmissionDateInput"
+                  value={this.state.contrib_notification_date}
+                  onChange={this.handleDateChange}
                 />
               </div>
               <div className="form-group">
@@ -311,6 +367,8 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   className="form-control"
                   id="approvalDateInput"
                   name="approvalDateInput"
+                  value={this.state.approval_date}
+                  onChange={this.handleDateChange}
                 />
               </div>
               <div className="form-group">
@@ -318,7 +376,10 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                 <input
                   type="date"
                   className="form-control"
+                  id="contributionClosedDateInput"
                   name="contributionClosedDateInput"
+                  value={this.state.contrib_close_date}
+                  onChange={this.handleDateChange}
                 />
               </div>
               <div className="form-group">
