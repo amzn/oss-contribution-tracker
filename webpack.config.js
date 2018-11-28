@@ -30,10 +30,6 @@ let plugins = [
     jQuery: 'jquery',
     Popper: ['popper.js', 'default'],
   }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    filename: 'vendor.bundle.js',
-  }),
   new ExtractTextPlugin('[name].css'),
 ];
 
@@ -42,6 +38,7 @@ if (prod) {
 }
 
 module.exports = {
+  mode: 'none',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.scss'],
   },

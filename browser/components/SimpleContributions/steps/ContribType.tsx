@@ -28,9 +28,8 @@ export default class ContribType extends SurveyStep<{}, Data> {
 
   nextStep = () => {
     if (
-      browser.autoApprove.contribDescTypes.includes(
-        this.props.ownData.type as any
-      )
+      browser.autoApprove.contribDescTypes.includes(this.props.ownData
+        .type as any)
     ) {
       this.props.changeStep('contrib-description');
     } else {

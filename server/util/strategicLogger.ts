@@ -5,8 +5,10 @@ const octokit = require('@octokit/rest')();
 
 function sleep() {
   /* Use random sleep time (3-12 seconds) to avoid stampeding the API */
-  return new Promise(resolve => setTimeout(resolve, Math.floor((Math.random() * 10000) + 3000)));
-};
+  return new Promise(resolve =>
+    setTimeout(resolve, Math.floor(Math.random() * 10000 + 3000))
+  );
+}
 
 /* database functions */
 function contributionExists(pg, url) {

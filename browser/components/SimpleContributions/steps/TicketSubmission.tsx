@@ -12,7 +12,7 @@ export default class TicketSubmission extends SurveyStep<{}> {
           <p>
             Your change was not able to be automatically approved. You must
             follow the regular <Link to="/contribute">Log Contribution </Link>
-             process.
+            process.
           </p>
         </ExtensionPoint>
       </div>

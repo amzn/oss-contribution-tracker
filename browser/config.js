@@ -5,5 +5,5 @@ export const browser = {
     allowedTypes: ['bugfix', 'doc', 'config', 'test'],
     // contribDescTypes: used in ContribTypes for steps that require additional contributions details
     contribDescTypes: ['feature', 'other'],
-  }
+  },
 };

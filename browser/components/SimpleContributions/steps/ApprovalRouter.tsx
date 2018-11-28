@@ -37,11 +37,7 @@ export default class ApprovalRouter extends SurveyStep<{}> {
     }
 
     // check the contribution type
-    if (
-      !browser.autoApprove.allowedTypes.includes(
-        data['contrib-type'].type
-      )
-    ) {
+    if (!browser.autoApprove.allowedTypes.includes(data['contrib-type'].type)) {
       return false;
     }
 

@@ -36,10 +36,10 @@ interface State {
   approval_status: string;
   projectDisabled: boolean;
   alert: any;
-  contrib_contrib_date: string,
-  contrib_notification_date: string,
-  contrib_close_date: string,
-  approval_date: string,
+  contrib_contrib_date: string;
+  contrib_notification_date: string;
+  contrib_close_date: string;
+  approval_date: string;
 }
 
 class ContributionsEditor extends React.Component<Partial<Props>, State> {
@@ -91,22 +91,29 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
       }
       if (this.state.contrib.contribution_date) {
         this.setState({
-          contrib_contrib_date: this.formatDate(this.state.contrib.contribution_date)});
+          contrib_contrib_date: this.formatDate(
+            this.state.contrib.contribution_date
+          ),
+        });
       }
-      if (this.state.contrib.contribution_submission_date){
+      if (this.state.contrib.contribution_submission_date) {
         this.setState({
-          contrib_notification_date: this.formatDate(this.state.contrib.contribution_submission_date)
-        })
+          contrib_notification_date: this.formatDate(
+            this.state.contrib.contribution_submission_date
+          ),
+        });
       }
-      if (this.state.contrib.approval_date){
+      if (this.state.contrib.approval_date) {
         this.setState({
-          approval_date: this.formatDate(this.state.contrib.approval_date)
-        })
+          approval_date: this.formatDate(this.state.contrib.approval_date),
+        });
       }
-      if (this.state.contrib.contribution_closed_date){
+      if (this.state.contrib.contribution_closed_date) {
         this.setState({
-          contrib_close_date: this.formatDate(this.state.contrib.contribution_closed_date)
-        })
+          contrib_close_date: this.formatDate(
+            this.state.contrib.contribution_closed_date
+          ),
+        });
       }
     } else {
       this.setState({
@@ -279,19 +286,19 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     const target = d.target;
     if (target.id === 'contributionDateInput') {
       this.setState({
-        contrib_contrib_date: target.value
+        contrib_contrib_date: target.value,
       });
     } else if (target.id === 'contributionSubmissionDateInput') {
       this.setState({
-        contrib_notification_date: target.value
+        contrib_notification_date: target.value,
       });
     } else if (target.id === 'approvalDateInput') {
       this.setState({
-        approval_date: target.value
+        approval_date: target.value,
       });
     } else if (target.id === 'contributionClosedDateInput') {
       this.setState({
-        contrib_close_date: target.value
+        contrib_close_date: target.value,
       });
     }
   };

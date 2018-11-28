@@ -30,7 +30,7 @@ export default async function(): Promise<CustomDriver> {
     return driver.get(`http://web:8000${path}`);
   };
   driver.setUser = async function(user: string = 'selenium') {
-    driver.getRelative('/dummy-no-auth');
+    await driver.getRelative('/dummy-no-auth');
     await driver
       .manage()
       .addCookie({ name: 'nullauth-dummy-user', value: user });
