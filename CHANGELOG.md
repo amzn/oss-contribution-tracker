@@ -16,6 +16,7 @@ require manual edits to pluggable interfaces.
 ### Changed
 - Added config for the browser (browser/config.js) to control the simpleContributions workflow.
 - strategicLogger.ts can stampede the GitHub API and throw abuse errors so I added a sleep function (random sleep between 3 and 12 seconds) to stutter the requests.
+- Dates are actually displayed when editing a contribution
 - Fixed bug with webpack creating bundles under the wrong name.
 
 ### Added
@@ -27,3 +28,4 @@ require manual edits to pluggable interfaces.
 
 ### Security
 - Updated multiple dependencies to newer and secure versions.
+- Removed flatmap since it is now crypto malware.
