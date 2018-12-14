@@ -16,12 +16,14 @@ require manual edits to pluggable interfaces.
 ### Changed
 - Added config for the browser (browser/config.js) to control the simpleContributions workflow.
 - strategicLogger.ts can stampede the GitHub API and throw abuse errors so I added a sleep function (random sleep between 3 and 12 seconds) to stutter the requests.
+- Fixed bug with webpack creating bundles under the wrong name.
 
 ### Added
 - This CHANGELOG.md! Unless requested I am not going to backfill the changelog.
 - Simple contribution process. This adds a new way to submit contributions that allows for automatic approval based on type and size of contribution. These are setup through the config.contributions.autoApprove object which allows you to specify the allowed length of the change as well as differing types.
   - This includes additional default values that need to be filled out by the user.
 - Adjusted the software to fail on launch if the config is not properly filled out.
+- Strategic project users now has a column that will open the users GitHub page.
 
 ### Security
 - Updated multiple dependencies to newer and secure versions.

@@ -301,6 +301,9 @@ describe('index', () => {
             groups: { 2: '2018-02-01' },
           },
         ]),
+        getGitHubAliasByUsername: jasmine.createSpy('dbcontributions').and.returnValue({
+          github_alias: 'test_user',
+        }),
       },
     };
     mockery.registerMock('../../db/groups', {
@@ -315,6 +318,7 @@ describe('index', () => {
       getAllStrategicProjects: mock.dbprojects.getAllStrategicProjects,
     });
     mockery.registerMock('../../db/users', {
+      getGitHubAliasByUsername: mock.dbusers.getGitHubAliasByUsername,
       getUsersByGroup: mock.dbusers.getUsersByGroup,
       getUsernamesByGroup: mock.dbusers.getUsernamesByGroup,
       listAllUsers: mock.dbusers.listAllUsers,
@@ -534,6 +538,7 @@ describe('index', () => {
             contribMTD: 2,
             contribMonth: 3,
             contribYear: 4,
+            github_alias: 'test_user'
           },
           {
             company_alias: 'beta',
@@ -541,6 +546,7 @@ describe('index', () => {
             contribMTD: 2,
             contribMonth: 3,
             contribYear: 4,
+            github_alias: 'test_user'
           },
           {
             company_alias: 'charlie',
@@ -548,6 +554,7 @@ describe('index', () => {
             contribMTD: 2,
             contribMonth: 3,
             contribYear: 4,
+            github_alias: 'test_user'
           },
         ],
       });

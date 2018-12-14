@@ -56,6 +56,13 @@ export function getUsernamesByGroup(groups) {
   );
 }
 
+export function getGitHubAliasByUsername(username) {
+  return pg().oneOrNone(
+    'select github_alias from users where company_alias = $1',
+    [username]
+  );
+}
+
 // Add a new user to the DB
 export async function addNewUser(companyAlias, githubAlias, groups) {
   const check = await pg().oneOrNone(
