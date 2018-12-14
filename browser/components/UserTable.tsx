@@ -58,7 +58,15 @@ export default class UserTable extends React.Component<Props, State> {
             {
               Header: <b>GitHub Alias</b>,
               accessor: 'github_alias',
-              Cell: cellInfo => <a href={'https://github.com/' + cellInfo.value} target="_blank"> {cellInfo.value} </a>
+              Cell: cellInfo => (
+                <a
+                  href={'https://github.com/' + cellInfo.value}
+                  target="_blank"
+                >
+                  {' '}
+                  {cellInfo.value}{' '}
+                </a>
+              ),
             },
             {
               Header: <b># Contribs Last Week</b>,

@@ -161,7 +161,8 @@ export async function getStrategicProject(req, id) {
   }
 
   for (const user of users) {
-    const github_alias = (await dbusers.getGitHubAliasByUsername(user)).github_alias;
+    const github_alias = (await dbusers.getGitHubAliasByUsername(user))
+      .github_alias;
     const contribWeek = await dbcontributions.getLastWeekCount(projId, [user]);
     const contribMTD = await dbcontributions.getMTDCount(projId, [user]);
     const contribMonth = await dbcontributions.getLastMonthCount(projId, [
@@ -175,7 +176,7 @@ export async function getStrategicProject(req, id) {
       contribMTD: parseInt(contribMTD.numcontribs, 10),
       contribMonth: parseInt(contribMonth.numcontribs, 10),
       contribYear: parseInt(contribYear.numcontribs, 10),
-      github_alias
+      github_alias,
     };
     userList.push(data);
   }
