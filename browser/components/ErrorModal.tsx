@@ -34,7 +34,8 @@ export default class ErrorModal extends Component<Props, {}> {
             </div>
             <div className="modal-body">
               <p>
-                There was a problem:<br />
+                There was a problem:
+                <br />
                 <strong>{message}</strong>
               </p>
               <p>{explain}</p>

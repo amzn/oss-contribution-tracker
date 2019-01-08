@@ -267,4 +267,7 @@ const mapStateToProps = (state, props) => ({
   type: props.type,
 });
 
-export default connect(mapStateToProps, actions)(GroupsTable);
+export default connect(
+  mapStateToProps,
+  actions
+)(GroupsTable);

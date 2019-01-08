@@ -198,4 +198,7 @@ const mapStateToProps = state => ({
   groups: state.groups.all,
 });
 
-export default connect(mapStateToProps, actions)(UserForm);
+export default connect(
+  mapStateToProps,
+  actions
+)(UserForm);

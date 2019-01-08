@@ -215,7 +215,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     document.getElementById('to-admin').click();
   };
 
-  handleGithubStatusChange = (change) => {
+  handleGithubStatusChange = change => {
     if (this.state.contribution_github_status !== change.value) {
       this.setState({
         contribution_github_status: change.value,
@@ -223,7 +223,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
     }
   };
 
-  handleApprovalStatusChange = (change) => {
+  handleApprovalStatusChange = change => {
     if (this.state.approval_status !== change.value) {
       this.setState({
         approval_status: change.value,
@@ -403,9 +403,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                   name="githubStatusInput"
                   placeholder={this.state.contribution_github_status}
                   options={values}
-                  onChange={change =>
-                    this.handleGithubStatusChange(change)
-                  }
+                  onChange={change => this.handleGithubStatusChange(change)}
                   value={this.state.contribution_github_status}
                   clearable={false}
                   autosize={true}
@@ -438,9 +436,7 @@ class ContributionsEditor extends React.Component<Partial<Props>, State> {
                 <Select
                   name="approvalStatusInput"
                   options={values}
-                  onChange={change =>
-                    this.handleApprovalStatusChange(change)
-                  }
+                  onChange={change => this.handleApprovalStatusChange(change)}
                   value={this.state.approval_status}
                   clearable={false}
                   autosize={true}

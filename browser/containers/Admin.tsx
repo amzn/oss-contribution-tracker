@@ -368,4 +368,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, actions)(Admin);
+export default connect(
+  mapStateToProps,
+  actions
+)(Admin);

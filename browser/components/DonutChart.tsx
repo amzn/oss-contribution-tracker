@@ -100,15 +100,13 @@ export default class Rad extends React.Component<Partial<Props>, {}> {
       .append('g')
       .attr('class', 'arc');
 
-    g
-      .append('path')
+    g.append('path')
       .attr('d', arc)
       .style('fill', function(d) {
         return color(d.data.label);
       });
 
-    g
-      .append('text')
+    g.append('text')
       .attr('transform', function(d) {
         const pos = outerArc.centroid(d);
         pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
@@ -123,8 +121,7 @@ export default class Rad extends React.Component<Partial<Props>, {}> {
       })
       .style('font-size', '0.8em');
 
-    g
-      .append('polyline')
+    g.append('polyline')
       .attr('points', function(d) {
         const pos = outerArc.centroid(d);
         pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
@@ -132,8 +129,7 @@ export default class Rad extends React.Component<Partial<Props>, {}> {
       })
       .attr('class', 'polyline');
 
-    g
-      .append('text')
+    g.append('text')
       .text(this.props.centerText)
       .attr('dy', '.35em')
       .attr('dx', this.props.centerTextdx)
