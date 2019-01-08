@@ -257,17 +257,21 @@ export class App extends React.Component<Props, State> {
                 <Route
                   exact={true}
                   path="/strategic-projects"
-                  component={Strategic}
+                  render={() => <Strategic user={user as any} />}
                 />
                 <Route
                   exact={true}
                   path="/strategic-projects/group/:group_id"
-                  component={Group}
+                  render={({ match }) => (
+                    <Group user={user as any} params={match.params} />
+                  )}
                 />
                 <Route
                   exact={true}
                   path="/strategic-projects/project/:project_id"
-                  component={Project}
+                  render={({ match }) => (
+                    <Project user={user as any} params={match.params} />
+                  )}
                 />
                 <Route
                   exact={true}

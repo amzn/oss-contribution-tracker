@@ -145,6 +145,7 @@ describe('index', () => {
               return [{}];
             }
           }),
+        updateGroup: jasmine.createSpy('dbgroups').and.returnValue([]),
       },
       dbprojects: {
         getAllStrategicProjects: jasmine
@@ -242,6 +243,7 @@ describe('index', () => {
               return {};
             }
           }),
+        updateProject: jasmine.createSpy('dbprojects').and.returnValue([]),
       },
       dbusers: {
         getUsernamesByGroup: jasmine
@@ -306,6 +308,8 @@ describe('index', () => {
           .and.returnValue({
             github_alias: 'test_user',
           }),
+        addGroupsToUser: jasmine.createSpy('dbusers').and.returnValue([]),
+        removeGroupFromUser: jasmine.createSpy('dbusers').and.returnValue([]),
       },
     };
     mockery.registerMock('../../db/groups', {
@@ -313,17 +317,21 @@ describe('index', () => {
       searchGroupIdsByProjectId: mock.dbgroups.searchGroupIdsByProjectId,
       getGroupsByProjectId: mock.dbgroups.getGroupsByProjectId,
       getGroupById: mock.dbgroups.getGroupById,
+      updateGroup: mock.dbgroups.updateGroup,
     });
     mockery.registerMock('../../db/projects', {
       getUniqueProjectById: mock.dbprojects.getUniqueProjectById,
       getProjectsByGroup: mock.dbprojects.getProjectsByGroup,
       getAllStrategicProjects: mock.dbprojects.getAllStrategicProjects,
+      updateProject: mock.dbprojects.updateProject,
     });
     mockery.registerMock('../../db/users', {
+      addGroupsToUser: mock.dbusers.addGroupsToUser,
       getGitHubAliasByUsername: mock.dbusers.getGitHubAliasByUsername,
       getUsersByGroup: mock.dbusers.getUsersByGroup,
       getUsernamesByGroup: mock.dbusers.getUsernamesByGroup,
       listAllUsers: mock.dbusers.listAllUsers,
+      removeGroupFromUser: mock.dbusers.removeGroupFromUser,
     });
     mockery.registerMock('../../db/contributions', {
       getLastWeekCount: mock.dbcontributions.getLastWeekCount,
@@ -702,6 +710,40 @@ describe('index', () => {
           },
         ],
       });
+      done();
+    });
+
+    it('should update a project', async done => {
+      const body = {
+        project_groups: '1,2',
+        project_license: 'MIT',
+        project_name: 'Test project',
+        project_id: 3,
+        project_url: 'not used',
+        project_users: '',
+      };
+      await strategic.updateProject({}, body);
+      expect(mock.dbprojects.updateProject).toHaveBeenCalled();
+      expect(mock.dbgroups.getGroupsByProjectId).toHaveBeenCalled();
+      expect(mock.dbgroups.updateGroup).toHaveBeenCalled();
+      expect(mock.dbgroups.getGroupById).toHaveBeenCalled();
+      done();
+    });
+
+    it('should update a group', async done => {
+      const body = {
+        groupId: 1,
+        groupName: 'testGroup',
+        sponsorName: 'testUser',
+        goals: 'testing',
+        projects: [1],
+        users: ['alpha', 'testUser'],
+      };
+      await strategic.updateGroup({}, body);
+      expect(mock.dbusers.getUsernamesByGroup).toHaveBeenCalled();
+      expect(mock.dbgroups.updateGroup).toHaveBeenCalled();
+      expect(mock.dbusers.addGroupsToUser).toHaveBeenCalled();
+      expect(mock.dbusers.removeGroupFromUser).toHaveBeenCalled();
       done();
     });
   });

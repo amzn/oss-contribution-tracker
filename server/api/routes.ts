@@ -411,6 +411,18 @@ router.get('/strategic/projects/:id', async (req, res, next) => {
   pack(groupsAPI.getStrategicProject(req, req.params.id), res, next);
 });
 
+// update project
+router.post('/strategic/projects/update', async (req, res, next) => {
+  const access = (req as any).UserAccess;
+  if (access.includes(AccessTypes.admin)) {
+    pack(groupsAPI.updateProject(req, req.body), res, next);
+  } else {
+    const user = await getUser(req);
+    winston.warn(`${user} did not have permissions to access /group`);
+    return next(new AccessError('no access to Strategic Group management'));
+  }
+});
+
 // gets all users
 router.get('/strategic/users', async (req, res, next) => {
   pack(groupsAPI.listUsers(req), res, next);

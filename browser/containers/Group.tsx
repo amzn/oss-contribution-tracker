@@ -13,15 +13,22 @@
  */
 import * as React from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { Link } from 'react-router-dom';
 import { reqJSON } from '../util/index';
 
 import ProjectTable from '../components/ProjectTable';
-import ReportForm from '../components/ReportForm.tsx';
+import ReportForm from '../components/ReportForm';
 import StrategicTable from '../components/StrategicTable';
 import UserTable from '../components/UserTable';
 
 interface Props {
   params: any;
+  user: {
+    user: string;
+    groups: string[];
+    roles: string[];
+    access: string[];
+  };
 }
 
 interface State {
@@ -89,7 +96,7 @@ export default class Group extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const groupId = (this.props as any).match.params.group_id;
+    const groupId = this.props.params.group_id;
     const group = await reqJSON('/api/strategic/groups/' + groupId.toString());
     const contributions = await reqJSON(
       '/api/strategic/contributions/group/' + groupId.toString()
@@ -131,8 +138,19 @@ export default class Group extends React.Component<Props, State> {
   render() {
     return (
       <div>
+        {this.props.user.access.includes('admin') ? (
+          <Link
+            className="badge badge-danger"
+            id="edit-group"
+            to={`/admin?strategic_group=${this.state.group.group_id}`}
+          >
+            Edit Group
+          </Link>
+        ) : (
+          <div />
+        )}
         <div className="group-header">
-          <h2> {this.state.group.group_name} Group Details </h2>
+          <h2>{this.state.group.group_name} - Group Details</h2>
           <button className="btn btn-primary" onClick={this.handleDownload}>
             Download Report
           </button>

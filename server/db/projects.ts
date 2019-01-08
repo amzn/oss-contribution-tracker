@@ -81,3 +81,12 @@ export async function addProject(name, contribUrl, license, verified) {
   }
   return 'exists';
 }
+
+// Update existing project
+export async function updateProject(id, name, url, license) {
+  return await pg().query(
+    'update projects set (project_name, project_url, project_license)' +
+      ' = ($1, $2, $3) where project_id = $4',
+    [name, url, license, id]
+  );
+}

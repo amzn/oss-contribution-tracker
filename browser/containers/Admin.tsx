@@ -11,10 +11,13 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+import * as QS from 'query-string';
 import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { reqJSON } from '../util/index';
+
+import { PulseLoader } from 'halogenium';
 
 import ApprovalsTable from '../components/ApprovalsTable';
 import CCLAForm from '../components/CCLAForm';
@@ -25,6 +28,7 @@ import GroupsTable from '../components/GroupsTable';
 import ProjectForm from '../components/ProjectForm';
 import GroupForm from '../components/StrategicGroupForm';
 import UserForm from '../components/UserForm';
+import ViewProject from '../components/ViewProject';
 import ViewUser from '../components/ViewUser';
 
 import * as actions from '../actions/strategicActions';
@@ -36,8 +40,13 @@ interface Props {
   nav: string;
   group: number;
   updateAdminNav: any;
+  updateAdminGroup: any;
+  groupId?: string;
   groups: any;
+  fetchGroup: any;
   fetchGroups: any;
+  location: any;
+  dispatch: any;
 }
 
 interface State {
@@ -48,6 +57,24 @@ interface State {
   key: number;
   claTable: any;
   claProjectNames: any[];
+  project_direct: boolean;
+  project_id: number;
+  projectList: [
+    {
+      contribMTD: number;
+      contribMonth: number;
+      contribWeek: number;
+      contribYear: number;
+      numGroups: number;
+      numUsers: number;
+      project_auto_aprovable: boolean;
+      project_id: number;
+      project_license: string;
+      project_name: string;
+      project_url: string;
+      project_verified: boolean;
+    }
+  ];
 }
 
 class Admin extends Component<Props, State> {
@@ -61,6 +88,9 @@ class Admin extends Component<Props, State> {
       key: 0,
       claTable: new Array(),
       claProjectNames: new Array(),
+      projectList: null,
+      project_direct: false,
+      project_id: null,
     };
   }
 
@@ -69,7 +99,23 @@ class Admin extends Component<Props, State> {
     await this.getCLAs();
     await this.getContributions();
     await this.getUsers();
+    await this.getProjects();
     await this.props.fetchGroups();
+
+    const queryParams = QS.parse(this.props.location.search);
+    // read query params and take actions as needed
+    if (queryParams.strategic_group) {
+      // turns out order is important...
+      await this.props.updateAdminGroup(queryParams.strategic_group);
+      await this.changeNav('editGroup');
+      await this.props.fetchGroup(queryParams.strategic_group);
+    } else if (queryParams.strategic_project) {
+      this.setState({
+        project_direct: true,
+        project_id: queryParams.strategic_project,
+      });
+      await this.changeNav('editProject');
+    }
   }
 
   getApprovals = async () => {
@@ -100,6 +146,13 @@ class Admin extends Component<Props, State> {
     });
   };
 
+  getProjects = async () => {
+    const projectList = await reqJSON('/api/strategic/projects');
+    this.setState({
+      projectList: projectList.projectList,
+    });
+  };
+
   changeNav = nav => {
     this.props.updateAdminNav(nav);
   };
@@ -123,6 +176,10 @@ class Admin extends Component<Props, State> {
     this.changeNav('viewGroup');
   };
 
+  setProjectEdit = () => {
+    this.changeNav('editProject');
+  };
+
   setGroupForm = () => {
     this.changeNav('newGroup');
   };
@@ -140,33 +197,56 @@ class Admin extends Component<Props, State> {
   };
 
   displaySelected = () => {
-    switch (this.props.nav) {
-      case 'approveContrib':
-        return <ApprovalsTable approvalList={this.state.approvalList} />;
-      case 'editContrib':
-        return (
-          <EditContributionTable
-            contributionList={this.state.contributionList}
-          />
-        );
-      case 'viewCCLA':
-        return <CLATable cla={this.state.claTable} />;
-      case 'newCCLA':
-        return <CCLAForm toggleForm={this.toggleCLAForm} />;
-      case 'viewGroup':
-        return <GroupsTable groups={this.props.groups} type="edit" />;
-      case 'editGroup':
-        return <EditGroup />;
-      case 'newGroup':
-        return <GroupForm />;
-      case 'newProject':
-        return <ProjectForm />;
-      case 'newUser':
-        return <UserForm />;
-      case 'editUser':
-        return <ViewUser userList={this.state.userList} />;
-      default:
-        return <p>Select an option from the left.</p>;
+    const queryParams = QS.parse(this.props.location.search);
+    if (
+      !this.props.nav &&
+      (queryParams.strategic_group || queryParams.strategic_project)
+    ) {
+      return (
+        <div>
+          Loading Data
+          <PulseLoader color="#26A65B" size="16px" margin="4px" />
+        </div>
+      );
+    } else {
+      // act in accordance to the current nav view and data
+      switch (this.props.nav) {
+        case 'approveContrib':
+          return <ApprovalsTable approvalList={this.state.approvalList} />;
+        case 'editContrib':
+          return (
+            <EditContributionTable
+              contributionList={this.state.contributionList}
+            />
+          );
+        case 'viewCCLA':
+          return <CLATable cla={this.state.claTable} />;
+        case 'newCCLA':
+          return <CCLAForm toggleForm={this.toggleCLAForm} />;
+        case 'viewGroup':
+          return <GroupsTable groups={this.props.groups} type="edit" />;
+        case 'editProject':
+          return (
+            <ViewProject
+              projectList={this.state.projectList}
+              groupList={this.props.groups}
+              direct={this.state.project_direct}
+              projectID={this.state.project_id}
+            />
+          );
+        case 'editGroup':
+          return <EditGroup />;
+        case 'newGroup':
+          return <GroupForm />;
+        case 'newProject':
+          return <ProjectForm />;
+        case 'newUser':
+          return <UserForm />;
+        case 'editUser':
+          return <ViewUser userList={this.state.userList} />;
+        default:
+          return <p>Select an option from the left.</p>;
+      }
     }
   };
 
@@ -177,7 +257,6 @@ class Admin extends Component<Props, State> {
 
   render() {
     const view = this.displaySelected();
-
     return (
       <div className="container-fluid" id="admin_container">
         <div className="row">
@@ -229,6 +308,13 @@ class Admin extends Component<Props, State> {
               </a>
               <a
                 href="#"
+                onClick={this.setProjectEdit}
+                className="list-group-item list-group-item-action"
+              >
+                Edit Project
+              </a>
+              <a
+                href="#"
                 onClick={this.setEditUser}
                 className="list-group-item list-group-item-action"
               >
@@ -274,10 +360,12 @@ class Admin extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
-  nav: state.admin.nav,
-  group: state.admin.group,
-  groups: state.groups.all,
-});
+const mapStateToProps = state => {
+  return {
+    nav: state.admin.nav,
+    group: state.admin.group,
+    groups: state.groups.all,
+  };
+};
 
 export default connect(mapStateToProps, actions)(Admin);

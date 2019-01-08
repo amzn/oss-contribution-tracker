@@ -35,6 +35,17 @@ const AdminReducer = (state = initialState, action) => {
       };
       return newState;
     }
+    case ActionTypes.FETCH_GROUP: {
+      const newState = {
+        nav: state.nav,
+        group: {
+          details: action.payload.group,
+          projects: action.payload.projects,
+          users: action.payload.users,
+        },
+      };
+      return newState;
+    }
     default:
       return state;
   }
