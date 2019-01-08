@@ -32,6 +32,7 @@ interface Props extends OwnProps {
 interface State {
   currAlias: any;
   filteredDataList: object[];
+  employeeTable: any;
 }
 
 class AllEmployeeTable extends React.Component<Props, State> {
@@ -42,6 +43,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
       filteredDataList: this.props.filteredDataList
         ? this.props.filteredDataList
         : [],
+      employeeTable: null,
     };
   }
 
@@ -138,7 +140,7 @@ class AllEmployeeTable extends React.Component<Props, State> {
   }
 }
 
-export default connect((state, props: OwnProps) => ({
+export default connect((state: State, props: OwnProps) => ({
   filteredDataList: state.employeeTable.filteredDataList,
   alias: props.alias,
 }))(AllEmployeeTable);

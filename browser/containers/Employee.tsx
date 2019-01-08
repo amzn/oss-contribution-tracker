@@ -27,6 +27,7 @@ interface Props extends React.Props<any> {
 interface State {
   currentAlias: string;
   aliasList: any[];
+  employee: any;
 }
 
 class Employee extends React.Component<Props, State> {
@@ -35,6 +36,7 @@ class Employee extends React.Component<Props, State> {
     this.state = {
       currentAlias: '',
       aliasList: new Array(),
+      employee: null,
     };
   }
 
@@ -97,6 +99,6 @@ class Employee extends React.Component<Props, State> {
     );
   }
 }
-export default connect(state => ({
+export default connect((state: State) => ({
   employeeData: state.employee,
 }))(Employee);

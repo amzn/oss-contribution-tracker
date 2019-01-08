@@ -1,6 +1,6 @@
 {
   "name": "OSS-Contribution-Tracker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "OSS Contribution Tracker",
   "scripts": {
     "build": "tsc -p server && chmod +x ./build/server/util/strategicLogger.js && webpack && npm run copy-static",
@@ -36,6 +36,7 @@
     "@types/request": "^2.0.3",
     "@types/selenium-webdriver": "^2.53.39",
     "@types/typescript": "^2.0.0",
+    "@types/webpack-dev-server": "^3.1.1",
     "@types/winston": "0.0.32",
     "bootstrap": "^4.1.2",
     "chromedriver": "^2.44.0",
@@ -60,12 +61,12 @@
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.12.0",
     "tslint-react": "^3.6.0",
-    "typescript": "~2.7.2",
+    "typescript": "^2.7.2",
     "uglifyjs-webpack-plugin": "^1.2.0",
     "url-loader": "^0.6.2",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "@octokit/rest": "^15.9.1",
