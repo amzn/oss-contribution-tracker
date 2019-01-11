@@ -16,7 +16,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import ReportForm from './ReportForm.tsx';
+import ReportForm from './ReportForm';
 import StrategicTableLinkCell from './StrategicTableLinkCell';
 
 import * as actions from '../actions/strategicActions';
@@ -267,4 +267,7 @@ const mapStateToProps = (state, props) => ({
   type: props.type,
 });
 
-export default connect(mapStateToProps, actions)(GroupsTable);
+export default connect(
+  mapStateToProps,
+  actions
+)(GroupsTable);

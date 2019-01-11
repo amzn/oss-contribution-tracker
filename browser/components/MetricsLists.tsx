@@ -31,10 +31,9 @@ export default class MetricsLists extends React.Component<Props, {}> {
     return list.map(item => {
       return (
         <li key={'allMetrics_' + item.year}>
-          {item.year}: {item.total_contributions} contributions ({
-            item.contributor_count
-          }{' '}
-          distinct contributors to {item.project_count} distinct projects)
+          {item.year}: {item.total_contributions} contributions (
+          {item.contributor_count} distinct contributors to {item.project_count}{' '}
+          distinct projects)
         </li>
       );
     });

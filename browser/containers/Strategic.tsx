@@ -17,6 +17,15 @@ import { reqJSON } from '../util/index';
 import GroupsTable from '../components/GroupsTable';
 import ProjectTable from '../components/ProjectTable';
 
+interface Props {
+  user: {
+    user: string;
+    groups: string[];
+    roles: string[];
+    access: string[];
+  };
+}
+
 interface State {
   groupList: Array<{
     group_id: number;
@@ -46,7 +55,7 @@ interface State {
   }>;
 }
 
-export default class Strategic extends React.Component<{}, State> {
+export default class Strategic extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

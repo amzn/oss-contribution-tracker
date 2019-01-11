@@ -123,7 +123,8 @@ export default class DiffEntry extends SurveyStep<State, Data> {
         <p>
           For Git: <code>git diff --ignore-all-space 'HEAD^'</code> (replace{' '}
           <code>'HEAD^'</code> with a commit hash if diffing multiple commits,
-          or omit it entirely it you haven't yet made a commit)<br />
+          or omit it entirely it you haven't yet made a commit)
+          <br />
           Diff two files or folders: <code>diff -uwB original changed</code>
         </p>
 

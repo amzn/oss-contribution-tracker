@@ -20,7 +20,7 @@ import * as actions from '../actions/strategicActions';
 
 interface Props {
   params: any;
-  fetchGroup: (id) => void; // function pointers explaining input and output
+  fetchGroup: any; // function pointers explaining input and output
   fetchGroups: () => void;
   fetchProjects: () => void;
   fetchUsers: () => void;
@@ -96,9 +96,9 @@ class EditGroup extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.props.fetchGroup(this.props.groupId);
     this.props.fetchProjects();
     this.props.fetchUsers();
+    this.props.fetchGroup(this.props.groupId);
   }
 
   componentDidUpdate(prevProps) {
@@ -345,4 +345,7 @@ const mapStateToProps = state => ({
   groupId: state.admin.group,
 });
 
-export default connect(mapStateToProps, actions)(EditGroup);
+export default connect(
+  mapStateToProps,
+  actions
+)(EditGroup);

@@ -12,6 +12,7 @@
  * permissions and limitations under the License.
  */
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { reqJSON } from '../util/index';
 
 import GroupsTable from '../components/GroupsTable';
@@ -20,6 +21,12 @@ import UserTable from '../components/UserTable';
 
 interface Props {
   params: any;
+  user: {
+    user: string;
+    groups: string[];
+    roles: string[];
+    access: string[];
+  };
 }
 
 interface State {
@@ -84,7 +91,7 @@ export default class Project extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const projectId = (this.props as any).match.params.project_id;
+    const projectId = this.props.params.project_id;
     const project = await reqJSON(
       '/api/strategic/projects/' + projectId.toString()
     );
@@ -102,7 +109,18 @@ export default class Project extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <h2> {this.state.project.project_name} Details </h2>
+        {this.props.user.access.includes('admin') ? (
+          <Link
+            className="badge badge-danger"
+            id="edit-group"
+            to={`/admin?strategic_project=${this.state.project.project_id}`}
+          >
+            Edit Project
+          </Link>
+        ) : (
+          <div />
+        )}
+        <h2> {this.state.project.project_name} - Project Details </h2>
         <hr />
         <h4> Groups </h4>
         <div id="contributionsListAll">

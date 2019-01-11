@@ -191,6 +191,59 @@ export async function listProjects(req) {
   return { projectList: await dbprojects.getProjectsByGroup(req.body.id) };
 }
 
+export async function updateProject(req, body) {
+  const {
+    project_id,
+    project_name,
+    project_url,
+    project_license,
+    project_groups,
+  } = body;
+  // update project
+  await dbprojects.updateProject(
+    project_id,
+    project_name,
+    project_url,
+    project_license
+  );
+
+  // update groups
+  const groupList = project_groups.split(',').map(groupID => {
+    return parseInt(groupID, 10);
+  });
+  const projectGroups = await dbgroups.getGroupsByProjectId([project_id]);
+  for (const group of projectGroups) {
+    // clean up existing groups from project
+    if (!groupList.includes(group.group_id)) {
+      // group not in list and should be
+      group.projects.splice(group.projects.indexOf(project_id), 1);
+      await dbgroups.updateGroup(
+        group.group_id,
+        group.group_name,
+        group.sponsor,
+        group.goal,
+        group.projects
+      );
+    } else if (groupList.indexOf(group.group_id) !== -1) {
+      // group
+      groupList.splice(groupList.indexOf(group.group_id), 1);
+    }
+  }
+  // add project to new groups
+  for (const id of groupList) {
+    const groupInfo = await dbgroups.getGroupById(id);
+    groupInfo.projects.push(project_id);
+    await dbgroups.updateGroup(
+      groupInfo.group_id,
+      groupInfo.group_name,
+      groupInfo.sponsor,
+      groupInfo.goal,
+      groupInfo.projects
+    );
+  }
+  return { success: true };
+}
+
 export async function listUsers(req) {
   return { users: await dbusers.listAllUsers() };
 }
@@ -236,21 +289,21 @@ export async function addNewUser(req, body) {
 }
 
 export async function updateGroup(req, body) {
-  const oldUsers = (await dbusers.getUsernamesByGroup([
-    body.groupId.toString(),
-  ])).names;
+  const { groupId, groupName, sponsorName, goals, projects, users } = body;
+  const oldUsers = (await dbusers.getUsernamesByGroup([groupId.toString()]))
+    .names;
   const updatedGroup = await dbgroups.updateGroup(
-    body.groupId,
-    body.groupName,
-    body.sponsorName,
-    body.goals,
-    body.projects
+    groupId,
+    groupName,
+    sponsorName,
+    goals,
+    projects
   );
   const updatedUsers = [];
-  for (const user of body.users) {
+  for (const user of users) {
     updatedUsers.push(user);
     if (!oldUsers || !oldUsers.includes(user)) {
-      const id = body.groupId;
+      const id = groupId;
       const date = new Date().toISOString().substring(0, 10);
       const group = {};
       group[id] = date;
@@ -262,7 +315,7 @@ export async function updateGroup(req, body) {
     ? oldUsers.filter(user => updatedUsers.indexOf(user) < 0)
     : [];
   for (const user of deletedUsers) {
-    await dbusers.removeGroupFromUser(user, body.groupId);
+    await dbusers.removeGroupFromUser(user, groupId);
   }
   return { updatedGroup };
 }

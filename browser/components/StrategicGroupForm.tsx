@@ -238,4 +238,7 @@ const mapStateToProps = state => ({
   users: state.users.all,
 });
 
-export default connect(mapStateToProps, actions)(GroupForm);
+export default connect(
+  mapStateToProps,
+  actions
+)(GroupForm);
