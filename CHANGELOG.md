@@ -13,11 +13,11 @@ require manual edits to pluggable interfaces.
 
 ## 1.1.1
 ## Changed
-- Split a couple of functions where I was being more fancy than I needed to so I coudl conform to new typescript rules.
+- Split a couple of functions where I was being more fancy than I needed to so I could conform to new typescript rules.
 ## Added
 - Strategic projects and groups will now display a edit button for users that are part of the admin posix/ldap group. This button is a direct link to editing the project or group on the admin page to allow for quicker updates.
 ## Security
-- Upgraded webpack-dev-server due to SVE on the 3.1.10 version.
+- Upgraded webpack-dev-server due to CVE on the 3.1.10 version.
 
 ## 1.1.0
 

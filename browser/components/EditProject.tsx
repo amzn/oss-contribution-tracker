@@ -1,4 +1,4 @@
-/* Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -110,47 +110,38 @@ export default class EditProject extends React.Component<Props, State> {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
-      await this.getProject();
-
-      const projectGroups = [];
-      for (const group of this.state.projectInfo.groups) {
-        projectGroups.push(group.group_id);
-      }
-
-      const projectUsers = [];
-      let projectDetails = {
-        project_id: null,
-        project_license: null,
-        project_name: null,
-        project_url: null,
-      };
-      if (this.state.projectInfo) {
-        projectDetails = this.state.projectInfo.project;
-        for (const user of this.state.projectInfo.users) {
-          projectUsers.push(user.company_alias);
-        }
-      }
-
-      this.setState({
-        projectGroups: projectGroups.join(','),
-        projectID: projectDetails.project_id || '',
-        projectLicense: projectDetails.project_license || '',
-        projectName: projectDetails.project_name || '',
-        projectURL: projectDetails.project_url || '',
-        projectUsers: projectUsers.join(','),
-      });
+    const projectInfo = await this.getProject();
+    const projectGroups = [];
+    for (const group of projectInfo.groups) {
+      projectGroups.push(group.group_id);
     }
+    const projectUsers = [];
+    let projectDetails = {
+      project_id: null,
+      project_license: null,
+      project_name: null,
+      project_url: null,
+    };
+    if (projectInfo) {
+      projectDetails = projectInfo.project;
+      for (const user of projectInfo.users) {
+        projectUsers.push(user.company_alias);
+      }
+    }
+    this.setState({
+      projectGroups: projectGroups.join(','),
+      projectID: projectDetails.project_id || '',
+      projectInfo,
+      projectLicense: projectDetails.project_license || '',
+      projectName: projectDetails.project_name || '',
+      projectURL: projectDetails.project_url || '',
+      projectUsers: projectUsers.join(','),
+    });
   }
 
   getProject = async () => {
     if (this.props.project) {
-      const projectInfo = await reqJSON(
-        `/api/strategic/projects/${this.props.project}`
-      );
-      this.setState({
-        projectInfo,
-      });
+      return await reqJSON(`/api/strategic/projects/${this.props.project}`);
     }
   };
 

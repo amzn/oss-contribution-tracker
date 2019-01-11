@@ -192,7 +192,13 @@ export async function listProjects(req) {
 }
 
 export async function updateProject(req, body) {
-  const { project_id, project_name, project_url, project_license } = body;
+  const {
+    project_id,
+    project_name,
+    project_url,
+    project_license,
+    project_groups,
+  } = body;
   // update project
   await dbprojects.updateProject(
     project_id,
@@ -202,14 +208,14 @@ export async function updateProject(req, body) {
   );
 
   // update groups
-  const groupList = body.project_groups.split(',').map(groupID => {
+  const groupList = project_groups.split(',').map(groupID => {
     return parseInt(groupID, 10);
   });
   const projectGroups = await dbgroups.getGroupsByProjectId([project_id]);
   for (const group of projectGroups) {
     // clean up existing groups from project
-    if (groupList.indexOf(group.group_id) === -1) {
-      // group shouldn't have access on project
+    if (!groupList.includes(group.group_id)) {
+      // group not in list and should be
       group.projects.splice(group.projects.indexOf(project_id), 1);
       await dbgroups.updateGroup(
         group.group_id,
@@ -219,6 +225,7 @@ export async function updateProject(req, body) {
         group.projects
       );
     } else if (groupList.indexOf(group.group_id) !== -1) {
+      // group
       groupList.splice(groupList.indexOf(group.group_id), 1);
     }
   }
