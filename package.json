@@ -10,7 +10,8 @@
     "test-ui": "tsc -p selenium && jasmine 'build/selenium/*.spec.js'",
     "lint": "prettier --write '**/*.{ts,tsx,js,css,scss}' '!build/**/*' && tslint -p server --fix && tslint -p browser --fix",
     "lint-check": "prettier --list-different . '**/*.{ts,tsx,js,css,scss}' '!build/**/*' && tslint -p server && tslint -p browser",
-    "clean": "rm -rf build node_modules"
+    "clean": "rm -rf build",
+    "fresh": "npm run clean && rm -rf node_modules && npm install"
   },
   "repository": {
     "type": "git",
@@ -79,6 +80,7 @@
     "halogenium": "^2.2.3",
     "history": "^4.6.3",
     "ldapjs": "^1.0.0",
+    "match-sorter": "^2.3.0",
     "moment": "^2.19.3",
     "pg-promise": "^5.5.0",
     "query-string": "^6.2.0",

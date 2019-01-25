@@ -13,7 +13,6 @@
  */
 import * as React from 'react';
 import ReactTable from 'react-table';
-import StrategicTableLinkCell from './StrategicTableLinkCell';
 
 interface Props {
   projectList: Array<{
@@ -82,8 +81,19 @@ export default class ProjectTable extends React.Component<Props, State> {
           columns={[
             {
               Header: <b>Project</b>,
-              accessor: 'project_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type="project" />,
+              accessor: 'project_name',
+              Cell: project => {
+                return (
+                  <a
+                    href={
+                      '/strategic-projects/project/' +
+                      project.original.project_id
+                    }
+                  >
+                    {project.original.project_name}
+                  </a>
+                );
+              },
             },
             {
               Header: <b>Project URL</b>,
@@ -131,8 +141,19 @@ export default class ProjectTable extends React.Component<Props, State> {
           columns={[
             {
               Header: <b>Project</b>,
-              accessor: 'project_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type="project" />,
+              accessor: 'project_name',
+              Cell: project => {
+                return (
+                  <a
+                    href={
+                      '/strategic-projects/project/' +
+                      project.original.project_id
+                    }
+                  >
+                    {project.original.project_name}
+                  </a>
+                );
+              },
             },
             {
               Header: <b>Project URL</b>,

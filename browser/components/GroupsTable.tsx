@@ -17,14 +17,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import ReportForm from './ReportForm';
-import StrategicTableLinkCell from './StrategicTableLinkCell';
 
 import * as actions from '../actions/strategicActions';
 
 interface Props {
   updateAdminNav: (navpage) => void;
   updateAdminGroup: (groupId) => void;
-  groups: {
+  groups: Array<{
     group_id: number;
     group_name: string;
     goal: string;
@@ -35,7 +34,7 @@ interface Props {
     contribMTD: number;
     contribMonth: number;
     contribYear: number;
-  };
+  }>;
   type: string;
 }
 
@@ -95,8 +94,18 @@ class GroupsTable extends React.Component<Props, State> {
           columns={[
             {
               Header: <b>Group</b>,
-              accessor: 'group_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
+              accessor: 'group_name',
+              Cell: group => {
+                return (
+                  <a
+                    href={
+                      '/strategic-projects/group/' + group.original.group_id
+                    }
+                  >
+                    {group.original.group_name}
+                  </a>
+                );
+              },
             },
             {
               Header: <b># Projects</b>,
@@ -164,8 +173,18 @@ class GroupsTable extends React.Component<Props, State> {
             },
             {
               Header: <b>Group</b>,
-              accessor: 'group_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
+              accessor: 'group_name',
+              Cell: group => {
+                return (
+                  <a
+                    href={
+                      '/strategic-projects/group/' + group.original.group_id
+                    }
+                  >
+                    {group.original.group_name}
+                  </a>
+                );
+              },
             },
             {
               Header: <b># Projects</b>,
@@ -221,8 +240,18 @@ class GroupsTable extends React.Component<Props, State> {
           columns={[
             {
               Header: <b>Group</b>,
-              accessor: 'group_id',
-              Cell: d => <StrategicTableLinkCell id={d.value} type="group" />,
+              accessor: 'group_name',
+              Cell: group => {
+                return (
+                  <a
+                    href={
+                      '/strategic-projects/group/' + group.original.group_id
+                    }
+                  >
+                    {group.original.group_name}
+                  </a>
+                );
+              },
             },
             {
               Header: <b># Contribs Last Week</b>,
