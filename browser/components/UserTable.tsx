@@ -14,6 +14,7 @@
 
 import * as React from 'react';
 import ReactTable from 'react-table';
+import ExtensionPoint from '../util/ExtensionPoint';
 
 interface Props {
   userList: any[];
@@ -54,6 +55,15 @@ export default class UserTable extends React.Component<Props, State> {
             {
               Header: <b>User</b>,
               accessor: 'company_alias',
+              Cell: props => (
+                <ExtensionPoint
+                  ext="strategic-project-company_alias"
+                  user={props.value}
+                >
+                  {' '}
+                  {props.value}
+                </ExtensionPoint>
+              ),
             },
             {
               Header: <b>GitHub Alias</b>,
