@@ -17,7 +17,7 @@ import pg from './index';
 
 // Select all approvers
 export function listApprovers() {
-  return pg().query('select * from approvers');
+  return pg().query('select * from approvers where approver_active = true');
 }
 
 // Select approvers by ID
