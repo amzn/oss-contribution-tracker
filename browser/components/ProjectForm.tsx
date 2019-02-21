@@ -46,12 +46,18 @@ class ProjectForm extends React.Component<Props, State> {
   handleSubmit = async e => {
     e.preventDefault();
     const fields = e.target.elements;
+    let projectURL = fields.url.value;
+    const isGitHubOrg = fields.project_is_org.checked;
+    if (isGitHubOrg && projectURL.startsWith('https://github.com/')) {
+      projectURL = projectURL.slice(0, 19) + projectURL.slice(19).split('/')[0];
+    }
 
     const jsonObj = {
       project_name: fields.name.value,
-      project_url: fields.url.value,
+      project_url: projectURL,
       project_license: fields.license.value,
       project_verified: fields.verified.value,
+      project_is_org: isGitHubOrg,
     };
 
     const result = await this.props.addNewProject(jsonObj);
@@ -124,6 +130,14 @@ class ProjectForm extends React.Component<Props, State> {
                   className="form-control"
                   name="url"
                   required={true}
+                />
+              </div>
+              <div className="form-group">
+                <label>Is GitHub Org? </label>
+                <input
+                  type="checkbox"
+                  name="project_is_org"
+                  value="project_is_org"
                 />
               </div>
               <div className="form-group">

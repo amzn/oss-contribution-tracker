@@ -66,7 +66,7 @@ export function getAllStrategicProjects() {
 }
 
 // Add a new project to the DB
-export async function addProject(name, contribUrl, license, verified) {
+export async function addProject(name, contribUrl, license, verified, is_org) {
   // Check if project already exists and add if it doesn't
   const check = await pg().oneOrNone(
     'select project_id from projects where project_name = $1',
@@ -75,18 +75,18 @@ export async function addProject(name, contribUrl, license, verified) {
   if (!check) {
     return pg().one(
       'insert into projects (project_name, project_url, project_license, ' +
-        'project_verified) values ($1, $2, $3, $4) returning project_id',
-      [name, contribUrl, license, verified]
+        'project_verified, project_is_org) values ($1, $2, $3, $4, $5) returning project_id',
+      [name, contribUrl, license, verified, is_org]
     );
   }
   return 'exists';
 }
 
 // Update existing project
-export async function updateProject(id, name, url, license) {
+export async function updateProject(id, name, url, license, is_org) {
   return await pg().query(
-    'update projects set (project_name, project_url, project_license)' +
-      ' = ($1, $2, $3) where project_id = $4',
-    [name, url, license, id]
+    'update projects set (project_name, project_url, project_license, project_is_org)' +
+      ' = ($1, $2, $3, $4) where project_id = $5',
+    [name, url, license, is_org, id]
   );
 }

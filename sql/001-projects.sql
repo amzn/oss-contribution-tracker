@@ -4,5 +4,6 @@ CREATE TABLE projects (
   project_url TEXT,
   project_license TEXT,
   project_verified BOOLEAN NOT NULL,
-  project_auto_approvable BOOLEAN NOT NULL DEFAULT false
+  project_auto_approvable BOOLEAN NOT NULL DEFAULT false,
+  project_project_is_org BOOLEAN NOT NULL DEFAULT false
 );

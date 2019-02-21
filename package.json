@@ -1,6 +1,6 @@
 {
   "name": "OSS-Contribution-Tracker",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "OSS Contribution Tracker",
   "scripts": {
     "build": "tsc -p server && chmod +x ./build/server/util/strategicLogger.js && webpack && npm run copy-static",

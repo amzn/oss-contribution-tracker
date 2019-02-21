@@ -107,7 +107,13 @@ export async function addNewContribution(req, body) {
   if (body.needsProjectReview) {
     // Since needsProjectReview is only set on a new project we can just add a project
     // TODO: toggle back to false once multiple people are submitting contributions
-    const resp = await dbProjects.addProject(body.package, null, null, true); // false);
+    const resp = await dbProjects.addProject(
+      body.package,
+      null,
+      null,
+      true,
+      false
+    ); // false);
     projectId = resp.project_id;
   } else {
     projectId = body.package;
@@ -166,7 +172,8 @@ export async function updateContribution(req, body) {
       body.project_name,
       null,
       null,
-      config.contributions.autoApprove.newProjects
+      config.contributions.autoApprove.newProjects,
+      false
     );
     body.project_id = resp.project_id;
   }
