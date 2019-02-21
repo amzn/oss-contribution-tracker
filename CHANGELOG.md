@@ -25,6 +25,7 @@ require manual edits to pluggable interfaces.
 ## Changed
 - Added radio button when adding/editing projects to support the above new feature.
 - Fixed data bug when editing a project.
+- updated package.json to new version.
 
 ## 1.1.1
 ## Changed
