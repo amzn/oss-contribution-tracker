@@ -111,7 +111,7 @@ export default class EditProject extends React.Component<Props, State> {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
+    if (this.props.project !== prevProps.project) {
       const projectInfo = await this.getProject();
       const projectGroups = [];
       for (const group of projectInfo.groups) {
@@ -276,14 +276,15 @@ export default class EditProject extends React.Component<Props, State> {
                 </div>
 
                 <div className="form-group">
-                  <label>Is GitHub Org? </label>
                   <input
+                    id="project_is_org_checkbox"
                     type="checkbox"
                     name="project_is_org"
                     value="project_is_org"
                     onChange={this.handleGitHubOrgCheckbox}
                     checked={this.state.projectInfo.project.project_is_org}
                   />
+                  <label className="form-check-label">Is GitHub Org?</label>
                 </div>
 
                 <div className="form-group">
