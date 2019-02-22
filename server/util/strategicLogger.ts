@@ -4,9 +4,9 @@ const pgPromise = require('pg-promise');
 const octokit = require('@octokit/rest')();
 
 function sleep() {
-  /* Use random sleep time (3-12 seconds) to avoid stampeding the API */
+  /* Use random sleep time (3-7 seconds) to avoid stampeding the API */
   return new Promise(resolve =>
-    setTimeout(resolve, Math.floor(Math.random() * 10000 + 3000))
+    setTimeout(resolve, Math.floor(Math.random() * 4000 + 3000))
   );
 }
 
@@ -108,25 +108,40 @@ async function whitelistedContrib(pg, contrib, groups) {
 async function fetchNewIssues(pg, owner, repo, date) {
   let response = null;
   if (date) {
-    response = await octokit.issues.getForRepo({
-      owner: owner.toString(),
-      repo: repo.toString(),
-      state: 'all',
-      since: date.toString(),
-    });
+    try {
+      response = await octokit.issues.listForRepo({
+        owner: owner.toString(),
+        repo: repo.toString(),
+        state: 'all',
+        since: date.toString(),
+      });
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.warn(e);
+    }
   } else {
-    response = await octokit.issues.getForRepo({
-      owner: owner.toString(),
-      repo: repo.toString(),
-      state: 'all',
-    });
+    try {
+      response = await octokit.issues.listForRepo({
+        owner: owner.toString(),
+        repo: repo.toString(),
+        state: 'all',
+      });
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.warn(e);
+    }
   }
   let { data } = response;
   await sleep();
 
   while (octokit.hasNextPage(response)) {
-    response = await octokit.getNextPage(response);
-    data = data.concat(response.data);
+    try {
+      response = await octokit.getNextPage(response);
+      data = data.concat(response.data);
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.warn(e);
+    }
     await sleep();
   }
 
@@ -134,43 +149,96 @@ async function fetchNewIssues(pg, owner, repo, date) {
 }
 
 async function updateStrategicContribs(pg) {
+  // add column to this table if it is an org or repo
   const projects = await getAllStrategicProjects(pg);
   projects.forEach(async proj => {
-    const project = await searchProjectById(pg, parseInt(proj.id, 10));
+    const project = await searchProjectById(pg, proj.id);
     const url = project.project_url;
     if (url && url.match(/github/i)) {
       const urlTokens = url.split('/');
       const last = urlTokens.length - 1;
-      const repo = urlTokens[last];
-      const owner = urlTokens[last - 1];
+      let repo;
+      let owner;
 
-      // groups this project belongs to
-      const groups = (await searchGroupsByProjectId(pg, proj.id)).groups;
-
-      let date = await getLastScrapeDate(pg, parseInt(proj.id, 10));
-
-      if (date) {
-        date = date.last_scrape_date;
-      }
-
-      // find all new issues
-      const issues = await fetchNewIssues(pg, owner, repo, date);
-
-      for (const issue of issues) {
-        // check that the contribution doesn't exist and it's made by a whitelisted user
+      if (project.project_is_org) {
+        // project is an org so we want to check all public repos
+        // only run once a day
+        const lastRun = await getLastScrapeDate(pg, proj.id);
+        const date = new Date(lastRun.last_scrape_date);
+        const currDate = new Date();
         if (
-          issue.pull_request &&
-          (await contributionExists(pg, issue.pull_request.html_url)).length ===
-            0 &&
-          (await whitelistedContrib(pg, issue, groups))
+          date &&
+          date.getFullYear() <= currDate.getFullYear() &&
+          date.getMonth() <= currDate.getMonth() &&
+          date.getDate() < currDate.getDate()
         ) {
-          // insert to database
-          await addWhitelistedContrib(pg, issue, proj.id);
+          // get all repos in org
+          let response = await octokit.repos.listForOrg({
+            org: project.project_name,
+            per_page: 100,
+            type: 'public',
+          });
+          let { data } = response;
+          while (octokit.hasNextPage(response)) {
+            response = await octokit.getNextPage(response);
+            data = data.concat(response.data);
+            await sleep();
+          }
+          for (const repoInfo of data) {
+            await updateDatabase(
+              pg,
+              project.project_id,
+              project.project_name,
+              repoInfo.name
+            );
+          }
         }
+      } else if (!project.project_is_org) {
+        // project is a single repo
+        owner = urlTokens[last - 1];
+        repo = urlTokens[last];
+        await updateDatabase(pg, proj.id, owner, repo);
       }
-      await updateLastScrapeDate(pg, parseInt(proj.id, 10));
+      // update last scraper datetime
+      await updateLastScrapeDate(pg, proj.id);
+    } else {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        `Project ${project.project_name} is not on GitHub and not updated here.`
+      );
     }
   });
+}
+
+async function updateDatabase(
+  pg,
+  projectID: number,
+  owner: string,
+  repo: string
+) {
+  // groups this project belongs to
+  const groups = (await searchGroupsByProjectId(pg, projectID)).groups;
+
+  let date = await getLastScrapeDate(pg, projectID);
+  if (date) {
+    date = date.last_scrape_date;
+  }
+
+  // below should be pulled into its own function
+  // find all new issues
+  const issues = await fetchNewIssues(pg, owner, repo, date);
+  for (const issue of issues) {
+    // check that the contribution doesn't exist and it's made by a whitelisted user
+    if (
+      issue.pull_request &&
+      (await contributionExists(pg, issue.pull_request.html_url)).length ===
+        0 &&
+      (await whitelistedContrib(pg, issue, groups))
+    ) {
+      // insert to database
+      await addWhitelistedContrib(pg, issue, projectID);
+    }
+  }
 }
 
 async function run() {

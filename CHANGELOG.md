@@ -11,6 +11,22 @@ require manual edits to pluggable interfaces.
 
 ### Improvements to strategic projects
 
+## 1.2.0
+## Added
+- Added support for strategic projects to function on an organization level. Now you can add an entire org to your strategic project instead of only individual projects making it easier for you to track your users contributions!
+- To enable support you need to run the below against your DB to add a new column
+
+>  ALTER TABLE projects ADD COLUMN project_is_org BOOLEAN;
+>
+>  UPDATE projects SET project_is_org = false;
+>
+>  ALTER TABLE projects ALTER COLUMN project_is_org SET NOT NULL;
+
+## Changed
+- Added radio button when adding/editing projects to support the above new feature.
+- Fixed data bug when editing a project.
+- updated package.json to new version.
+
 ## 1.1.1
 ## Changed
 - Split a couple of functions where I was being more fancy than I needed to so I could conform to new typescript rules.

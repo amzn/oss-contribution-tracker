@@ -41,7 +41,8 @@ export async function addProject(req, body) {
     body.project_name,
     body.project_url,
     body.project_license,
-    body.project_verified
+    body.project_verified,
+    body.project_is_org
   );
   return { projectList };
 }

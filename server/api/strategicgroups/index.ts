@@ -198,13 +198,15 @@ export async function updateProject(req, body) {
     project_url,
     project_license,
     project_groups,
+    project_is_org,
   } = body;
   // update project
   await dbprojects.updateProject(
     project_id,
     project_name,
     project_url,
-    project_license
+    project_license,
+    project_is_org
   );
 
   // update groups
