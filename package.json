@@ -10,7 +10,7 @@
     "test-ui": "tsc -p selenium && jasmine 'build/selenium/*.spec.js'",
     "lint": "prettier --write '**/*.{ts,tsx,js,css,scss}' '!build/**/*' && tslint -p server --fix && tslint -p browser --fix",
     "lint-check": "prettier --list-different . '**/*.{ts,tsx,js,css,scss}' '!build/**/*' && tslint -p server && tslint -p browser",
-    "clean": "rm -rf build",
+    "clean": "rm -rf build node_modules",
     "fresh": "npm run clean && rm -rf node_modules && npm install"
   },
   "repository": {
@@ -43,15 +43,15 @@
     "chromedriver": "^2.44.0",
     "concurrently": "^3.5.1",
     "core-js": "^2.4.1",
-    "css-loader": "^0.28.9",
+    "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
     "jasmine": "^2.8.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "mockery": "^1.7.0",
-    "node-sass": "^4.9.3",
-    "nodemon": "^1.18.7",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.0",
     "pg-monitor": "^0.4.5",
     "popper.js": "^1.12.9",
     "prettier": "^1.12.1",
@@ -65,9 +65,9 @@
     "typescript": "^2.7.2",
     "uglifyjs-webpack-plugin": "^1.2.0",
     "url-loader": "^0.6.2",
-    "webpack": "^4.26.1",
+    "webpack": "^4.31.0",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
     "@octokit/rest": "^15.9.1",

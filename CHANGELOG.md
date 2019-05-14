@@ -11,6 +11,10 @@ require manual edits to pluggable interfaces.
 
 ### Improvements to strategic projects
 
+## 1.2.1
+## Changed
+- Fixed CVE issues
+
 ## 1.2.0
 ## Added
 - Added support for strategic projects to function on an organization level. Now you can add an entire org to your strategic project instead of only individual projects making it easier for you to track your users contributions!
