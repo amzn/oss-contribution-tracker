@@ -1,14 +1,32 @@
 #!/usr/bin/env node
 
 const pgPromise = require('pg-promise');
-const octokit = require('@octokit/rest')();
+const Octokit = require('@octokit/rest')
+  .plugin(require('@octokit/plugin-retry'))
+  .plugin(require('@octokit/plugin-throttling'));
 
-function sleep() {
-  /* Use random sleep time (3-7 seconds) to avoid stampeding the API */
-  return new Promise(resolve =>
-    setTimeout(resolve, Math.floor(Math.random() * 4000 + 3000))
-  );
-}
+let octokit = new Octokit({
+  auth: `token `,
+  throttle: {
+    onRateLimit: (retryAfter, options) => {
+      octokit.log.warn(
+        `Request quota exhausted for request ${options.method} ${options.url}`
+      );
+      if (options.request.retryCount === 3) {
+        // only retries once
+        // tslint:disable-next-line:no-console
+        console.warn(`Retrying after ${retryAfter} seconds!`);
+        return true;
+      }
+    },
+    onAbuseLimit: (retryAfter, options) => {
+      // does not retry, only logs a warning
+      octokit.log.warn(
+        `Abuse detected for request ${options.method} ${options.url}`
+      );
+    },
+  },
+});
 
 /* database functions */
 function contributionExists(pg, url) {
@@ -105,53 +123,9 @@ async function whitelistedContrib(pg, contrib, groups) {
   return false;
 }
 
-async function fetchNewIssues(pg, owner, repo, date) {
-  let response = null;
-  if (date) {
-    try {
-      response = await octokit.issues.listForRepo({
-        owner: owner.toString(),
-        repo: repo.toString(),
-        state: 'all',
-        since: date.toString(),
-      });
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.warn(e);
-    }
-  } else {
-    try {
-      response = await octokit.issues.listForRepo({
-        owner: owner.toString(),
-        repo: repo.toString(),
-        state: 'all',
-      });
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.warn(e);
-    }
-  }
-  let { data } = response;
-  await sleep();
-
-  while (octokit.hasNextPage(response)) {
-    try {
-      response = await octokit.getNextPage(response);
-      data = data.concat(response.data);
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.warn(e);
-    }
-    await sleep();
-  }
-
-  return await data;
-}
-
 async function updateStrategicContribs(pg) {
-  // add column to this table if it is an org or repo
   const projects = await getAllStrategicProjects(pg);
-  projects.forEach(async proj => {
+  for (const proj of projects) {
     const project = await searchProjectById(pg, proj.id);
     const url = project.project_url;
     if (url && url.match(/github/i)) {
@@ -164,27 +138,31 @@ async function updateStrategicContribs(pg) {
         // project is an org so we want to check all public repos
         // only run once a day
         const lastRun = await getLastScrapeDate(pg, proj.id);
-        const date = new Date(lastRun.last_scrape_date);
+        let date = null;
+        if (lastRun && lastRun.last_scrape_date) {
+          date = new Date(lastRun.last_scrape_date);
+        } else {
+          // having no date was causing failures so go to the beginning of time...1970
+          date = new Date(0);
+        }
         const currDate = new Date();
         if (
           date &&
-          date.getFullYear() <= currDate.getFullYear() &&
-          date.getMonth() <= currDate.getMonth() &&
-          date.getDate() < currDate.getDate()
+          date.getFullYear() !== currDate.getFullYear() &&
+          date.getMonth() !== currDate.getMonth() &&
+          date.getDate() !== currDate.getDate()
         ) {
           // get all repos in org
-          let response = await octokit.repos.listForOrg({
+          const options = octokit.repos.listForOrg.endpoint.merge({
             org: project.project_name,
             per_page: 100,
             type: 'public',
           });
-          let { data } = response;
-          while (octokit.hasNextPage(response)) {
-            response = await octokit.getNextPage(response);
-            data = data.concat(response.data);
-            await sleep();
-          }
-          for (const repoInfo of data) {
+          let repoList = null;
+          await octokit.paginate(options).then(repos => {
+            repoList = repos;
+          });
+          for (const repoInfo of repoList) {
             await updateDatabase(
               pg,
               project.project_id,
@@ -207,7 +185,7 @@ async function updateStrategicContribs(pg) {
         `Project ${project.project_name} is not on GitHub and not updated here.`
       );
     }
-  });
+  }
 }
 
 async function updateDatabase(
@@ -219,14 +197,9 @@ async function updateDatabase(
   // groups this project belongs to
   const groups = (await searchGroupsByProjectId(pg, projectID)).groups;
 
-  let date = await getLastScrapeDate(pg, projectID);
-  if (date) {
-    date = date.last_scrape_date;
-  }
-
-  // below should be pulled into its own function
+  const dateObj = await getLastScrapeDate(pg, projectID);
   // find all new issues
-  const issues = await fetchNewIssues(pg, owner, repo, date);
+  const issues = await fetchNewIssues(pg, owner, repo, dateObj);
   for (const issue of issues) {
     // check that the contribution doesn't exist and it's made by a whitelisted user
     if (
@@ -239,6 +212,65 @@ async function updateDatabase(
       await addWhitelistedContrib(pg, issue, projectID);
     }
   }
+}
+
+async function fetchNewIssues(pg, owner, repo, dateObj) {
+  let options = null;
+  if (dateObj) {
+    const date = dateObj.last_scrape_date;
+    options = octokit.issues.listForRepo.endpoint.merge({
+      owner: owner.toString(),
+      repo: repo.toString(),
+      state: 'all',
+      since: date.toString(),
+    });
+  } else {
+    options = octokit.issues.listForRepo.endpoint.merge({
+      owner: owner.toString(),
+      repo: repo.toString(),
+      state: 'all',
+    });
+  }
+
+  let data = null;
+  try {
+    await octokit.paginate(options).then(issue => {
+      data = issue;
+    });
+  } catch (e) {
+    // tslint:disable-next-line:no-console
+    console.warn(e);
+  }
+  return data;
+}
+
+async function ghAuth(ghToken) {
+  // set up octokit authentication with github token
+  octokit = new Octokit({
+    auth: `token ${ghToken}`,
+    throttle: {
+      onRateLimit: (retryAfter, options) => {
+        octokit.log.warn(
+          `Request quota exhausted for request ${options.method} ${options.url}`
+        );
+        if (options.request.retryCount === 0) {
+          // tslint:disable-next-line:no-console
+          console.warn(`Retrying after ${retryAfter} seconds!`);
+          return true;
+        }
+      },
+      onAbuseLimit: (retryAfter, options) => {
+        octokit.log.warn(
+          `Abuse detected for request ${options.method} ${options.url}`
+        );
+        if (options.request.retryCount === 0) {
+          // tslint:disable-next-line:no-console
+          console.warn(`Retrying after ${retryAfter} seconds!`);
+          return true;
+        }
+      },
+    },
+  });
 }
 
 async function run() {
@@ -258,20 +290,15 @@ async function run() {
   });
 
   // set up octokit authentication with github token
-  octokit.authenticate({
-    type: 'oauth',
-    token: '',
-  });
+  const ghToken = null;
+  await ghAuth(ghToken);
 
   await updateStrategicContribs(pg);
 }
 
 // to use as stand-alone, remove export
 export async function onboxRun(config, pg) {
-  octokit.authenticate({
-    type: 'oauth',
-    token: config.github.token,
-  });
+  await ghAuth(config.github.token);
 
   await updateStrategicContribs(pg);
 }
