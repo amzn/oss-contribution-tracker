@@ -127,6 +127,8 @@ async function updateStrategicContribs(pg) {
   const projects = await getAllStrategicProjects(pg);
   for (const proj of projects) {
     const project = await searchProjectById(pg, proj.id);
+    // tslint:disable-next-line:no-console
+    console.info(`***** Processing ${project.project_name} *****`);
     const url = project.project_url;
     if (url && url.match(/github/i)) {
       const urlTokens = url.split('/');
@@ -146,12 +148,7 @@ async function updateStrategicContribs(pg) {
           date = new Date(0);
         }
         const currDate = new Date();
-        if (
-          date &&
-          date.getFullYear() !== currDate.getFullYear() &&
-          date.getMonth() !== currDate.getMonth() &&
-          date.getDate() !== currDate.getDate()
-        ) {
+        if (date < currDate) {
           // get all repos in org
           const options = octokit.repos.listForOrg.endpoint.merge({
             org: project.project_name,
@@ -170,6 +167,9 @@ async function updateStrategicContribs(pg) {
               repoInfo.name
             );
           }
+        } else {
+          // tslint:disable-next-line:no-console
+          console.info(`${project.project_name} already ran today.`);
         }
       } else if (!project.project_is_org) {
         // project is a single repo
@@ -185,6 +185,8 @@ async function updateStrategicContribs(pg) {
         `Project ${project.project_name} is not on GitHub and not updated here.`
       );
     }
+    // tslint:disable-next-line:no-console
+    console.info(`***** ${project.project_name} Processing Complete *****`);
   }
 }
 
@@ -216,6 +218,8 @@ async function updateDatabase(
 
 async function fetchNewIssues(pg, owner, repo, dateObj) {
   let options = null;
+  // tslint:disable-next-line:no-console
+  console.info(`Fetching issues for ${owner}/${repo}`);
   if (dateObj) {
     const date = dateObj.last_scrape_date;
     options = octokit.issues.listForRepo.endpoint.merge({
@@ -241,6 +245,8 @@ async function fetchNewIssues(pg, owner, repo, dateObj) {
     // tslint:disable-next-line:no-console
     console.warn(e);
   }
+  // tslint:disable-next-line:no-console
+  console.info(`Done fetching issues for ${owner}/${repo}`);
   return data;
 }
 
@@ -250,10 +256,12 @@ async function ghAuth(ghToken) {
     auth: `token ${ghToken}`,
     throttle: {
       onRateLimit: (retryAfter, options) => {
+        // tslint:disable-next-line:no-console
+        console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)
         octokit.log.warn(
           `Request quota exhausted for request ${options.method} ${options.url}`
         );
-        if (options.request.retryCount === 0) {
+        if (options.request.retryCount < 3) {
           // tslint:disable-next-line:no-console
           console.warn(`Retrying after ${retryAfter} seconds!`);
           return true;
@@ -263,6 +271,8 @@ async function ghAuth(ghToken) {
         octokit.log.warn(
           `Abuse detected for request ${options.method} ${options.url}`
         );
+        // tslint:disable-next-line:no-console
+        console.warn(`Abuse detected for request ${options.method} ${options.url}`)
         if (options.request.retryCount === 0) {
           // tslint:disable-next-line:no-console
           console.warn(`Retrying after ${retryAfter} seconds!`);
@@ -271,6 +281,11 @@ async function ghAuth(ghToken) {
       },
     },
   });
+  // Setup logging for pagination for easier debugging
+  octokit.hook.after('request', async (response, options) => {
+    // tslint:disable-next-line:no-console
+    console.debug(`${options.method} ${options.url}: ${response.status}`);
+  })
 }
 
 async function run() {
