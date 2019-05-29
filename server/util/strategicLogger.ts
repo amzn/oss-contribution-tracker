@@ -257,7 +257,9 @@ async function ghAuth(ghToken) {
     throttle: {
       onRateLimit: (retryAfter, options) => {
         // tslint:disable-next-line:no-console
-        console.warn(`Request quota exhausted for request ${options.method} ${options.url}`)
+        console.warn(
+          `Request quota exhausted for request ${options.method} ${options.url}`
+        );
         octokit.log.warn(
           `Request quota exhausted for request ${options.method} ${options.url}`
         );
@@ -272,7 +274,9 @@ async function ghAuth(ghToken) {
           `Abuse detected for request ${options.method} ${options.url}`
         );
         // tslint:disable-next-line:no-console
-        console.warn(`Abuse detected for request ${options.method} ${options.url}`)
+        console.warn(
+          `Abuse detected for request ${options.method} ${options.url}`
+        );
         if (options.request.retryCount === 0) {
           // tslint:disable-next-line:no-console
           console.warn(`Retrying after ${retryAfter} seconds!`);
@@ -285,7 +289,7 @@ async function ghAuth(ghToken) {
   octokit.hook.after('request', async (response, options) => {
     // tslint:disable-next-line:no-console
     console.debug(`${options.method} ${options.url}: ${response.status}`);
-  })
+  });
 }
 
 async function run() {
