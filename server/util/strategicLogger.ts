@@ -135,6 +135,7 @@ async function updateStrategicContribs(pg) {
       const last = urlTokens.length - 1;
       let repo;
       let owner;
+      let update = false;
 
       if (project.project_is_org) {
         // project is an org so we want to check all public repos
@@ -160,7 +161,7 @@ async function updateStrategicContribs(pg) {
             repoList = repos;
           });
           for (const repoInfo of repoList) {
-            await updateDatabase(
+            update = await updateDatabase(
               pg,
               project.project_id,
               project.project_name,
@@ -175,10 +176,12 @@ async function updateStrategicContribs(pg) {
         // project is a single repo
         owner = urlTokens[last - 1];
         repo = urlTokens[last];
-        await updateDatabase(pg, proj.id, owner, repo);
+        update = await updateDatabase(pg, proj.id, owner, repo);
       }
-      // update last scraper datetime
-      await updateLastScrapeDate(pg, proj.id);
+      if (update) {
+        // update last scraper datetime
+        await updateLastScrapeDate(pg, proj.id);
+      }
     } else {
       // tslint:disable-next-line:no-console
       console.warn(
@@ -202,18 +205,22 @@ async function updateDatabase(
   const dateObj = await getLastScrapeDate(pg, projectID);
   // find all new issues
   const issues = await fetchNewIssues(pg, owner, repo, dateObj);
-  for (const issue of issues) {
-    // check that the contribution doesn't exist and it's made by a whitelisted user
-    if (
-      issue.pull_request &&
-      (await contributionExists(pg, issue.pull_request.html_url)).length ===
-        0 &&
-      (await whitelistedContrib(pg, issue, groups))
-    ) {
-      // insert to database
-      await addWhitelistedContrib(pg, issue, projectID);
+  if (issues) {
+    for (const issue of issues) {
+      // check that the contribution doesn't exist and it's made by a whitelisted user
+      if (
+        issue.pull_request &&
+        (await contributionExists(pg, issue.pull_request.html_url)).length ===
+          0 &&
+        (await whitelistedContrib(pg, issue, groups))
+      ) {
+        // insert to database
+        await addWhitelistedContrib(pg, issue, projectID);
+      }
     }
+    return true;
   }
+  return false;
 }
 
 async function fetchNewIssues(pg, owner, repo, dateObj) {
@@ -277,7 +284,8 @@ async function ghAuth(ghToken) {
         console.warn(
           `Abuse detected for request ${options.method} ${options.url}`
         );
-        if (options.request.retryCount === 0) {
+        // Three (3) retries
+        if (options.request.retryCount < 3) {
           // tslint:disable-next-line:no-console
           console.warn(`Retrying after ${retryAfter} seconds!`);
           return true;
