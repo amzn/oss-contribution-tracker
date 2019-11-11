@@ -39,7 +39,7 @@
     "@types/typescript": "^2.0.0",
     "@types/webpack-dev-server": "^3.1.1",
     "@types/winston": "0.0.32",
-    "bootstrap": "^4.1.2",
+    "bootstrap": "^4.3.1",
     "chromedriver": "^2.44.0",
     "concurrently": "^3.5.1",
     "core-js": "^2.4.1",
