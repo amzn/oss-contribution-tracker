@@ -68,9 +68,7 @@ export default class DiffEntry extends SurveyStep<State, Data> {
     } catch (error) {
       this.setState({
         validationLoading: false,
-        validationError: `An error occurred while processing your diff: ${
-          error.message
-        }`,
+        validationError: `An error occurred while processing your diff: ${error.message}`,
       });
     }
   };

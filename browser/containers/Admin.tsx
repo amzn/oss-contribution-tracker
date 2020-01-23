@@ -102,7 +102,9 @@ class Admin extends Component<Props, State> {
     await this.getProjects();
     await this.props.fetchGroups();
 
-    const queryParams = QS.parse(this.props.location.search, {parseNumbers: true});
+    const queryParams = QS.parse(this.props.location.search, {
+      parseNumbers: true,
+    });
     // read query params and take actions as needed
     if (queryParams.strategic_group) {
       // turns out order is important...
@@ -368,7 +370,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  actions
-)(Admin);
+export default connect(mapStateToProps, actions)(Admin);

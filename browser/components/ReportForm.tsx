@@ -40,9 +40,7 @@ export default class ReportForm extends React.Component<Props, State> {
     e.preventDefault();
     const fields = e.target.elements;
     const report = await reqJSON(
-      `/api/strategic/report/${this.props.groupId}/${fields.year.value}-${
-        fields.month.value
-      }`
+      `/api/strategic/report/${this.props.groupId}/${fields.year.value}-${fields.month.value}`
     );
     report.date = `${fields.year.value}-${fields.month.value}`;
     utils.onClickDownload(report);

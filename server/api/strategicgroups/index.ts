@@ -19,9 +19,9 @@ import * as dbusers from '../../db/users';
 export async function listGroups(req) {
   const groupList = await dbgroups.listGroups();
   for (const group of groupList) {
-    const users = (await dbusers.getUsernamesByGroup([
-      group.group_id.toString(),
-    ])).names;
+    const users = (
+      await dbusers.getUsernamesByGroup([group.group_id.toString()])
+    ).names;
     const contribWeek = await dbcontributions.getLastWeekCount(
       group.projects,
       users
@@ -49,9 +49,9 @@ export async function listGroups(req) {
 export async function listStrategicProjects(req) {
   const projectList = await dbprojects.getAllStrategicProjects();
   for (const project of projectList) {
-    const groups = (await dbgroups.searchGroupIdsByProjectId(
-      project.project_id
-    )).groups;
+    const groups = (
+      await dbgroups.searchGroupIdsByProjectId(project.project_id)
+    ).groups;
     const users = (await dbusers.getUsernamesByGroup(groups)).names;
     const contribWeek = await dbcontributions.getLastWeekCount(
       [project.project_id],
@@ -140,9 +140,9 @@ export async function getStrategicProject(req, id) {
   const userList = [];
 
   for (const group of groups) {
-    const usernames = (await dbusers.getUsernamesByGroup([
-      group.group_id.toString(),
-    ])).names;
+    const usernames = (
+      await dbusers.getUsernamesByGroup([group.group_id.toString()])
+    ).names;
     const contribWeek = await dbcontributions.getLastWeekCount(
       projId,
       usernames
@@ -365,11 +365,13 @@ export async function getReport(req, id, date) {
 
   for (const user of users) {
     user.total = parseInt(
-      (await dbcontributions.monthlyTotalByUser(
-        group.projects,
-        user.company_alias,
-        date
-      )).total,
+      (
+        await dbcontributions.monthlyTotalByUser(
+          group.projects,
+          user.company_alias,
+          date
+        )
+      ).total,
       10
     );
   }

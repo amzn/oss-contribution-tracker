@@ -64,9 +64,9 @@ export async function listStrategicContributionsByGroup(req, groupId) {
 
   // add project name
   for (const c of list) {
-    c.project_name = (await dbProjects.searchProjectById(
-      c.project_id
-    ))[0].project_name; // returns one project as a list
+    c.project_name = (
+      await dbProjects.searchProjectById(c.project_id)
+    )[0].project_name; // returns one project as a list
   }
   return await list;
 }

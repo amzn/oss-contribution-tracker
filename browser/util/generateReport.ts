@@ -41,13 +41,9 @@ Sponsor: ${report.group.sponsor}
 Goals
 ${report.group.goal}
 
-This group has ${report.users.length} contributors and ${
-    report.projects.length
-  } projects.
+This group has ${report.users.length} contributors and ${report.projects.length} projects.
 
-The group made a total of ${report.group.strategic} contributions in ${
-    months[month]
-  } ${year}.
+The group made a total of ${report.group.strategic} contributions in ${months[month]} ${year}.
 `;
 
   if (report.group.total - report.group.strategic !== 0) {
@@ -84,9 +80,7 @@ The group made ${project.strategic} contributions to this project this month.
       summary += `\nThe full list of strategic contributions is:
 `;
       for (const contribution of project.contributions) {
-        summary += `${contribution.contributor_alias} -- ${
-          contribution.contribution_description
-        } -- ${contribution.contribution_url}
+        summary += `${contribution.contributor_alias} -- ${contribution.contribution_description} -- ${contribution.contribution_url}
 `;
       }
     }

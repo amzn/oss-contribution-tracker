@@ -40,9 +40,7 @@ app
     winston.info(`Sessions will launch as "${config.fallbackUser}"`);
 
     winston.info(
-      `Server running [${process.env.NODE_ENV}/${
-        process.env.DOMAIN
-      }]: http://0.0.0.0:${config.server.port}/`
+      `Server running [${process.env.NODE_ENV}/${process.env.DOMAIN}]: http://0.0.0.0:${config.server.port}/`
     );
   })
   .catch(err => winston.error(err));

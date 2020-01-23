@@ -62,9 +62,10 @@ export function updateContribution(contrib) {
 
 export function addContributionAutoApproval(contrib) {
   return dispatch => {
-    return postJSON('/api/contributions/newautoapproval', contrib).catch(
-      error => console.error(error)
-    );
+    return postJSON(
+      '/api/contributions/newautoapproval',
+      contrib
+    ).catch(error => console.error(error));
   };
 }
 

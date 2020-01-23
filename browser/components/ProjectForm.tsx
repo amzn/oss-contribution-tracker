@@ -178,7 +178,4 @@ class ProjectForm extends React.Component<Props, State> {
   }
 }
 
-export default connect(
-  null,
-  actions
-)(ProjectForm);
+export default connect(null, actions)(ProjectForm);

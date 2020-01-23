@@ -345,7 +345,4 @@ const mapStateToProps = state => ({
   groupId: state.admin.group,
 });
 
-export default connect(
-  mapStateToProps,
-  actions
-)(EditGroup);
+export default connect(mapStateToProps, actions)(EditGroup);
