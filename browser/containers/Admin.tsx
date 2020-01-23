@@ -102,7 +102,7 @@ class Admin extends Component<Props, State> {
     await this.getProjects();
     await this.props.fetchGroups();
 
-    const queryParams = QS.parse(this.props.location.search);
+    const queryParams = QS.parse(this.props.location.search, {parseNumbers: true});
     // read query params and take actions as needed
     if (queryParams.strategic_group) {
       // turns out order is important...
@@ -112,7 +112,7 @@ class Admin extends Component<Props, State> {
     } else if (queryParams.strategic_project) {
       this.setState({
         project_direct: true,
-        project_id: queryParams.strategic_project,
+        project_id: queryParams.strategic_project as number,
       });
       await this.changeNav('editProject');
     }

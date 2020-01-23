@@ -12,7 +12,7 @@
  * permissions and limitations under the License.
  */
 
-import createBrowserHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
 // manually export our own history to make navigation outside react (i.e., in
 // redux actions) easier.
