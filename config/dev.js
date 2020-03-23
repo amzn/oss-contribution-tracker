@@ -55,6 +55,10 @@ config.approver = {
   posixGroup: '', // approver posix group
 };
 
+config.cla = {
+  posixGroup: [], // read-only access to CCLAs
+};
+
 // Users defined for dropdowns
 config.display = {
   signatory: [

@@ -31,6 +31,8 @@ describe('routes', function() {
               return 'adminTestUser';
             } else if (req.type === 'approver') {
               return 'approverTestUser';
+            } else if (req.type === 'cla') {
+              return 'claTestUser';
             } else {
               return 'anonTestUser';
             }
@@ -42,6 +44,8 @@ describe('routes', function() {
               return ['group1', 'group3'];
             } else if (user === 'approverTestUser') {
               return ['group2', 'group3'];
+            } else if (user === 'claTestUser') {
+              return ['group4', 'group3'];
             } else {
               return ['group3'];
             }
@@ -57,6 +61,9 @@ describe('routes', function() {
       },
       approver: {
         posixGroup: ['group2'],
+      },
+      cla: {
+        posixGroup: ['group4'],
       },
     };
     mockery.registerMock('../config', { default: config });
@@ -85,6 +92,15 @@ describe('routes', function() {
       const next = () => {};
       await auth.checkAccess(req, res, next);
       expect((req as any).UserAccess).toEqual(['approver']);
+      done();
+    });
+
+    it('should return cla', async function(done) {
+      const req = { type: 'cla' };
+      const res = {};
+      const next = () => {};
+      await auth.checkAccess(req, res, next);
+      expect((req as any).UserAccess).toEqual(['cla']);
       done();
     });
 
