@@ -34,6 +34,7 @@ import Metrics from './Metrics';
 import Project from './Project';
 import Report from './Report';
 import Strategic from './Strategic';
+import ViewCCLAs from './ViewCCLAs';
 
 interface Props {
   children: any;
@@ -57,6 +58,7 @@ interface State {
 enum AccessTypes {
   admin = 'admin',
   approve = 'approver',
+  cla = 'cla',
   anon = 'anon',
 }
 
@@ -132,6 +134,16 @@ export class App extends React.Component<Props, State> {
         />
       );
     }
+    if (this.state.user.access.includes(AccessTypes.cla)) {
+      routes.push(
+        <Route
+          exact={true}
+          path="/view-cclas"
+          component={ViewCCLAs}
+          key="cclaRoute"
+        />
+      );
+    }
     return routes;
   };
 
@@ -181,6 +193,13 @@ export class App extends React.Component<Props, State> {
                     <ExtensionPoint ext="navbar-admin-links" user={user} />
                   </li>
                 </div>
+              )}
+              {user.access.includes(AccessTypes.cla) && (
+                <li className="nav-item">
+                  <Link to="/view-cclas" className="nav-link">
+                    View CCLAs
+                  </Link>
+                </li>
               )}
               <ExtensionPoint ext="navbar-links" user={user} />
               <li className="nav-item">

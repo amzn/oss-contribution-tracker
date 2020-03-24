@@ -47,6 +47,10 @@ config.approver = {
   posixGroup: null, // approver posix group
 };
 
+config.cla = {
+  posixGroup: [], // read-only access to CCLAs
+};
+
 config.roles = {
   // 'role-name': ['group-1', 'group-2'],
 };

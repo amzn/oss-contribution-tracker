@@ -504,11 +504,13 @@ async function getUser(req): Promise<string> {
   levels of access:
     admin: administrators
     approver: can approve new projects
+    cla: read only access to CCLAs
     anon: unknown users with minimal access
 */
 enum AccessTypes {
   admin = 'admin',
   approve = 'approver',
+  cla = 'cla',
   anon = 'anon',
 }
 // Middleware that stuffs user access levels into req.UserAccess
@@ -529,6 +531,13 @@ export async function checkAccess(req, res, next) {
   for (let i = 0; i < len; i++) {
     if ((groups as any).includes(config.approver.posixGroup[i])) {
       access.push('approver');
+    }
+  }
+  len = config.cla.posixGroup.length;
+  // Check if in cla groups
+  for (let i = 0; i < len; i++) {
+    if ((groups as any).includes(config.cla.posixGroup[i])) {
+      access.push('cla');
     }
   }
   // If access is empty then they aren't a member of a special group
