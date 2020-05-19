@@ -15,7 +15,7 @@
 
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -33,8 +33,12 @@ let plugins = [
   new ExtractTextPlugin('[name].css'),
 ];
 
+let optimization = undefined;
 if (prod) {
-  plugins = plugins.concat([new UglifyJsPlugin()]);
+  optimization = {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  };
 }
 
 module.exports = {
@@ -102,7 +106,8 @@ module.exports = {
 
   devtool: prod ? 'source-map' : 'cheap-module-source-map',
 
-  plugins: plugins,
+  plugins,
+  optimization,
 
   devServer: {
     port: 8010,
