@@ -51,7 +51,7 @@
     "jasmine": "^2.8.0",
     "jquery": "^3.5.0",
     "mockery": "^1.7.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "nodemon": "^1.19.0",
     "pg-monitor": "^0.4.5",
     "popper.js": "^1.12.9",
@@ -68,7 +68,7 @@
     "url-loader": "^0.6.2",
     "webpack": "^4.31.0",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
     "@octokit/plugin-retry": "^2.2.0",
