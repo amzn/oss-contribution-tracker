@@ -52,7 +52,7 @@
     "jquery": "^3.5.0",
     "mockery": "^1.7.0",
     "node-sass": "^4.14.1",
-    "nodemon": "^1.19.0",
+    "nodemon": "^2.0.4",
     "pg-monitor": "^0.4.5",
     "popper.js": "^1.12.9",
     "prettier": "^1.12.1",
