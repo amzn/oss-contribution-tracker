@@ -223,11 +223,6 @@ router.post('/contributions/new/auto', async (req, res, next) => {
 });
 
 router.post('/contributions/diffcheck', async (req, res, next) => {
-  const user = await getUser(req);
-  const roles = await getRoles(user);
-  if (!roles.has('auto-approve')) {
-    return next(new AccessError('no access to auto-approve'));
-  }
   pack(contributionsAPI.diffCheck(req, req.body), res, next);
 });
 
