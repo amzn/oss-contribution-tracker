@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-- "13"
-
-script:
-- npm test
-# TODO: test-ui? see oss-attribution-builder's .travis.yml for an example
-- npm run lint-check

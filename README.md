@@ -1,5 +1,5 @@
 # OSS-Contribution-Tracker
-[![Build Status](https://travis-ci.com/amzn/oss-contribution-tracker.svg?branch=master)](https://travis-ci.com/amzn/oss-contribution-tracker)
+[![](https://github.com/amzn/oss-contribution-tracker/workflows/CI/badge.svg)](https://github.com/amzn/oss-contribution-tracker/actions?query=workflow%3ACI)
 
 OSS-Contribution-Tracker is a tool that tracks external contributions to third-party open source software and CLAs that are sometimes associated.
 
